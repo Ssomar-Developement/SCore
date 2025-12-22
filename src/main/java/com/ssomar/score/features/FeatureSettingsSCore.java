@@ -379,6 +379,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     titleFeatures(getFeatureSettings("titleFeatures", true)),
     sitFeatures(getFeatureSettings("sitFeatures")),
     storageFeatures(getFeatureSettings("storageFeatures")),
+    doubleChest(getFeatureSettings("doubleChest")),
     trimMaterial(getFeatureSettings("trimMaterial")),
     type(getFeatureSettings("type")),
     underValue(getFeatureSettings("underValue")),
