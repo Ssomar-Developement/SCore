@@ -48,7 +48,8 @@ public enum RestrictionEnum {
     CANCEL_ITEM_DELETE_BY_LIGHTNING(FeatureSettingsSCore.cancelItemDeleteByLightning),
 
     CANCEL_SWAPHAND(FeatureSettingsSCore.cancelSwapHand),
-    LOCKED_INVENTORY(FeatureSettingsSCore.lockedInventory);
+    LOCKED_INVENTORY(FeatureSettingsSCore.lockedInventory),
+    CANCEL_SPAWNER(FeatureSettingsSCore.cancelSpawner);
 
     @Getter
     public final FeatureSettingsInterface featureSetting;

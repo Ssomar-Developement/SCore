@@ -76,6 +76,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     cancelStoneCutter(getFeatureSettings("cancelStoneCutter", "cancel-stone-cutter", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     cancelSwapHand(getFeatureSettings("cancelSwapHand", "cancel-swap-hand", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     cancelToolInteractions(getFeatureSettings("cancelToolInteractions", "cancel-tool-interactions", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelSpawner(getFeatureSettings("cancelSpawner", "cancel-spawner", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     charged(getFeatureSettings("charged")),
     color(getFeatureSettings("color")),
     containerContent(getFeatureSettings("containerContent")),
