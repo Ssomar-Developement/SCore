@@ -199,6 +199,7 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     displayCooldownMessage("displayCooldownMessage", "Display Cooldown Message", new String[]{"&7&oDisplay the cooldown message"}, null),
     displayFeatures("displayFeatures", "Display Features", new String[]{"&7&oDisplay features"}, Material.ITEM_FRAME),
     displayNameDrop("displayNameDrop", "Display custom name", new String[]{"&7&oDisplay custom name above the item"}, null),
+    doubleChest("doubleChest", "Double Chest", new String[]{"&7&oEnable to use a double chest", "&7&o(54 slots) instead of a single chest", "&7&o(27 slots)"}, Material.CHEST),
     dropBlockIfItIsBroken("dropBlockIfItIsBroken", "Drop block if it is broken", new String[]{"&7&oIf the block is broken,", "&7&oit will drop the block"}, Material.LEVER),
     dropBlockWhenItBurns("dropBlockWhenItBurns", "Drop block when it burns", new String[]{"&7&oIf the block burns,", "&7&oit will drop the block"}, Material.LEVER),
     dropBlockWhenItExplodes("dropBlockWhenItExplodes", "Drop block when it explodes", new String[]{"&7&oIf the block explodes,", "&7&oit will drop the block"}, Material.LEVER),

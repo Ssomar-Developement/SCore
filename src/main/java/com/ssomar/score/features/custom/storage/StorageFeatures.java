@@ -27,6 +27,7 @@ import java.util.Optional;
 public class StorageFeatures extends FeatureWithHisOwnEditor<StorageFeatures, StorageFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
     private BooleanFeature enable;
+    private BooleanFeature doubleChest;
     private ColoredStringFeature title;
 
     public StorageFeatures(FeatureParentInterface parent) {
@@ -37,6 +38,7 @@ public class StorageFeatures extends FeatureWithHisOwnEditor<StorageFeatures, St
     @Override
     public void reset() {
         this.enable = new BooleanFeature(this,  false, FeatureSettingsSCore.enable);
+        this.doubleChest = new BooleanFeature(this, false, FeatureSettingsSCore.doubleChest);
         this.title = new ColoredStringFeature(this, Optional.empty(), FeatureSettingsSCore.title);
     }
 
@@ -45,6 +47,7 @@ public class StorageFeatures extends FeatureWithHisOwnEditor<StorageFeatures, St
         List<String> error = new ArrayList<>();
         if (config.isConfigurationSection(getName())) {
             error.addAll(this.enable.load(plugin, config.getConfigurationSection(getName()), isPremiumLoading));
+            error.addAll(this.doubleChest.load(plugin, config.getConfigurationSection(getName()), isPremiumLoading));
             error.addAll(this.title.load(plugin, config.getConfigurationSection(getName()), isPremiumLoading));
         }
 
@@ -56,6 +59,7 @@ public class StorageFeatures extends FeatureWithHisOwnEditor<StorageFeatures, St
         config.set(getName(), null);
         ConfigurationSection section = config.createSection(getName());
         this.enable.save(section);
+        this.doubleChest.save(section);
         this.title.save(section);
     }
 
@@ -65,14 +69,18 @@ public class StorageFeatures extends FeatureWithHisOwnEditor<StorageFeatures, St
 
     @Override
     public StorageFeatures initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 3];
+        String[] finalDescription = new String[getEditorDescription().length + 4];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        if (isRequirePremium() && !isPremium()) finalDescription[finalDescription.length - 3] = GUI.PREMIUM;
-        else finalDescription[finalDescription.length - 3] = GUI.CLICK_HERE_TO_CHANGE;
+        if (isRequirePremium() && !isPremium()) finalDescription[finalDescription.length - 4] = GUI.PREMIUM;
+        else finalDescription[finalDescription.length - 4] = GUI.CLICK_HERE_TO_CHANGE;
         if (enable.getValue())
-            finalDescription[finalDescription.length - 2] = "&7Enabled: &a&l✔";
+            finalDescription[finalDescription.length - 3] = "&7Enabled: &a&l✔";
         else
-            finalDescription[finalDescription.length - 2] = "&7Disabled: &c&l✘";
+            finalDescription[finalDescription.length - 3] = "&7Disabled: &c&l✘";
+        if (doubleChest.getValue())
+            finalDescription[finalDescription.length - 2] = "&7Double Chest: &a&l✔";
+        else
+            finalDescription[finalDescription.length - 2] = "&7Double Chest: &c&l✘";
         finalDescription[finalDescription.length - 1] = "&7Title: &e" + title.getValue().orElse("No title");
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
@@ -88,6 +96,7 @@ public class StorageFeatures extends FeatureWithHisOwnEditor<StorageFeatures, St
     public StorageFeatures clone(FeatureParentInterface newParent) {
         StorageFeatures dropFeatures = new StorageFeatures(newParent);
         dropFeatures.setEnable(this.enable.clone(dropFeatures));
+        dropFeatures.setDoubleChest(this.doubleChest.clone(dropFeatures));
         dropFeatures.setTitle(this.title.clone(dropFeatures));
         return dropFeatures;
     }
@@ -96,6 +105,7 @@ public class StorageFeatures extends FeatureWithHisOwnEditor<StorageFeatures, St
     public List<FeatureInterface> getFeatures() {
         List<FeatureInterface> features = new ArrayList<>();
         features.add(this.enable);
+        features.add(this.doubleChest);
         features.add(this.title);
         return features;
     }
@@ -121,6 +131,7 @@ public class StorageFeatures extends FeatureWithHisOwnEditor<StorageFeatures, St
             if (feature instanceof StorageFeatures) {
                 StorageFeatures dropFeatures = (StorageFeatures) feature;
                 dropFeatures.setEnable(this.enable);
+                dropFeatures.setDoubleChest(this.doubleChest);
                 dropFeatures.setTitle(this.title);
                 break;
             }
