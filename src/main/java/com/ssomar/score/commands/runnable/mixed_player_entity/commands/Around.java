@@ -68,7 +68,8 @@ public class Around extends MixedCommand {
                 Location loc = receiver.getLocation().add(offset);
 
                 List<Player> targets = new ArrayList<>();
-                for (Entity e : loc.getNearbyEntities(distance, distance, distance)) {
+                // need to use world because loc.getNearbyEntities was introduced in 1.21.4
+                for (Entity e : loc.getWorld().getNearbyEntities(loc, distance, distance, distance)) {
                     if (e instanceof Player) {
                         Player target = (Player) e;
 

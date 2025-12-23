@@ -3,7 +3,6 @@ package com.ssomar.score.commands.runnable.player.commands;
 import com.ssomar.executableitems.listeners.projectiles.ProjectileInfo;
 import com.ssomar.executableitems.listeners.projectiles.ProjectilesHandler;
 import com.ssomar.score.SCore;
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
@@ -16,6 +15,7 @@ import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -73,13 +73,41 @@ public class Launch extends PlayerCommand {
                     } else entity = receiver.launchProjectile(Arrow.class);
 
                     // for some reason, starting at 1.21.6, minecraft does a NullPointerException if projectiles like shulkerbullet does not have a target
+                    boolean isShulkerBullet = false;
                     try {
+                        //SsomarDev.testMsg("LAUNCH projectile launched: " + entity.getType().name()+ " 1.21.6 plus ? "+SCore.is1v21v6Plus(), true);
                         if (entity instanceof ShulkerBullet && SCore.is1v21v6Plus()) {
                             ShulkerBullet bullet = (ShulkerBullet) entity;
-                            bullet.setTarget(null);
-                            //shulkerBulletClass.getMethod("setTarget", LivingEntity.class).invoke(bullet, (LivingEntity) null);
+                            isShulkerBullet = true;
+
+                            // Get the entity on the cursor of the shooter
+                            // 120 is the max distance
+                            RayTraceResult rayTraceResult = receiver.rayTraceEntities(120);
+                            if (rayTraceResult != null && rayTraceResult.getHitEntity() != null && rayTraceResult.getHitEntity() instanceof LivingEntity && !rayTraceResult.getHitEntity().getUniqueId().equals(receiver.getUniqueId())) {
+                                bullet.setTarget((LivingEntity) rayTraceResult.getHitEntity());
+                                //SsomarDev.testMsg("ShulkerBullet launched, setting target to entity on cursor: " + rayTraceResult.getHitEntity().getName(), false);
+                            }
+                            else{
+                                // Get the nearest living entity except the shooter
+                                Entity ent = receiver.getWorld().getNearbyEntities(receiver.getLocation(), 50, 50, 50, e -> e instanceof LivingEntity && !e.getUniqueId().equals(receiver.getUniqueId()))
+                                        .stream()
+                                        .min((e1, e2) -> Double.compare(e1.getLocation().distanceSquared(receiver.getLocation()), e2.getLocation().distanceSquared(receiver.getLocation())))
+                                        .orElse(null);
+
+                                //SsomarDev.testMsg("ShulkerBullet launched, setting target to nearest entity: " + (ent != null ? ent.getName() : "null"), true);
+
+                                if (ent != null) {
+                                    bullet.setTarget((LivingEntity) ent);
+                                    //SsomarDev.testMsg("Target set to: " + ent.getName(), true);
+                                } else {
+                                    //SsomarDev.testMsg("No valid target found, setting target to null", true);
+                                    bullet.setTarget(null);
+                                }
+                            }
+
                         }
                     } catch (Exception e) {
+                        e.printStackTrace();
                         entity = receiver.launchProjectile(Arrow.class);
                     }
 
@@ -91,7 +119,7 @@ public class Launch extends PlayerCommand {
                         firework.setShotAtAngle(true);
                     }
 
-                    if (!SCore.is1v13Less()) {
+                    if (!SCore.is1v13Less() && !isShulkerBullet) {
 
                         Location loc = receiver.getEyeLocation();
                         float pitch = loc.getPitch();

@@ -148,7 +148,7 @@ public class BlocksAttacksFeatures extends FeatureWithHisOwnEditor<BlocksAttacks
         if (isAvailable()) {
             if (enable.getValue()) {
                 ItemStack item = args.getItem();
-                SsomarDev.testMsg("blockattacks features applyOnItem2", true);
+                SsomarDev.testMsg("blockattacks features applyOnItem2", false);
                 try {
                     item.setData(DataComponentTypes.BLOCKS_ATTACKS, BlocksAttacks.blocksAttacks()
                     .blockSound(blockSound.getValue().isPresent() ? blockSound.getValue().get().getKey() : null)

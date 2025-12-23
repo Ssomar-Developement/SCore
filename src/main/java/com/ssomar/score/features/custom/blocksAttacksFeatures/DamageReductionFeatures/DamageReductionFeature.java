@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.blocksAttacksFeatures.DamageReductionFeatures;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
@@ -54,8 +55,9 @@ public class DamageReductionFeature extends FeatureWithHisOwnEditor<DamageReduct
         baseDamageBlocked.setValue(Optional.of((double) damageReduction.base()));
         factorDamageBlocked.setValue(Optional.of((double) damageReduction.factor()));
         horizontalBlockingAngle.setValue(Optional.of((double) damageReduction.horizontalBlockingAngle()));
-        if(damageReduction.type() != null)
-            damageTypes.fromRegistryKeySet(damageReduction.type());
+        if(damageReduction.type() != null) damageTypes.fromRegistryKeySet(damageReduction.type());
+        SsomarDev.testMsg("§6[SC] DamageReductionFeature loaded from DamageReduction: " + this, true);
+        SsomarDev.testMsg("§6[SC] type: "+damageReduction.type() , true);
     }
 
     @Override
@@ -70,7 +72,7 @@ public class DamageReductionFeature extends FeatureWithHisOwnEditor<DamageReduct
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
         if (config.isConfigurationSection(id)) {
-            ConfigurationSection section = config.getConfigurationSection(getName());
+            ConfigurationSection section = config.getConfigurationSection(id);
             errors.addAll(baseDamageBlocked.load(plugin, section, isPremiumLoading));
             errors.addAll(factorDamageBlocked.load(plugin, section, isPremiumLoading));
             errors.addAll(horizontalBlockingAngle.load(plugin, section, isPremiumLoading));
@@ -136,13 +138,13 @@ public class DamageReductionFeature extends FeatureWithHisOwnEditor<DamageReduct
 
     @Override
     public DamageReductionFeature clone(FeatureParentInterface newParent) {
-        DamageReductionFeature dropFeatures = new DamageReductionFeature(newParent, id);
-        dropFeatures.setBaseDamageBlocked(baseDamageBlocked.clone(dropFeatures));
-        dropFeatures.setFactorDamageBlocked(factorDamageBlocked.clone(dropFeatures));
-        dropFeatures.setHorizontalBlockingAngle(horizontalBlockingAngle.clone(dropFeatures));
-        dropFeatures.setDamageTypes(damageTypes.clone(dropFeatures));
+        DamageReductionFeature newReduction = new DamageReductionFeature(newParent, id);
+        newReduction.setBaseDamageBlocked(baseDamageBlocked.clone(newReduction));
+        newReduction.setFactorDamageBlocked(factorDamageBlocked.clone(newReduction));
+        newReduction.setHorizontalBlockingAngle(horizontalBlockingAngle.clone(newReduction));
+        newReduction.setDamageTypes(damageTypes.clone(newReduction));
 
-        return dropFeatures;
+        return newReduction;
     }
 
     @Override
