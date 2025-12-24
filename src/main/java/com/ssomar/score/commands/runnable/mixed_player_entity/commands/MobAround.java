@@ -97,7 +97,7 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
 
                     for (Entity e : receiverLoc.getWorld().getNearbyEntities(receiverLoc, distance, distance, distance)) {
                         if (e instanceof LivingEntity && !(e instanceof Player)) {
-                            if (regionCheck && SCore.hasGriefPrevention && !GriefPreventionAPI.playerIsInHisClaim((Player) launcher, e.getLocation(), true)) continue;
+                            if (launcher != null && regionCheck && SCore.hasGriefPrevention && !GriefPreventionAPI.playerIsInHisClaim((Player) launcher, e.getLocation(), true)) continue;
 
                             if (e.hasMetadata("NPC") || e.equals(receiver)) continue;
                             LivingEntity target = (LivingEntity) e;
