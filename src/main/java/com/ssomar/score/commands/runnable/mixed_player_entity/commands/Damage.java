@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.ArgumentChecker;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.usedapi.WorldGuardAPI;
@@ -31,8 +32,26 @@ import java.util.Optional;
 
 public class Damage extends MixedCommand {
 
+    public Damage() {
+        CommandSetting amount = new CommandSetting("amount", 0, String.class, "0");
+        CommandSetting ifStrength = new CommandSetting("ifStr", 1, String.class, "false");
+        CommandSetting ifAttribute = new CommandSetting("ifAttr", 2, String.class, "false");
+        CommandSetting damageType = new CommandSetting("type", 3, String.class, "INDIRECT_MAGIC");
+        List<CommandSetting> settings = getSettings();
+        settings.add(amount);
+        settings.add(ifStrength);
+        settings.add(ifAttribute);
+        settings.add(damageType);
+        setNewSettingsMode(true);
+    }
+
     public void run(Player p, Entity receiver, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
+        List<String> args = new ArrayList<>();
+        args.add((String) sCommandToExec.getSettingValue("amount"));
+        args.add((String) sCommandToExec.getSettingValue("ifStr"));
+        args.add((String) sCommandToExec.getSettingValue("ifAttr"));
+        args.add((String) sCommandToExec.getSettingValue("type"));
+
         ActionInfo aInfo = sCommandToExec.getActionInfo();
 
         if(!(receiver instanceof LivingEntity)) return;
@@ -49,7 +68,7 @@ public class Damage extends MixedCommand {
             // To display the good death message
             if(p != null) damageType = DamageType.PLAYER_ATTACK;
             try {
-                damageType = Registry.DAMAGE_TYPE.get(NamespacedKey.minecraft(args.get(3).toLowerCase()));
+                damageType = Registry.DAMAGE_TYPE.get(NamespacedKey.minecraft((String) sCommandToExec.getSettingValue("type")));
             } catch (Exception e) {}
 
             try {
@@ -151,7 +170,7 @@ public class Damage extends MixedCommand {
 
     @Override
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        return staticVerif(args, isFinalVerification, getTemplate());
+        return Optional.empty();
     }
 
     public static Optional<String> staticVerif(List<String> args, boolean isFinalVerification, String template) {
