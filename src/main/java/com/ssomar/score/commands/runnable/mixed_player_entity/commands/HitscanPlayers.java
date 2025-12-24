@@ -26,6 +26,7 @@ public class HitscanPlayers extends MixedCommand {
         CommandSetting throughEntities = new CommandSetting("throughEntities", -1, Boolean.class, true);
         CommandSetting limit = new CommandSetting("limit", -1, Integer.class, -1);
         CommandSetting sort = new CommandSetting("sort", -1, String.class, "NEAREST");
+        CommandSetting regionCheck = new CommandSetting("regionCheck", -1, Boolean.class, false);
         List<CommandSetting> settings = getSettings();
         settings.add(range);
         settings.add(radius);
@@ -37,13 +38,14 @@ public class HitscanPlayers extends MixedCommand {
         settings.add(throughBlocks);
         settings.add(limit);
         settings.add(sort);
+        settings.add(regionCheck);
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }
 
     @Override
     public void run(Player p, Entity receiver, SCommandToExec sCommandToExec) {
-        List<Entity> entities = HitscanEntities.runHitscan(receiver, sCommandToExec, true);
+        List<Entity> entities = HitscanEntities.runHitscan(receiver, sCommandToExec, true, p);
         List<Player> players = new ArrayList<>();
         for (Entity entity : entities){
             if(entity instanceof Player) players.add((Player) entity);

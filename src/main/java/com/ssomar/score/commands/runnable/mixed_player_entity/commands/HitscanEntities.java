@@ -1,10 +1,12 @@
 package com.ssomar.score.commands.runnable.mixed_player_entity.commands;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
+import com.ssomar.score.usedapi.GriefPreventionAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
@@ -33,6 +35,7 @@ public class HitscanEntities extends MixedCommand {
         CommandSetting throughEntities = new CommandSetting("throughEntities", -1, Boolean.class, true);
         CommandSetting limit = new CommandSetting("limit", -1, Integer.class, -1);
         CommandSetting sort = new CommandSetting("sort", -1, String.class, "NEAREST");
+        CommandSetting regionCheck = new CommandSetting("regionCheck", -1, Boolean.class, false);
         List<CommandSetting> settings = getSettings();
         settings.add(range);
         settings.add(radius);
@@ -44,17 +47,18 @@ public class HitscanEntities extends MixedCommand {
         settings.add(throughBlocks);
         settings.add(limit);
         settings.add(sort);
+        settings.add(regionCheck);
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }
 
     @Override
     public void run(Player p, Entity receiver, SCommandToExec sCommandToExec) {
-        List<Entity> entities = runHitscan(receiver, sCommandToExec, false);
+        List<Entity> entities = runHitscan(receiver, sCommandToExec, false, p);
         CommmandThatRunsCommand.runEntityCommands(entities, sCommandToExec.getOtherArgs(), sCommandToExec.getActionInfo());
     }
 
-    public static List<Entity> runHitscan(Entity receiver, SCommandToExec sCommandToExec, boolean playerOnly){
+    public static List<Entity> runHitscan(Entity receiver, SCommandToExec sCommandToExec, boolean playerOnly, Player shooter){
         List<Entity> entities = new ArrayList<>();
 
         double range = (double) sCommandToExec.getSettingValue("range");
@@ -67,6 +71,7 @@ public class HitscanEntities extends MixedCommand {
         boolean throughEntities = (boolean) sCommandToExec.getSettingValue("throughEntities");
         int limit = (int) sCommandToExec.getSettingValue("limit");
         String sort = (String) sCommandToExec.getSettingValue("sort");
+        boolean regionCheck = (boolean) sCommandToExec.getSettingValue("regionCheck");
 
         if (receiver instanceof LivingEntity) {
 
@@ -105,6 +110,7 @@ public class HitscanEntities extends MixedCommand {
                 // 5. Verify That a Raytrace Exists Without Hitting a Block (Null Raytrace)
                 if (hitSuccess) {
                     SsomarDev.testMsg("YESSS HITSCAN > " + entity.getType(), true);
+                    if (regionCheck && SCore.hasGriefPrevention && !GriefPreventionAPI.playerIsInHisClaim((Player) shooter, entity.getLocation(), true)) continue;
                     entities.add(entity);
                 }
             }
