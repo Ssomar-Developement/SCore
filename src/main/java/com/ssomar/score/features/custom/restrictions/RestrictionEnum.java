@@ -39,6 +39,7 @@ public enum RestrictionEnum {
     CANCEL_LOOM(FeatureSettingsSCore.cancelLoom),
     CANCEL_DECORATED_POT(FeatureSettingsSCore.cancelDecoratedPot),
     CANCEL_CRAFTER(FeatureSettingsSCore.cancelCrafter),
+    CANCEL_PLACE_IN_BUNDLE(FeatureSettingsSCore.cancelPlaceInBundle),
 
     CANCEL_MERCHANT(FeatureSettingsSCore.cancelMerchant),
     CANCEL_HORSE(FeatureSettingsSCore.cancelHorse),
