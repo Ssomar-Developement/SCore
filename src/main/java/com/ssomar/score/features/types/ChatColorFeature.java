@@ -137,6 +137,7 @@ public class ChatColorFeature extends FeatureAbstract<Optional<ChatColor>, ChatC
 
     @Override
     public boolean leftClicked(Player editor, NewGUIManager manager) {
+        //SsomarDev.testMsg("ChatColorFeature left click", true);
         if (!isPremium() && this.isRequirePremium()) return true;
         updateChatColor(nextChatColor(getChatColor((GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor));
         return true;
@@ -144,6 +145,7 @@ public class ChatColorFeature extends FeatureAbstract<Optional<ChatColor>, ChatC
 
     @Override
     public boolean rightClicked(Player editor, NewGUIManager manager) {
+        //SsomarDev.testMsg("ChatColorFeature right click", true);
         if (!isPremium() && this.isRequirePremium()) return true;
         updateChatColor(prevChatColor(getChatColor((GUI) manager.getCache().get(editor))), (GUI) manager.getCache().get(editor));
         return true;
@@ -186,6 +188,7 @@ public class ChatColorFeature extends FeatureAbstract<Optional<ChatColor>, ChatC
     }
 
     public void updateChatColor(ChatColor color, GUI gui) {
+        //SsomarDev.testMsg("ChatColorFeature updateChatColor: " + color.name(), true);
         ItemStack item = gui.getByIdentifier(getEditorName());
         value = Optional.of(color);
         ItemMeta meta = item.getItemMeta();
@@ -197,13 +200,13 @@ public class ChatColorFeature extends FeatureAbstract<Optional<ChatColor>, ChatC
                 find = true;
             } else if (find) {
                 if (lore.size() == 17) break;
-                lore.add(StringConverter.coloredString("&6✦ &e" + check.name()));
+                lore.add(StringConverter.coloredString("&6✦ &e" + check.name() + (!isPremium() && this.isRequirePremium() ? " &7&oPremium" : "")));
             }
         }
         for (ChatColor check : ChatColor.values()) {
             if (lore.size() == 17) break;
             else {
-                lore.add(StringConverter.coloredString("&6✦ &e" + check.name()));
+                lore.add(StringConverter.coloredString("&6✦ &e" + check.name() + (!isPremium() && this.isRequirePremium() ? " &7&oPremium" : "")));
             }
         }
         meta.setLore(lore);
@@ -219,6 +222,7 @@ public class ChatColorFeature extends FeatureAbstract<Optional<ChatColor>, ChatC
         for (String str : lore) {
             if (str.contains("➤ ")) {
                 str = StringConverter.decoloredString(str).replaceAll(" Premium", "");
+                //SsomarDev.testMsg("ChatColorFeature getChatColor: " + str.split("➤ ")[1], true);
                 return ChatColor.valueOf(str.split("➤ ")[1]);
             }
         }
