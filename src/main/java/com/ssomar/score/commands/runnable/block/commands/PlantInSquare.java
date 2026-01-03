@@ -26,7 +26,7 @@ public class PlantInSquare extends BlockCommand {
         CommandSetting radius = new CommandSetting("radius", 0, Integer.class, 1);
         CommandSetting takeFromInv = new CommandSetting("takeFromInv", 1, Boolean.class, false);
         CommandSetting acceptEI = new CommandSetting("acceptEI", 2, Boolean.class, false);
-        CommandSetting cropType = new CommandSetting("cropType", 3, String.class, "WHEAT");
+        CommandSetting cropType = new CommandSetting("cropType", 3, String.class, null);
         CommandSetting isCube = new CommandSetting("isCube", 4, Boolean.class, false);
         List<CommandSetting> settings = getSettings();
         settings.add(radius);
@@ -44,7 +44,14 @@ public class PlantInSquare extends BlockCommand {
         int radius = Integer.parseInt(sCommandToExec.getSettingValue("radius").toString());
         boolean takeFromInventory = Boolean.parseBoolean(sCommandToExec.getSettingValue("takeFromInv").toString());
         boolean acceptEI = Boolean.parseBoolean(sCommandToExec.getSettingValue("acceptEI").toString());
-        List<String> specifiedCropTypes = Arrays.asList(sCommandToExec.getSettingValue("cropType").toString().toUpperCase().split(","));
+
+        List<String> specifiedCropTypes;
+        String cropType = (String) sCommandToExec.getSettingValue("cropType");
+        if (cropType != null)
+            specifiedCropTypes = Arrays.asList(cropType.toUpperCase().split(","));
+        else
+            specifiedCropTypes = new ArrayList<>();
+
         boolean isCube = Boolean.parseBoolean(sCommandToExec.getSettingValue("isCube").toString());
 
         // #2
