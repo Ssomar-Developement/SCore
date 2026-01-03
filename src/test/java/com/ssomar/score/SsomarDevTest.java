@@ -24,8 +24,15 @@ class SsomarDevTest {
                     .forEach(f -> {
                         try {
                             String code = Files.readString(f);
+
+                            // Remove block comments /* ... */
+                            code = code.replaceAll("(?s)/\\*.*?\\*/", "");
+
+                            // Remove line comments // ...
+                            code = code.replaceAll("//.*", "");
+
                             assertFalse(code.contains("if (true)"),
-                                    "Forbidden pattern found in: " + f);
+                                    "Someone forgot to remove their forced if=true statement! Forbidden pattern found in: " + f);
                         } catch (IOException e) {
                             fail(e);
                         }

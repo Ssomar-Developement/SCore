@@ -5,6 +5,7 @@ import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.usedapi.GriefPreventionAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
@@ -32,12 +33,14 @@ public class Around extends BlockCommand {
         CommandSetting throughBlocks = new CommandSetting("throughBlocks", -1, Boolean.class, true);
         CommandSetting limit = new CommandSetting("limit", -1, Integer.class, -1);
         CommandSetting sort = new CommandSetting("sort", -1, String.class, "NEAREST");
+        CommandSetting regionCheck = new CommandSetting("regionCheck", -1, Boolean.class, false);
         List<CommandSetting> settings = getSettings();
         settings.add(distance);
         settings.add(displayMsgIfNoPlayer);
         settings.add(throughBlocks);
         settings.add(limit);
         settings.add(sort);
+        settings.add(regionCheck);
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }
@@ -93,12 +96,14 @@ public class Around extends BlockCommand {
                     boolean throughBlocks = (boolean) sCommandToExec.getSettingValue("throughBlocks");
                     int limit = (int) sCommandToExec.getSettingValue("limit");
                     String sort = (String) sCommandToExec.getSettingValue("sort");
+                    boolean regionCheck = (boolean) sCommandToExec.getSettingValue("regionCheck");
 
                     List<Player> targets = new ArrayList<>();
                     for (Entity e : block.getWorld().getNearbyEntities(block.getLocation().add(0.5, 0.5, 0.5), distance, distance, distance)) {
                         if (e instanceof Player) {
 
                             Location receiverLoc = e.getLocation();
+                            if (p != null && regionCheck && SCore.hasGriefPrevention && !GriefPreventionAPI.playerIsInHisClaim(p, e.getLocation(), true)) continue;
 
                             if(!throughBlocks){
                                 List<Location> centerLocationOfEachFaces = new ArrayList<>();
