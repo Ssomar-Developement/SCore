@@ -7,6 +7,7 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
@@ -58,6 +59,9 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
     private double xVelocity;
     private double yVelocity;
     private double zVelocity;
+
+    private double health;
+    private double max_health;
 
     @Getter
     private Map<String, String> placeholders;
@@ -146,6 +150,14 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
             } else {
                 attackCharge = 0;
             }
+
+            this.health = player.getHealth();
+
+            if (SCore.is1v10Less())
+                this.max_health = player.getMaxHealth(); // is deprecated since 1.11
+            else
+                this.max_health = player.getAttribute(Attribute.MAX_HEALTH).getValue();
+
 
             /* Pre save placeholders without calcul */
             /* I need to let that because old versions doesnt have particle */
@@ -278,13 +290,16 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_positive%", yawPositive + "", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_positive_int%", ((int) yawPositive) + "", false);
 
+            // It means new placeholder %player_yaw_initial% %player_yaw_positive_initial% %player_yaw_initial_int% %player_yaw_positive_initial_int%
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_initial%", yawInitial + "", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_initial_int%", ((int) yawInitial) + "", true);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_positive_initial%", yawPositiveInitial + "", false);
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_positive_initial_int%", ((int) yawPositiveInitial) + "", false);
 
-            // It means new placeholder %player_yaw_initial% %player_yaw_positive_initial% %player_yaw_initial_int% %player_yaw_positive_initial_int%
             toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_attack_charge%", attackCharge + "", false);
+
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_health%", health + "", false);
+            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_max_health%", max_health + "", false);
         }
 
         return toReplace;
