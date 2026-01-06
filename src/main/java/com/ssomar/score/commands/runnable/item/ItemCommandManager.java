@@ -23,6 +23,7 @@ public class ItemCommandManager extends CommandManager<SCommand> {
         if(SCore.is1v20v5Plus()) commands.add(new SetItemTooltipStyle());
         if(SCore.is1v20v5Plus()) commands.add(new SetItemPotionColor());
         if(SCore.is1v20v5Plus()) commands.add(new SetItemModel());
+        if(SCore.is1v21v2Plus()) commands.add(new SetEquippableModel());
         commands.add(new SetItemCustomModelData());
 
         if (!SCore.is1v12Less()) {
