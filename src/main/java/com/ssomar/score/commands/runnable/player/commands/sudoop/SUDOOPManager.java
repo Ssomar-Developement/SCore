@@ -68,7 +68,9 @@ public class SUDOOPManager {
 
             } finally {
                 player.setOp(false);
-                SecurityOPQuery.deletePlayerOP(Database.getInstance().connect(), player, true);
+                SCore.schedulerHook.runAsyncTask(() -> {
+                    SecurityOPQuery.deletePlayerOP(Database.getInstance().connect(), player, false);
+                }, 0);
                 cachedOpStatus.put(playerUUID, false);
                 if (commandsAsOP.get(player).size() == 1) commandsAsOP.remove(player);
                 else commandsAsOP.get(player).remove(command);
