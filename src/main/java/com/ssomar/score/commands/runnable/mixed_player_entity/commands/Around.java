@@ -8,6 +8,7 @@ import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.configs.messages.Message;
 import com.ssomar.score.configs.messages.MessageMain;
+import com.ssomar.score.usedapi.GriefPreventionAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
@@ -35,6 +36,7 @@ public class Around extends MixedCommand {
         CommandSetting offsetDistance = new CommandSetting("offsetDistance", -1, Double.class, 0d);
         CommandSetting limit = new CommandSetting("limit", -1, Integer.class, -1);
         CommandSetting sort = new CommandSetting("sort", -1, String.class, "NEAREST");
+        CommandSetting regionCheck = new CommandSetting("regionCheck", -1, Boolean.class, false);
         List<CommandSetting> settings = getSettings();
         settings.add(distance);
         settings.add(displayMsgIfNoPlayer);
@@ -45,10 +47,17 @@ public class Around extends MixedCommand {
         settings.add(offsetDistance);
         settings.add(limit);
         settings.add(sort);
+        settings.add(regionCheck);
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }
 
+    /**
+     * The AROUND command is highly used in player commands, so think of the <code>receiver</code> as the caster of the custom command.
+     * @param receiver
+     * @param sCommandToExec
+     * @param displayMsgIfNoTargetHit
+     */
     public static void aroundExecution(Entity receiver, SCommandToExec sCommandToExec, boolean displayMsgIfNoTargetHit) {
         Runnable runnable = new Runnable() {
             @Override
@@ -63,6 +72,7 @@ public class Around extends MixedCommand {
                 double offsetDistance = (double) sCommandToExec.getSettingValue("offsetDistance");
                 int limit = (int) sCommandToExec.getSettingValue("limit");
                 String sort = (String) sCommandToExec.getSettingValue("sort");
+                boolean regionCheck = (boolean) sCommandToExec.getSettingValue("regionCheck");
 
                 Vector offset = XParticle.calculDirection(offsetYaw, offsetPitch).multiply(offsetDistance);
                 Location loc = receiver.getLocation().add(offset);
@@ -72,6 +82,7 @@ public class Around extends MixedCommand {
                 for (Entity e : loc.getWorld().getNearbyEntities(loc, distance, distance, distance)) {
                     if (e instanceof Player) {
                         Player target = (Player) e;
+                        if (regionCheck && SCore.hasGriefPrevention && !GriefPreventionAPI.playerIsInHisClaim((Player) receiver, e.getLocation(), true)) continue;
 
                         if(safeDistance > 0) {
                             Location targetLoc = target.getLocation();

@@ -2,6 +2,7 @@ package com.ssomar.score.utils.placeholders;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.events.PlaceholderLastDamageDealtEvent;
+import com.ssomar.score.utils.backward_compatibility.AttributeUtils;
 import com.ssomar.score.utils.numbers.NTools;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -155,8 +156,10 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
 
             if (SCore.is1v10Less())
                 this.max_health = player.getMaxHealth(); // is deprecated since 1.11
-            else
-                this.max_health = player.getAttribute(Attribute.MAX_HEALTH).getValue();
+            else {
+                Attribute maxHealthAttr = SCore.is1v21Plus() ? AttributeUtils.getAttribute("MAX_HEALTH") : AttributeUtils.getAttribute("GENERIC_MAX_HEALTH");
+                this.max_health =player.getAttribute(maxHealthAttr).getValue();
+            }
 
 
             /* Pre save placeholders without calcul */
