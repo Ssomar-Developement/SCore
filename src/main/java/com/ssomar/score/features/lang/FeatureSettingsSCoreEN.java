@@ -667,7 +667,9 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     ifEntityIsInLava("ifEntityIsInLava", "If entity is in lava", new String[]{}, Material.ANVIL),
     ifEntityLastDamageCause("ifEntityLastDamageCause", "If entity last damage cause", new String[]{}, Material.ANVIL),
     ifEntityVelocity("ifEntityVelocity", "If entity velocity", new String[]{}, Material.ANVIL),
-    suspiciousBlockLoot("suspiciousBlockLoot", "Suspicious Block Loot", new String[]{"&7The loot the ExecutableBlock will have","&7when brushed.","&cREQUIRED BY PLAYER_BRUSH_BLOCK"}, FixedMaterial.getMaterial(Arrays.asList("BRUSH")))
+    suspiciousBlockLoot("suspiciousBlockLoot", "Suspicious Block Loot", new String[]{"&7The loot the ExecutableBlock will have","&7when brushed.","&cREQUIRED BY PLAYER_BRUSH_BLOCK"}, FixedMaterial.getMaterial(Arrays.asList("BRUSH"))),
+    ifBlockInRegion("ifBlockInRegion", "If Block in Region", new String[]{"&7If block is in region"}, Material.ANVIL),
+    ifNotBlockInRegion("ifNotBlockInRegion", "If Block is not in Region", new String[]{"&7If block is not in region"}, Material.ANVIL),
     ;
 
 
