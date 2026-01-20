@@ -394,6 +394,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
         return is1v8() || is1v9() || is1v10() || is1v11() || is1v12();
     }
 
+    /* The server is in 1.12 or + ? */
+    public static boolean is1v12Plus() { return is1v12() || is1v13() || is1v14() || is1v15() || is1v16Plus(); }
+
     /* The server is in 1.13 or - ? */
     public static boolean is1v13Less() {
         return is1v8() || is1v9() || is1v10() || is1v11() || is1v12() || is1v13();
@@ -915,9 +918,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static void initVersion() {
         is1v23 = Bukkit.getServer().getVersion().contains("1.23");
         is1v22 = Bukkit.getServer().getVersion().contains("1.22");
-        is1v21v9 = Bukkit.getServer().getVersion().contains("1.21.9");
-        is1v21v10 = Bukkit.getServer().getVersion().contains("1.21.10");
         is1v21v11 = Bukkit.getServer().getVersion().contains("1.21.11");
+        is1v21v10 = Bukkit.getServer().getVersion().contains("1.21.10");
+        is1v21v9 = Bukkit.getServer().getVersion().contains("1.21.9");
         is1v21v8 = Bukkit.getServer().getVersion().contains("1.21.8");
         is1v21v7 = Bukkit.getServer().getVersion().contains("1.21.7");
         is1v21v6 = Bukkit.getServer().getVersion().contains("1.21.6");
