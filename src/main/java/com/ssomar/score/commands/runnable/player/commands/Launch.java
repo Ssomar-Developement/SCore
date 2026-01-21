@@ -76,7 +76,7 @@ public class Launch extends PlayerCommand {
                     boolean isShulkerBullet = false;
                     try {
                         //SsomarDev.testMsg("LAUNCH projectile launched: " + entity.getType().name()+ " 1.21.6 plus ? "+SCore.is1v21v6Plus(), true);
-                        if (entity instanceof ShulkerBullet && SCore.is1v21v6Plus()) {
+                        if (SCore.is1v21v6Plus() && entity instanceof ShulkerBullet) {
                             ShulkerBullet bullet = (ShulkerBullet) entity;
                             isShulkerBullet = true;
 
