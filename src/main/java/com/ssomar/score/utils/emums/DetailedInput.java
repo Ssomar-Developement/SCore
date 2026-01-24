@@ -14,61 +14,71 @@ public enum DetailedInput {
     BACKWARD_RELEASE,
     JUMP_RELEASE,
     SNEAK_RELEASE,
-    SPRINT_RELEASE;
+    SPRINT_RELEASE,
+    // Grouped options (like RIGHT_OR_LEFT in DetailedClick)
+    LEFT_PRESS_OR_RELEASE,
+    RIGHT_PRESS_OR_RELEASE,
+    FORWARD_PRESS_OR_RELEASE,
+    BACKWARD_PRESS_OR_RELEASE,
+    JUMP_PRESS_OR_RELEASE,
+    SNEAK_PRESS_OR_RELEASE,
+    SPRINT_PRESS_OR_RELEASE;
 
 
-    public static boolean isDetailedClick(String s) {
-        return s.equalsIgnoreCase("left_press") || s.equalsIgnoreCase("right_press") || s.equalsIgnoreCase("forward_press")
-                || s.equalsIgnoreCase("backward_press")
-                || s.equalsIgnoreCase("jump_press") || s.equalsIgnoreCase("sneak_press") || s.equalsIgnoreCase("sprint_press")
-                || s.equalsIgnoreCase("left_release") || s.equalsIgnoreCase("right_release") || s.equalsIgnoreCase("forward_release")
-                || s.equalsIgnoreCase("backward_release")
-                || s.equalsIgnoreCase("jump_release") || s.equalsIgnoreCase("sneak_release") || s.equalsIgnoreCase("sprint_release");
+    public static boolean isDetailedInput(String s) {
+        for (DetailedInput input : values()) {
+            if (input.name().equalsIgnoreCase(s)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public static DetailedInput getDetailedClick(String s) {
-        if (s.equalsIgnoreCase("left_press")) {
-            return LEFT_PRESS;
-        }
-        else if (s.equalsIgnoreCase("right_press")) {
-            return RIGHT_PRESS;
-        }
-        else if (s.equalsIgnoreCase("forward_press")) {
-            return FORWARD_PRESS;
-        }
-        else if (s.equalsIgnoreCase("backward_press")) {
-            return BACKWARD_PRESS;
-        }
-        else if (s.equalsIgnoreCase("jump_press")) {
-            return JUMP_PRESS;
-        }
-        else if (s.equalsIgnoreCase("sneak_press")) {
-            return SNEAK_PRESS;
-        }
-        else if (s.equalsIgnoreCase("sprint_press")) {
-            return SPRINT_PRESS;
-        }
-        else if (s.equalsIgnoreCase("left_release")) {
-            return LEFT_RELEASE;
-        }
-        else if (s.equalsIgnoreCase("right_release")) {
-            return RIGHT_RELEASE;
-        }
-        else if (s.equalsIgnoreCase("forward_release")) {
-            return FORWARD_RELEASE;
-        }
-        else if (s.equalsIgnoreCase("backward_release")) {
-            return BACKWARD_RELEASE;
-        }
-        else if (s.equalsIgnoreCase("jump_release")) {
-            return JUMP_RELEASE;
-        }
-        else if (s.equalsIgnoreCase("sneak_release")) {
-            return SNEAK_RELEASE;
-        }
-        else if (s.equalsIgnoreCase("sprint_release")) {
-            return SPRINT_RELEASE;
+    public static DetailedInput getDetailedInput(String s) {
+        for (DetailedInput input : values()) {
+            if (input.name().equalsIgnoreCase(s)) {
+                return input;
+            }
         }
         return null;
+    }
+
+    /**
+     * Checks if the given input matches this DetailedInput configuration.
+     * Handles grouped options like LEFT_PRESS_OR_RELEASE.
+     */
+    public boolean matches(DetailedInput input) {
+        if (input == null) return false;
+        if (this == input) return true;
+
+        switch (this) {
+            case LEFT_PRESS_OR_RELEASE:
+                return input == LEFT_PRESS || input == LEFT_RELEASE;
+            case RIGHT_PRESS_OR_RELEASE:
+                return input == RIGHT_PRESS || input == RIGHT_RELEASE;
+            case FORWARD_PRESS_OR_RELEASE:
+                return input == FORWARD_PRESS || input == FORWARD_RELEASE;
+            case BACKWARD_PRESS_OR_RELEASE:
+                return input == BACKWARD_PRESS || input == BACKWARD_RELEASE;
+            case JUMP_PRESS_OR_RELEASE:
+                return input == JUMP_PRESS || input == JUMP_RELEASE;
+            case SNEAK_PRESS_OR_RELEASE:
+                return input == SNEAK_PRESS || input == SNEAK_RELEASE;
+            case SPRINT_PRESS_OR_RELEASE:
+                return input == SPRINT_PRESS || input == SPRINT_RELEASE;
+            default:
+                return false;
+        }
+    }
+
+    // Deprecated methods kept for backwards compatibility
+    @Deprecated
+    public static boolean isDetailedClick(String s) {
+        return isDetailedInput(s);
+    }
+
+    @Deprecated
+    public static DetailedInput getDetailedClick(String s) {
+        return getDetailedInput(s);
     }
 }
