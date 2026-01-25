@@ -104,7 +104,8 @@ public class StringConverter {
 
     public static String decoloredString(String s) {
         String convert = replaceHexCodes(s);
-
+        if (s == null)
+            return s;
         StringBuilder sb = new StringBuilder();
         char[] sChar = convert.toCharArray();
         boolean isAnd = false;
@@ -180,6 +181,7 @@ public class StringConverter {
     public static String replaceHexCodes(String s) {
 
         String textToTranslate = s;
+        if (s == null) return textToTranslate;
         boolean start1 = false;
         boolean startValid = false;
         boolean requireET = false;

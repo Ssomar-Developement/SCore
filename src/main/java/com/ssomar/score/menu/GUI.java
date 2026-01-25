@@ -205,7 +205,7 @@ public abstract class GUI implements IGUI {
     public static void setIdentifier(@NotNull ItemStack item, String identifier) {
         ItemMeta meta = item.getItemMeta();
         identifier = StringConverter.coloredString(identifier);
-        if(SCore.is1v12Less()){
+        if(SCore.is1v13Less() || SCore.is1v14() || SCore.is1v15()){
             meta.setDisplayName(identifier);
         }
         else {
@@ -217,7 +217,7 @@ public abstract class GUI implements IGUI {
 
     public static String getIdentifier(@NotNull ItemStack item) {
 
-        if(SCore.is1v12Less()){
+        if(SCore.is1v13Less() || SCore.is1v14() || SCore.is1v15()) {
             return item.getItemMeta().getDisplayName();
         }
         PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
@@ -229,7 +229,7 @@ public abstract class GUI implements IGUI {
     }
 
     public static boolean hasIdentifier(@NotNull ItemStack item) {
-        if(SCore.is1v12Less()){
+        if(SCore.is1v13Less() || SCore.is1v14() || SCore.is1v15()) {
             return item.getItemMeta().hasDisplayName();
         }
         PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();

@@ -180,7 +180,9 @@ public abstract class SObjectsWithFileEditor<T extends SObject & SObjectEditable
 
     public void goToFolder(String folder) {
         index = 1;
-        path = this.getCurrentPath() + "/" + StringConverter.decoloredString(folder).trim();
+        String folder_converted = folder != null ? StringConverter.decoloredString(folder).trim() : StringConverter.decoloredString(folder);
+        path = this.getCurrentPath() + "/" + folder_converted;
+        System.out.println(path);
         load();
     }
 

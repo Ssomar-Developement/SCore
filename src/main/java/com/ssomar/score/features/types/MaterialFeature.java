@@ -309,7 +309,8 @@ public class MaterialFeature extends FeatureAbstract<Optional<Material>, Materia
                     e.printStackTrace();
                     continue;
                 }
-            } else if (l.isItem() && !l.isAir()) map.put(l.name(), l);
+                // isAir() only got added in 1.14 api
+            } else if (l.isItem() && l != Material.AIR) map.put(l.name(), l);
         }
         return new ArrayList<>(map.values());
     }
