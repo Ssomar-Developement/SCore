@@ -127,14 +127,25 @@ public class AddTemporaryAttribute extends MixedCommand  {
         AttributeInstance attrInstance = livingEntity.getAttribute((attrType));
 
         // make a randomized key to allow spamming of ADD_TEMPORARY_ATTRIBUTE
-        NamespacedKey attr_key = new NamespacedKey(SCore.plugin, String.valueOf(UUID.randomUUID()));
-        AttributeModifier tempModifier = new AttributeModifier(attr_key, Double.parseDouble(sCommandToExec.getSettingValue("amount").toString()), operation);
+        UUID randomUUID = UUID.randomUUID();
+        String attrKeyString;
+        AttributeModifier tempModifier;
+        if (SCore.is1v21Plus()) {
+            NamespacedKey attr_key = new NamespacedKey(SCore.plugin, String.valueOf(randomUUID));
+            attrKeyString = attr_key.toString();
+            tempModifier = new AttributeModifier(attr_key, Double.parseDouble(sCommandToExec.getSettingValue("amount").toString()), operation);
+        } else {
+            // For versions below 1.21, use the legacy constructor
+            attrKeyString = randomUUID.toString();
+            tempModifier = new AttributeModifier(randomUUID, attrKeyString, Double.parseDouble(sCommandToExec.getSettingValue("amount").toString()), operation);
+        }
 
         assert attrInstance != null;
 
         attrInstance.addModifier(tempModifier);
 
         // a record must be made asap to ensure when crashes or restarts occur, expired attribute modifiers can be removed upon the player's relog
+        final String finalAttrKeyString = attrKeyString;
         if (entity instanceof Player) {
             final String finalAttrTypeID = attrTypeID;
             final double finalAmount = amount;
@@ -142,7 +153,7 @@ public class AddTemporaryAttribute extends MixedCommand  {
             SCore.schedulerHook.runAsyncTask(() ->
                     TemporaryAttributeQuery.insertToRecords(
                         Database.getInstance().connect(),
-                        String.valueOf(attr_key),
+                        finalAttrKeyString,
                         finalAttrTypeID,
                         finalAmount,
                         String.valueOf(entity.getUniqueId()),
@@ -155,10 +166,10 @@ public class AddTemporaryAttribute extends MixedCommand  {
             @Override
             public void run() {
                 if (!entity.isDead() || (entity instanceof Player && ((Player) entity).isOnline())) {
-                    AttributeUtils.removeSpecificAttribute((LivingEntity) entity, finalAttrTypeID1, attr_key.toString());
+                    AttributeUtils.removeSpecificAttribute((LivingEntity) entity, finalAttrTypeID1, finalAttrKeyString);
                     if (entity instanceof Player) {
                         SCore.schedulerHook.runAsyncTask(
-                                () -> TemporaryAttributeQuery.removeFromRecords(Database.getInstance().connect(), attr_key.toString()), 0
+                                () -> TemporaryAttributeQuery.removeFromRecords(Database.getInstance().connect(), finalAttrKeyString), 0
                         );
                     }
                 }
