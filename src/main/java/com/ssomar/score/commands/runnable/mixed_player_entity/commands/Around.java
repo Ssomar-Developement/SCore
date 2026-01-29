@@ -8,6 +8,7 @@ import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
 import com.ssomar.score.configs.messages.Message;
 import com.ssomar.score.configs.messages.MessageMain;
+import com.ssomar.score.features.custom.conditions.player.condition.IfPlayerMustBeOnHisClaimOrWilderness;
 import com.ssomar.score.usedapi.GriefPreventionAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.FluidCollisionMode;
@@ -82,7 +83,7 @@ public class Around extends MixedCommand {
                 for (Entity e : loc.getWorld().getNearbyEntities(loc, distance, distance, distance)) {
                     if (e instanceof Player) {
                         Player target = (Player) e;
-                        if (regionCheck && SCore.hasGriefPrevention && !GriefPreventionAPI.playerIsInHisClaim((Player) receiver, e.getLocation(), true)) continue;
+                        if (regionCheck && IfPlayerMustBeOnHisClaimOrWilderness.evaluateLocation((Player) receiver, e.getLocation())) continue;
 
                         if(safeDistance > 0) {
                             Location targetLoc = target.getLocation();

@@ -6,6 +6,7 @@ import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommand;
+import com.ssomar.score.features.custom.conditions.player.condition.IfPlayerMustBeOnHisClaimOrWilderness;
 import com.ssomar.score.usedapi.GriefPreventionAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.FluidCollisionMode;
@@ -110,7 +111,7 @@ public class HitscanEntities extends MixedCommand {
                 // 5. Verify That a Raytrace Exists Without Hitting a Block (Null Raytrace)
                 if (hitSuccess) {
                     SsomarDev.testMsg("YESSS HITSCAN > " + entity.getType(), true);
-                    if (regionCheck && SCore.hasGriefPrevention && !GriefPreventionAPI.playerIsInHisClaim((Player) shooter, entity.getLocation(), true)) continue;
+                    if (regionCheck && IfPlayerMustBeOnHisClaimOrWilderness.evaluateLocation((Player) receiver, entity.getLocation())) continue;
                     entities.add(entity);
                 }
             }

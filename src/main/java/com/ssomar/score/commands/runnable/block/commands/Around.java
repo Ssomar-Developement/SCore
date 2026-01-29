@@ -5,6 +5,7 @@ import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.features.custom.conditions.player.condition.IfPlayerMustBeOnHisClaimOrWilderness;
 import com.ssomar.score.usedapi.GriefPreventionAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.FluidCollisionMode;
@@ -103,7 +104,7 @@ public class Around extends BlockCommand {
                         if (e instanceof Player) {
 
                             Location receiverLoc = e.getLocation();
-                            if (p != null && regionCheck && SCore.hasGriefPrevention && !GriefPreventionAPI.playerIsInHisClaim(p, e.getLocation(), true)) continue;
+                            if (regionCheck && IfPlayerMustBeOnHisClaimOrWilderness.evaluateLocation(p, e.getLocation())) continue;
 
                             if(!throughBlocks){
                                 List<Location> centerLocationOfEachFaces = new ArrayList<>();
