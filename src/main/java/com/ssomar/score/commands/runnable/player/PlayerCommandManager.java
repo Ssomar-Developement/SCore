@@ -72,6 +72,8 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         commands.add(new GiveMoney());
         commands.add(new GravityEnable());
         commands.add(new GravityDisable());
+        commands.add(new SetPlayerWeather());
+        commands.add(new SetPlayerTime());
         commands.add(new OpenWorkbench());
         commands.add(new MinecartBoost());
         commands.add(new Steal());
