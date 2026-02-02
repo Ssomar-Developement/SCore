@@ -667,6 +667,10 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     ifEntityIsInLava("ifEntityIsInLava", "If entity is in lava", new String[]{}, Material.ANVIL),
     ifEntityLastDamageCause("ifEntityLastDamageCause", "If entity last damage cause", new String[]{}, Material.ANVIL),
     ifEntityVelocity("ifEntityVelocity", "If entity velocity", new String[]{}, Material.ANVIL),
+    ifNearbyEntityCount("ifNearbyEntityCount", "If nearby entity count", new String[]{"&7Compare the count of nearby entities"}, Material.ANVIL),
+    ifLineOfSight("ifLineOfSight", "If line of sight", new String[]{"&7If the player has line of sight to a living entity"}, null),
+    ifPlayerSpeed("ifPlayerSpeed", "If player speed", new String[]{"&7Compare the player's velocity magnitude"}, Material.ANVIL),
+    ifNearbyPlayerCount("ifNearbyPlayerCount", "If nearby player count", new String[]{"&7Compare the count of nearby players"}, Material.ANVIL),
     suspiciousBlockLoot("suspiciousBlockLoot", "Suspicious Block Loot", new String[]{"&7The loot the ExecutableBlock will have","&7when brushed.","&cREQUIRED BY PLAYER_BRUSH_BLOCK"}, FixedMaterial.getMaterial(Arrays.asList("BRUSH")))
     ;
 

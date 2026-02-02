@@ -667,6 +667,10 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     itemTextures(getFeatureSettings("itemTextures")),
     itemAdvancedComponents(getFeatureSettings("itemAdvancedComponents")),
     ifGameMode(getFeatureSettings("ifGameMode", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifNearbyEntityCount(getFeatureSettings("ifNearbyEntityCount", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifLineOfSight(getFeatureSettings("ifLineOfSight", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifPlayerSpeed(getFeatureSettings("ifPlayerSpeed", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifNearbyPlayerCount(getFeatureSettings("ifNearbyPlayerCount", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     suspiciousBlockLoot(getFeatureSettings("suspiciousBlockLoot"))
     ;
 
