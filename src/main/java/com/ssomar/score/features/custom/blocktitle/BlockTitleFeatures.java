@@ -34,13 +34,20 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 
 @Getter
 @Setter
 public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatures, BlockTitleFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
+
+    private static final Map<Location, UUID> textDisplayCache = new HashMap<>();
 
     private ListColoredStringFeature title;
     private DoubleFeature titleAjustement;
@@ -240,6 +247,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
                 }
                 if (sb.length() > 0) sb.deleteCharAt(sb.length() - 1);
                 textDisplay.setText(sb.toString());
+                textDisplayCache.put(loc.clone(), textDisplay.getUniqueId());
                 return loc;
             } else return null;
         }
@@ -271,12 +279,19 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
                 }
             }
         } else if (SCore.is1v20v4Plus()) {
-            //System.out.println(">>>>>>>>>>>>>>>>>> REMOVED title at location: " + location);
-            for (TextDisplay textDisplay : location.getWorld().getEntitiesByClass(TextDisplay.class)) {
-                //System.out.println(">>>>>>>>>>>>>>>>>> TextDisplay location: " + textDisplay.getLocation());
-                if (textDisplay.getLocation().equals(location)) {
-                    //System.out.println(">>>>>>>>>>>>>>>>>> TextDisplay removed");
-                    textDisplay.remove();
+            UUID cachedUuid = textDisplayCache.remove(location);
+            if (cachedUuid != null) {
+                Entity entity = Bukkit.getEntity(cachedUuid);
+                if (entity instanceof TextDisplay) {
+                    entity.remove();
+                    return;
+                }
+            }
+            // Fallback for cache miss (e.g., after server restart)
+            for (Entity entity : location.getWorld().getNearbyEntities(location, 0.5, 0.5, 0.5)) {
+                if (entity instanceof TextDisplay && entity.getLocation().equals(location)) {
+                    entity.remove();
+                    break;
                 }
             }
         }
@@ -330,8 +345,20 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
             remove(location);
             return spawn(objectLocation, sp);
         } else if (SCore.is1v20v4Plus()) {
-            //System.out.println(">>>>>>>>>>>>>>>>>> UPDATED title at location: " + location);
-            // To be sure that the hologram is removed even if the activeTitle is false
+            UUID cachedUuid = textDisplayCache.get(location);
+            if (cachedUuid != null) {
+                Entity entity = Bukkit.getEntity(cachedUuid);
+                if (entity instanceof TextDisplay) {
+                    TextDisplay textDisplay = (TextDisplay) entity;
+                    StringBuilder sb = new StringBuilder();
+                    for (String s : lines) {
+                        sb.append(s).append("\n");
+                    }
+                    if (sb.length() > 0) sb.deleteCharAt(sb.length() - 1);
+                    textDisplay.setText(sb.toString());
+                    return location;
+                }
+            }
             remove(location);
             return spawn(objectLocation, sp);
         }
