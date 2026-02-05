@@ -26,7 +26,7 @@ public class StringConverter {
     public static String coloredString(String s, boolean bypassNoColor) {
 
         if(!bypassNoColor && s.contains("NO_COLOR")) {
-            return s.replaceAll("NO_COLOR", "").trim();
+            return s.replace("NO_COLOR", "").trim();
         }
 
         final String[] keys = new String[]{"& ", "&"};
@@ -34,7 +34,7 @@ public class StringConverter {
 
 
         String convert = StringUtils.replaceEach( s, keys, values );
-        convert = convert.replaceAll("\\|<-_->\\|", "& ");
+        convert = convert.replace("|<-_->|", "& ");
 
         try {
             convert = LegacyComponentSerializer.legacySection().serialize(MiniMessage.miniMessage().deserialize(convert));
@@ -79,16 +79,16 @@ public class StringConverter {
             convertItem = convertItem.replace("$", "REGEX-DOLARS");
             convertPlayer = convertPlayer.replace("$", "REGEX-DOLARS");
 
-            convert = convert.replaceAll("%player%", convertPlayer);
-            convert = convert.replaceAll("%item%", convertItem);
-            convert = convert.replaceAll("%quantity%", quantity);
+            convert = convert.replace("%player%", convertPlayer);
+            convert = convert.replace("%item%", convertItem);
+            convert = convert.replace("%quantity%", quantity);
 
-            convert = convert.replaceAll("REGEX-DOLARS", "\\$");
+            convert = convert.replace("REGEX-DOLARS", "$");
             int M = time / 60;
             int S = time % 60;
             int H = M / 60;
             M = M % 60;
-            convert = convert.replaceAll("%time%", H + "H " + M + "M " + S + "S");
+            convert = convert.replace("%time%", H + "H " + M + "M " + S + "S");
         }
         return convert;
     }
@@ -152,12 +152,12 @@ public class StringConverter {
     public static String translateHexCodes(String textToTranslate) {
 
         if (textToTranslate.contains("BRUT_HEX")) {
-            textToTranslate = textToTranslate.replaceAll("§", "&");
-            return textToTranslate.replaceAll("BRUT_HEX", "").trim();
+            textToTranslate = textToTranslate.replace("§", "&");
+            return textToTranslate.replace("BRUT_HEX", "").trim();
         }
 
         String convert = textToTranslate;
-        convert = convert.replaceAll("§#", "#");
+        convert = convert.replace("§#", "#");
         Matcher matcher = HEX_PATTERN.matcher(convert);
         StringBuffer buffer = new StringBuffer();
 
@@ -227,7 +227,7 @@ public class StringConverter {
             for (String code : hexCode) {
                 replacement.append(code);
             }
-            textToTranslate = textToTranslate.replaceAll(toReplace.toString(), replacement.toString());
+            textToTranslate = textToTranslate.replace(toReplace.toString(), replacement.toString());
 
             textToTranslate = replaceHexCodes(textToTranslate);
         }
