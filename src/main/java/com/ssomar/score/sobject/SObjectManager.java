@@ -9,10 +9,7 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -25,6 +22,7 @@ public abstract class SObjectManager<T extends SObject> {
     private List<T> loadedObjects;
     private List<T> defaultObjects;
     private List<T> allObjects;
+    private Map<String, T> objectIndex;
     private String objectName;
 
     public SObjectManager(SPlugin sPlugin) {
@@ -32,6 +30,7 @@ public abstract class SObjectManager<T extends SObject> {
         allObjects = new ArrayList<>();
         defaultObjects = new ArrayList<>();
         loadedObjects = new ArrayList<>();
+        objectIndex = new HashMap<>();
         objectName = "OBJECT";
     }
 
@@ -40,6 +39,7 @@ public abstract class SObjectManager<T extends SObject> {
         allObjects = new ArrayList<>();
         defaultObjects = new ArrayList<>();
         loadedObjects = new ArrayList<>();
+        objectIndex = new HashMap<>();
         this.objectName = objectName;
     }
 
@@ -53,9 +53,7 @@ public abstract class SObjectManager<T extends SObject> {
         actionOnObjectWhenLoading(object);
         if(generateLoadEvent) generateLoadEvent(object.getId(), object);
 
-        allObjects = new ArrayList<>();
-        allObjects.addAll(defaultObjects);
-        allObjects.addAll(loadedObjects);
+        rebuildAllObjects();
     }
 
     public void addLoadedObjects(List<T> object) {
@@ -70,9 +68,18 @@ public abstract class SObjectManager<T extends SObject> {
             if(generateLoadEvent) generateLoadEvent(o.getId(), o);
         }
 
+        rebuildAllObjects();
+    }
+
+    private void rebuildAllObjects() {
         allObjects = new ArrayList<>();
         allObjects.addAll(defaultObjects);
         allObjects.addAll(loadedObjects);
+
+        objectIndex = new HashMap<>();
+        for (T o : allObjects) {
+            objectIndex.put(o.getId(), o);
+        }
     }
 
     public abstract void actionOnObjectWhenLoading(T object);
@@ -82,9 +89,7 @@ public abstract class SObjectManager<T extends SObject> {
         actionOnObjectWhenLoading(object);
         generateLoadEvent(object.getId(), object);
 
-        allObjects = new ArrayList<>();
-        allObjects.addAll(defaultObjects);
-        allObjects.addAll(loadedObjects);
+        rebuildAllObjects();
     }
 
     public void generateLoadEvent(String id, T object) {
@@ -108,12 +113,7 @@ public abstract class SObjectManager<T extends SObject> {
     }
 
     public Optional<T> getLoadedObjectWithID(String ID) {
-        for (T o : allObjects) {
-            if (o.getId().equals(ID)) {
-                return Optional.ofNullable(o);
-            }
-        }
-        return Optional.ofNullable(null);
+        return Optional.ofNullable(objectIndex.get(ID));
     }
 
     public List<String> getLoadedObjectsIDs() {
@@ -131,6 +131,7 @@ public abstract class SObjectManager<T extends SObject> {
             actionOnObjectWhenReloading(o);
             this.allObjects.remove(o);
             this.loadedObjects.remove(o);
+            this.objectIndex.remove(id);
         }
 
         Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &7reloading of &e" + id);
@@ -150,6 +151,7 @@ public abstract class SObjectManager<T extends SObject> {
             actionOnObjectWhenReloading(o);
             this.allObjects.remove(o);
             this.loadedObjects.remove(o);
+            this.objectIndex.remove(replacement.getId());
         }
 
         Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &7reloading of &e" + replacement.getId());
@@ -164,6 +166,7 @@ public abstract class SObjectManager<T extends SObject> {
             actionOnObjectWhenReloading(o);
             this.allObjects.remove(o);
             this.loadedObjects.remove(o);
+            this.objectIndex.remove(id);
             o.delete();
         }
     }
