@@ -51,12 +51,12 @@ public class CustomTriggerScheduler {
     }
 
     public void runCalculation(String id) {
-        if(tasksToRun.containsKey(id)) {
-            List<ScheduledTask> tasks = this.tasks.get(id);
-            for (ScheduledTask task1 : tasks) {
+        List<ScheduledTask> taskList = this.tasks.get(id);
+        if (taskList != null) {
+            for (ScheduledTask task1 : taskList) {
                 task1.cancel();
             }
-            tasks.clear();
+            taskList.clear();
         }
         long time = 120 - (System.currentTimeMillis() - lastCalculationTime);
         List<Long> timestamps = features.get(id).getNextTimestamp(time * 1000);
