@@ -1,13 +1,11 @@
 package com.ssomar.score.sobject.manager;
 
+import com.ssomar.executableitems.executableitems.ExecutableItemObject;
 import com.ssomar.score.sobject.SObject;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public interface ManagerWithBuildable<T extends SObject> {
 
@@ -74,5 +72,93 @@ public interface ManagerWithBuildable<T extends SObject> {
             }
         }
         return count;
+    }
+
+    /**
+     * Custom placeholder that returns the value of an internal variable within.
+     *
+     * For those who can't imagine how the code will work when extracting arguments
+     * separating prefixes via 
+     * @param instance
+     * @param inv
+     * @param placeholder
+     * @return
+     */
+    static Optional<String> getObjectVariableValueInInvPlaceholder(ManagerWithBuildable instance, PlayerInventory inv, String placeholder) {
+        // %executableitems_checkvar%
+        if(placeholder.startsWith("checkvar")){
+            List<Integer> checkSlots = new ArrayList<>();
+            List<String> searchObject = new ArrayList<>();
+            List<String> searchVariableKey = new ArrayList<>();
+            // %executableitems_checkvar_slot:%
+            if(placeholder.contains("_slot:")){
+                /*
+                For reference, here how the regex is going to process the placeholder:
+
+                Before: "%executableitems_slot:2_id:kite%"
+                After: [%executableitems, 2_id:kite%]
+                 */
+                String[] split = placeholder.split("_slot:");
+                if(split.length > 1){
+                    String[] slotsStr = split[1].split("_id:")[0].split(",");
+                    for(String s : slotsStr){
+                        try{
+                            checkSlots.add(Integer.parseInt(s));
+                        }catch (NumberFormatException ignored){}
+                    }
+                }
+            }
+            if(placeholder.contains("_id:")){
+                String[] split = placeholder.split("_id:");
+                if(split.length > 1){
+                    String[] objects = split[1].split("_slot:")[0].split(",");
+                    Collections.addAll(searchObject, objects);
+                }
+            }
+            if(placeholder.contains("_var:")){
+                String[] split = placeholder.split("_var:");
+                if(split.length > 1){
+                    String[] objects = split[1].split("_slot:")[0].split(",");
+                    Collections.addAll(searchObject, objects);
+                }
+            }
+
+            int count = checkObjectAmountInInv(instance, inv, checkSlots, searchObject);
+            return Optional.of(String.valueOf(count));
+        }
+        return Optional.empty();
+    }
+
+    static String getObjectVariableValueInInv(ManagerWithBuildable instance, PlayerInventory inv, List<Integer> checkSlots, List<String> searchObject) {
+        String value = "";
+
+        if(checkSlots.isEmpty()){
+            for(int i = 0; i < inv.getSize(); i++){
+                ItemStack item = inv.getItem(i);
+                ExecutableItemObject ei = new ExecutableItemObject(item);
+                if(ei.isValid()) {
+                    Optional<SObject> object = instance.getObject(item);
+                    if(object.isPresent()){
+                        if(searchObject.isEmpty()) count += item.getAmount();
+                        else if(searchObject.contains(object.get().getId())) count += item.getAmount();
+                    }
+                }
+            }
+        }
+        else{
+            for(int i : checkSlots){
+                if(i == -1) i = inv.getHeldItemSlot();
+                ItemStack item = inv.getItem(i);
+                if(item != null){
+                    Optional<SObject> object = instance.getObject(item);
+                    if(object.isPresent()){
+                        if(searchObject.isEmpty()) count += item.getAmount();
+                        else if(searchObject.contains(object.get().getId())) count += item.getAmount();
+                    }
+                }
+            }
+        }
+
+        return value;
     }
 }
