@@ -87,6 +87,12 @@ public class PlayerConditionsFeature extends FeatureWithHisOwnEditor<PlayerCondi
         conditions.add(new IfPosX(this));
         conditions.add(new IfPosY(this));
         conditions.add(new IfPosZ(this));
+        conditions.add(new IfPlayerSpeed(this));
+        conditions.add(new IfNearbyEntityCount(this));
+        conditions.add(new IfNearbyPlayerCount(this));
+        if(!SCore.is1v13Less()) {
+            conditions.add(new IfLineOfSight(this));
+        }
 
         /* Gamemode */
         conditions.add(new IfGamemode(this));
