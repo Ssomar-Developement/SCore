@@ -24,6 +24,8 @@ import java.util.regex.Pattern;
 @Getter
 public class CommandSetting {
 
+    private static final Pattern TAG_PATTERN = Pattern.compile("(<[^>]+>|[^<]+)");
+
     private List<String> names;
 
     private int oldSystemIndex;
@@ -137,8 +139,7 @@ public class CommandSetting {
     // To support minimessage color tags, ex <dark_gray>Test</dark_gray> <green>Test</green>
     public static String replaceUnderscoresOutsideTags(String value, boolean acceptUnderScoreForLongText) {
         if (acceptUnderScoreForLongText && value.contains("_") && !value.contains("http")) {
-            Pattern pattern = Pattern.compile("(<[^>]+>|[^<]+)");
-            Matcher matcher = pattern.matcher(value);
+            Matcher matcher = TAG_PATTERN.matcher(value);
 
             StringBuffer sb = new StringBuffer();
             while (matcher.find()) {
