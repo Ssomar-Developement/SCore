@@ -86,9 +86,6 @@ public interface ManagerWithBuildable<T extends SObject> {
     }
 
     /**
-     * Currently has a fatal flaw when handling nested placeholder values
-     * that contain underscores.
-     * <br/><br/>
      * "var:" is required to work.<br/>
      * You won't see any usages in this project because it's used by ExecutableItems's and ExecutableBlocks's codebase<br/>
      * <br/>
