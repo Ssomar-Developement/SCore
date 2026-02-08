@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+import static java.nio.file.Files.readString;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SsomarDevTest {
@@ -23,7 +24,7 @@ class SsomarDevTest {
             files.filter(f -> f.toString().endsWith(".java"))
                     .forEach(f -> {
                         try {
-                            String code = Files.readString(f);
+                            String code = readString(f);
 
                             // Remove block comments /* ... */
                             code = code.replaceAll("(?s)/\\*.*?\\*/", "");
