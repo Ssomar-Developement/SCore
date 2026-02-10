@@ -315,7 +315,7 @@ public class AttributeUtils {
      * Used to properly remove a LivingEntity entity's attribute modifier
      * @param entity_arg the LivingEntity that will have its specific attribute removed
      * @param attribute_type the attribute type
-     * @param key the attribute modifier's key string (plugin/header key included)
+     * @param key the attribute modifier's key string (NamespacedKey string for 1.21+, UUID string for older versions)
      */
     public static void removeSpecificAttribute(LivingEntity entity_arg, String attribute_type, String key) {
         LivingEntity entity = entity_arg;
@@ -332,7 +332,14 @@ public class AttributeUtils {
         assert attrInstance != null;
         Collection<AttributeModifier> attributeModifiers = attrInstance.getModifiers();
         for (AttributeModifier modifier : attributeModifiers) {
-            if (modifier.getKey().toString().equals(key)) {
+            String modifierKey;
+            if (SCore.is1v21Plus()) {
+                modifierKey = modifier.getKey().toString();
+            } else {
+                // For versions below 1.21, use getName() which contains the UUID string
+                modifierKey = modifier.getName();
+            }
+            if (modifierKey.equals(key)) {
                 attrInstance.removeModifier(modifier);
                 return;
             }
