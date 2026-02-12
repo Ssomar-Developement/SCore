@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.regex.Pattern;
 
 public abstract class RunCommand implements Serializable {
 
@@ -17,6 +18,8 @@ public abstract class RunCommand implements Serializable {
      *
      */
     private static final long serialVersionUID = 1L;
+
+    private static final Pattern AROUND_PAPI_PATTERN = Pattern.compile("\\S*%[a-zA-Z0-9_]*\\S*[{(]*%around_\\S*%[})]*");
 
     /* The command enter by the user */
     private String brutCommand;
@@ -106,9 +109,7 @@ public abstract class RunCommand implements Serializable {
                          * The good condition is contains %????_ and %around to make sure it works with all papi libs*/
 
                         // Check if the string contains %?????_ and %around
-                        String regex = "\\S*%[a-zA-Z0-9_]*\\S*[{(]*%around_\\S*%[})]*";
-
-                        if (s.matches(regex)) {
+                        if (AROUND_PAPI_PATTERN.matcher(s).matches()) {
                             //System.out.println("Match: "+s);
                             finalCommand = finalCommand.replace(s, "PLACEHOLDER_TO_REPLACE_LATER_" + later);
                             // If there is a placeholder like %projectile_x% between %_math and %_around we want to replace it
