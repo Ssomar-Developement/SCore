@@ -711,6 +711,8 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
                 return FeatureSettingsSCoreIT.values();
             case PL:
                 return FeatureSettingsSCorePL.values();
+            case VI:
+                return FeatureSettingsSCoreVI.values();
             default:
                 return FeatureSettingsSCoreEN.values();
         }
