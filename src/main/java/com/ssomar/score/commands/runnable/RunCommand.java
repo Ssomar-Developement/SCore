@@ -95,9 +95,10 @@ public abstract class RunCommand implements Serializable {
                 //SsomarDev.testMsg("Command run command: "+getBrutCommand(), true);
                 String finalCommand = getBrutCommand();
                 int later = 0;
-                Map<Integer, String> placeholdersToReplaceLatter = new HashMap<>();
+                Map<Integer, String> placeholdersToReplaceLatter = null;
                 //System.out.println("Command1: "+finalCommand);
                 if(finalCommand.contains("%around_")) {
+                    placeholdersToReplaceLatter = new HashMap<>();
                     String[] split = finalCommand.split(" ");
                     for (String s : split) {
                         /* Exception 1  for example %parseother_{%around_target%}_{player_name}
@@ -126,7 +127,7 @@ public abstract class RunCommand implements Serializable {
                 }
                 //System.out.println("Command2: "+finalCommand);
 
-                for (Map.Entry<Integer, String> entry : placeholdersToReplaceLatter.entrySet()) {
+                if (placeholdersToReplaceLatter != null) for (Map.Entry<Integer, String> entry : placeholdersToReplaceLatter.entrySet()) {
                     finalCommand = finalCommand.replace("PLACEHOLDER_TO_REPLACE_LATER_"+entry.getKey(), entry.getValue());
                 }
 
