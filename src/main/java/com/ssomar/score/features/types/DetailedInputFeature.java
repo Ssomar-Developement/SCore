@@ -40,7 +40,7 @@ public class DetailedInputFeature extends FeatureAbstract<Optional<DetailedInput
             FeatureReturnCheckPremium<DetailedInput> checkPremium = checkPremium("DetailedInput", material, defaultValue, isPremiumLoading);
             if (checkPremium.isHasError()) value = Optional.of(checkPremium.getNewValue());
         } catch (Exception e) {
-            errors.add("&cERROR, Couldn't load the DetailedInput value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> DetailedInput available: RIGHT, LEFT, FORWARD, BACKWARD, SPRINT, SNEAK, SPRINT");
+            errors.add("&cERROR, Couldn't load the DetailedInput value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> DetailedInput available: LEFT_PRESS, RIGHT_PRESS, FORWARD_PRESS, BACKWARD_PRESS, JUMP_PRESS, SNEAK_PRESS, SPRINT_PRESS, LEFT_RELEASE, RIGHT_RELEASE, FORWARD_RELEASE, BACKWARD_RELEASE, JUMP_RELEASE, SNEAK_RELEASE, SPRINT_RELEASE, LEFT_PRESS_OR_RELEASE, RIGHT_PRESS_OR_RELEASE, FORWARD_PRESS_OR_RELEASE, BACKWARD_PRESS_OR_RELEASE, JUMP_PRESS_OR_RELEASE, SNEAK_PRESS_OR_RELEASE, SPRINT_PRESS_OR_RELEASE");
             value = Optional.empty();
         }
         return errors;
@@ -48,7 +48,9 @@ public class DetailedInputFeature extends FeatureAbstract<Optional<DetailedInput
 
     public boolean verifInput(DetailedInput dC) {
         if (dC != null && value.isPresent()) {
-            return dC.equals(value.get());
+            DetailedInput configured = value.get();
+            // Check if the configured value matches the input (handles grouped options like LEFT_PRESS_OR_RELEASE)
+            return configured.matches(dC) || dC.equals(configured);
         }
         return false;
     }
