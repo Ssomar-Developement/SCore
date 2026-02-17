@@ -1,0 +1,70 @@
+editor:
+  back:
+    name: "&4&l⬅ &cQuay Lại"
+  creation:
+    id:
+      name: "&2&l✚ &a&lID Tạo Mới:"
+  delete:
+    name: "&4&l✘ &cXóa"
+    normal:
+      description: "&4&lX &cNhấp vào đây để xóa"
+    shift:
+      left:
+        description: "&4&lX &cShift + Nhấp trái để xóa"
+      description: "&4&lX &cShift + Nhấp để xóa"
+    message: "&cNày, nếu bạn muốn xóa %object%"
+  edit:
+    description: "&a✎ Nhấp vào đây để thay đổi"
+  exit:
+    name: "&4&l✘ &cThoát"
+  folder:
+    name: "&2&l✦ THƯ MỤC: &a"
+    description: ["", "&7Nhấp vào đây để mở thư mục"]
+  give:
+    shift:
+      right:
+        description: "&2✔ &aShift + Nhấp phải để nhận cho bản thân"
+    receivedMessage: "&aBạn đã nhận được &e"
+  invalid:
+    file:
+      name: "&4&l✦ TỆP KHÔNG HỢP LỆ: &c&o"
+      description: "&7Plugin chỉ có thể tải các tệp &e.yml &7"
+    configuration:
+      name: "&4&l✦ CẤU HÌNH KHÔNG HỢP LỆ: &c&o"
+      description: "&7Bạn nên chỉnh sửa tệp cấu hình của mình"
+      freeLimit: "&7Hãy đảm bảo rằng bạn chưa vượt quá giới hạn của phiên bản miễn phí"
+  new:
+    name: "&a&l➕ &aMới"
+  page:
+    name: " - Trang "
+    next:
+      name: "&dTrang tiếp &5&l▶"
+    previous:
+      name: "&5&l◀ &dTrang trước"
+  path:
+    name: "&6&l✦ &eĐƯỜNG DẪN:"
+    description: ["&8&oNhấp vào đây để quay lại", "&8&otrong thư mục trước"]
+  premade:
+    premium:
+      name: "&5&l✚ &d%object% Premium Mặc Định"
+    packs:
+      name: "&5&l✚ &d%object% từ Gói Tùy Chỉnh"
+  premium:
+    description: "&5&l❂ &d&lChỉ dành cho Premium &5&l❂"
+    requirePremiumToAddMore: "&cCẦN PREMIUM: để thêm nhiều hơn %limit% %object% bạn cần phiên bản Premium"
+  reset:
+    name: "&4&l✘ &cĐặt Lại"
+    description:
+      - ""
+      - "&c&oNhấp vào đây để đặt lại"
+      - "&c&oTất cả các tùy chọn của tạo mới này"
+  save:
+    name: "&a&l✔ &aLưu"
+    description:
+      - ""
+      - "&a&oNhấp vào đây để lưu"
+      - "&a&oCấu hình của bạn!"
+  title:
+    color: "&e&l"
+  currently:
+    name: "&7✦ Hiện tại:"
