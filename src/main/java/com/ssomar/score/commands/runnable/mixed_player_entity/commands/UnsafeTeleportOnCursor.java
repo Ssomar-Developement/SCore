@@ -78,13 +78,14 @@ public class UnsafeTeleportOnCursor extends MixedCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("UNSAFE_TELEPORT_ON_CURSOR");
         names.add("UNSAFE_TELEPORTONCURSOR");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "UNSAFE_TELEPORTONCURSOR [maxRange]";
+        return "UNSAFE_TELEPORT_ON_CURSOR [maxRange]";
     }
 
     @Override

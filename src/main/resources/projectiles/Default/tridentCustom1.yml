@@ -1,17 +1,16 @@
 type: TRIDENT
 customNameVisible: false
 customName: "Trident2"
-pickupStatus: DISALLOWED  #https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/entity/AbstractArrow.PickupStatus.html
+pickupStatus: DISALLOWED
 glowing: true
 critical: false
 bounce: true
 gravity: true
 damage: -1
-velocity: 1 #you can multiply the velocity (speed) ex velocity: 2.5
+velocity: 1
 knockbackStrength: -1
 pierceLevel: -1
 despawnDelay: 3
-# only work with 1.16.4 or +
 enchantments:
   enchantment1:
     enchantment: unbreaking
@@ -21,8 +20,10 @@ enchantments:
     level: 1
 #visualItem: DIAMOND_SWORD
 #customModelData: 5
-particlesType: WATER_BUBBLE #https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Particle.html
-particlesAmount: 10
-particlesOffSet: 0.5
-particlesSpeed: 0.3
-particlesDelay: 1 #in tick
+particles:
+  1:
+    particlesType: WATER_BUBBLE
+    particlesAmount: 10
+    particlesOffSet: 0.5
+    particlesSpeed: 0.3
+    particlesDelay: 1

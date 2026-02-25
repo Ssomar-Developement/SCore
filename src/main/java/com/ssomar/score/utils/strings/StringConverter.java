@@ -70,19 +70,20 @@ public class StringConverter {
 
         if (!convert.isEmpty()) {
             // For some reason the $ is replaced with \$ so we need to replace it with REGEX-DOLARS
-            //convert = convert.replace("$", "REGEX-DOLARS");
+            // https://discord.com/channels/701066025516531753/1421848568561664060
+            convert = convert.replace("$", "REGEX-DOLARS");
 
             if (convert.charAt(0) == '/') {
                 convert = convert.replaceFirst("/", "");
             }
-            //convertItem = convertItem.replace("$", "REGEX-DOLARS");
-            //convertPlayer = convertPlayer.replace("$", "REGEX-DOLARS");
+            convertItem = convertItem.replace("$", "REGEX-DOLARS");
+            convertPlayer = convertPlayer.replace("$", "REGEX-DOLARS");
 
             convert = convert.replaceAll("%player%", convertPlayer);
             convert = convert.replaceAll("%item%", convertItem);
             convert = convert.replaceAll("%quantity%", quantity);
 
-            //convert = convert.replaceAll("REGEX-DOLARS", "\\$");
+            convert = convert.replaceAll("REGEX-DOLARS", "\\$");
             int M = time / 60;
             int S = time % 60;
             int H = M / 60;

@@ -81,7 +81,6 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     public void back(NewInteractionClickedGUIManager<T> interact) {
         //Y parent = interact.gui.getParent();
         //parent.openBackEditor(interact.player);
-
         Player player = interact.player;
         GUI gui = SaveSessionPathManager.getInstance().getLastBeforePlayerSessionPath(player);
         if (gui != null){

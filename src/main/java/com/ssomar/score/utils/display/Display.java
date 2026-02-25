@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+
+// For display conditions of EI - doesnt work for bedrock players
 public final class Display {
     public static final String PREFIX = StringConverter.coloredString("&z");
 
@@ -46,7 +48,18 @@ public final class Display {
 
         ItemStack original = itemStack.clone();
         /* player.getOpenInventory() can be null when it is a custom GUI https://discord.com/channels/701066025516531753/1157683507699650560 */
-        Inventory inventory = (player == null) ? null : player.getInventory();
+        /* 	Error for bedrock players using temporary players - ProtocolLib
+        java.lang.UnsupportedOperationException: The method getInventory is not supported for temporary players.
+        at ProtocolLib.jar/com.comphenix.protocol.injector.temporary.TemporaryPlayerFactory$1.delegate(TemporaryPlayerFactory.java:140) ~[ProtocolLib.jar:?]
+        at ProtocolLib.jar/com.comphenix.protocol.injector.temporary.TemporaryPlayerInvocationHandler.getInventory(Unknown Source) ~[ProtocolLib.jar:?]
+        at SCore-5.25.11.4.jar/com.ssomar.score.utils.display.Display.display(Display.java:49) ~[SCore-5.25.11.4.jar:?] */
+        Inventory inventory;
+        try {
+            inventory = (player == null) ? null : player.getInventory();
+        } catch (UnsupportedOperationException e) {
+            inventory = null;
+        }
+        if (inventory == null) return new DisplayRequestResult(itemStack, DisplayResult.NOT_MODIFIED);
         boolean inInventory = (inventory != null  && !inventory.isEmpty() && inventory.contains(original));
         /* TODO boolean inGui = (player != null && GUIDetectionManager.hasGUIOpen(player)); */
         boolean inGui = false;

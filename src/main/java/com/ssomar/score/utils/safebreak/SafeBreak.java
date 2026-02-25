@@ -14,6 +14,7 @@ import dev.rosewood.roseloot.loot.context.LootContextParams;
 import dev.rosewood.roseloot.loot.table.LootTableTypes;
 import dev.rosewood.roseloot.manager.LootTableManager;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -37,18 +38,23 @@ public class SafeBreak {
     /* return false its verifSafeBreak is false */
     public static boolean breakBlockWithEvent(final Block block, @Nullable final UUID playerUUID, int slot, boolean drop, boolean generateBreakEvent, boolean verifSafeBreak, BlockBreakEventExtension.BreakCause breakCause) {
 
-        SsomarDev.testMsg("DEBUG SAFE BREAK 1", DEBUG);
+        SsomarDev.testMsg(ChatColor.GOLD+"[#s0010] breakBlockWithEvent() triggered : "+drop, DEBUG);
         if (playerUUID == null) {
+            SsomarDev.testMsg("> [#s0013] Player is null", DEBUG);
             if (breakEB(null, block, drop)) return true;
             block.breakNaturally();
             return true;
         }
-        SsomarDev.testMsg("DEBUG SAFE BREAK 1.5", DEBUG);
+        SsomarDev.testMsg("> [#s0011] Player is not null", DEBUG);
 
         Player player = Bukkit.getServer().getPlayer(playerUUID);
 
-        SsomarDev.testMsg("DEBUG SAFE BREAK 1.6 p: "+player, DEBUG);
+        SsomarDev.testMsg("> [#s0012] Safely obtained player instance : "+player, DEBUG);
 
+        // if player is
+        // - not null
+        // - is opped
+        // then continue on. else,
         if(!(player != null && player.isOp())){
             if (verifSafeBreak && !verifSafeBreak(playerUUID, block)){
                 SsomarDev.testMsg("DEBUG SAFE BREAK VERIFICATION BLOCKED ", DEBUG);
@@ -57,15 +63,18 @@ public class SafeBreak {
         }
 
 
-        SsomarDev.testMsg("DEBUG SAFE BREAK 2", DEBUG);
+        SsomarDev.testMsg("> [#s0022] Player is null or is not opped", DEBUG);
         if (player != null) {
-            SsomarDev.testMsg("DEBUG SAFE BREAK 3", DEBUG);
+            SsomarDev.testMsg("> > [#s0023] Player is not null", DEBUG);
             boolean canceled = false;
 
-            if(SCore.hasItemsAdder && ItemsAdderAPI.breakCustomBlock(block, player.getInventory().getItemInMainHand(), drop)) return true;
+            if(SCore.hasItemsAdder && ItemsAdderAPI.breakCustomBlock(block, player.getInventory().getItemInMainHand(), drop)) {
+                SsomarDev.testMsg("> > > [#s0030] ItemsAdder is enabled & breakCustomBlock succeeded. RETURN", true);
+                return true;
+            }
 
             if (generateBreakEvent) {
-                SsomarDev.testMsg("DEBUG SAFE BREAK 4", DEBUG);
+                SsomarDev.testMsg("> > > [#s0024] generateBreakEvent is true", DEBUG);
                 BlockBreakEvent bbE = new BlockBreakEventExtension(block, player, true, breakCause);
                 bbE.setCancelled(false);
                 /* */
@@ -89,6 +98,7 @@ public class SafeBreak {
                 }
             }
         } else {
+            SsomarDev.testMsg("> > [#s0026] Player is null", DEBUG);
             if(SCore.hasItemsAdder && ItemsAdderAPI.breakCustomBlock(block, null, drop)) return true;
             if (breakEB(null, block, drop)) return true;
 
@@ -191,7 +201,7 @@ public class SafeBreak {
        //SsomarDev.testMsg("DEBUG SAFE BREAK 10", DEBUG);
 
         if (SCore.hasExecutableBlocks) {
-           // SsomarDev.testMsg("DEBUG SAFE BREAK has EB", DEBUG);
+           SsomarDev.testMsg(ChatColor.GOLD+"[#s0032] DEBUG SAFE BREAK has EB", DEBUG);
             Optional<ExecutableBlockPlacedInterface> eBPOpt = ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block);
             if (eBPOpt.isPresent()) {
                 ExecutableBlockPlaced eBP = (ExecutableBlockPlaced) eBPOpt.get();
@@ -254,6 +264,9 @@ public class SafeBreak {
 
         if(SCore.hasProtectionStones)
             if(!ProtectionStonesAPI.playerCanBreakClaimBlock(playerUUID, location)) return false;
+
+        if(SCore.hasExcellentClaims)
+            if(!ExcellentClaimsAPI.playerCanBreakClaimBlock(playerUUID, location)) return false;
 
         return true;
     }

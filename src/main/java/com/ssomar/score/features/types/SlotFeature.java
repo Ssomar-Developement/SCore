@@ -39,6 +39,10 @@ public class SlotFeature extends FeatureAbstract<Optional<AttributeSlot>, SlotFe
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
         String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
+        if(colorStr.equals("NULL")){
+            value = defaultValue;
+            return errors;
+        }
         try {
             AttributeSlot attributeSlot = AttributeSlot.valueOf(colorStr.toUpperCase());
             value = Optional.ofNullable(attributeSlot);

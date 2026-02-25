@@ -382,6 +382,13 @@ public abstract class SCommand {
         return getColor();
     }
 
+    /**
+     * Used to verify the inputs of the previous command argument format. If you're using the
+     * new way for handling custom command arguments, just return <code>Optional.empty();</code>
+     * @param args
+     * @param isFinalVerification
+     * @return
+     */
     public Optional<String> verify(List<String> args, boolean isFinalVerification) {
 
         if (isNewSettingsMode()) {

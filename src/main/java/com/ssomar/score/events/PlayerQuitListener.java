@@ -11,9 +11,9 @@ public class PlayerQuitListener implements Listener {
 
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void playerReconnexion(PlayerQuitEvent e) {
+    public void playerDisconnection(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        AbsorptionManager.getInstance().onDisconnect(p);
+        //AbsorptionManager.getInstance().onDisconnect(p);
     }
 
 }

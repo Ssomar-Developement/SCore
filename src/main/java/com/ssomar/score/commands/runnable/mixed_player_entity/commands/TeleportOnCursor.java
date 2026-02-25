@@ -100,13 +100,14 @@ public class TeleportOnCursor extends MixedCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("TELEPORT_ON_CURSOR");
         names.add("TELEPORTONCURSOR");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "TELEPORTONCURSOR [maxRange} [acceptAir true or false]";
+        return "TELEPORT_ON_CURSOR [maxRange} [acceptAir true or false]";
     }
 
     @Override

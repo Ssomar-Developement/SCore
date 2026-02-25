@@ -19,15 +19,19 @@ public class BiomeUtils {
         if (biomes != null) {
             return biomes;
         }
+
         Map<Object, String> list = new HashMap<>();
         if (SCore.is1v21v2Plus()) {
-            for (Keyed l : Registry.BIOME) {
-                NamespacedKey key = l.getKey();
-                if(key.getNamespace().equals("minecraft")) {
-                    list.put(l, l.getKey().getKey().toUpperCase());
+            // If someone created a custom biome with weird namespace , it may cause issues, so we handle it
+            // Caused by: java.lang.IllegalArgumentException: Invalid namespace. Must be [a-z0-9._-]:
+            try {
+                for (Keyed l : Registry.BIOME) {
+                    NamespacedKey key = l.getKey();
+                    if (key.getNamespace().equals("minecraft")) {
+                        list.put(l, l.getKey().getKey().toUpperCase());
+                    } else list.put(l, l.getKey().toString());
                 }
-                else list.put(l, l.getKey().toString());
-            }
+            } catch (IllegalArgumentException e) {}
         } else {
             for (Object o : Biome.class.getEnumConstants()) {
                 // Use reflection to get .name()

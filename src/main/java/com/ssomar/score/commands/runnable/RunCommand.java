@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.scheduler.ScheduledTask;
 import com.ssomar.score.utils.strings.StringConverter;
@@ -175,6 +176,8 @@ public abstract class RunCommand implements Serializable {
                 }
             }
         };
+
+        SsomarDev.testMsg("[#s_1] [-2] RunCommand.java > runCommand()", false, SsomarDev.DebugMsgGroups._1);
         executeRunnable(runnable);
     }
 

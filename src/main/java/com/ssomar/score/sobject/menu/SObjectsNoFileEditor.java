@@ -22,8 +22,14 @@ import java.util.List;
 @Setter
 public abstract class SObjectsNoFileEditor<T extends SObject & SObjectEditable> extends SObjectsEditorAbstract<T> {
 
+
     public SObjectsNoFileEditor(SPlugin sPlugin, FeatureSettingsInterface settings, SObjectManager manager) {
         super(sPlugin, settings, manager);
+        this.load();
+    }
+
+    public SObjectsNoFileEditor(SPlugin sPlugin, String title, SObjectManager manager) {
+        super(sPlugin, title, manager);
         this.load();
     }
 
@@ -42,7 +48,7 @@ public abstract class SObjectsNoFileEditor<T extends SObject & SObjectEditable> 
 
                 List<String> desc = new ArrayList<>();
                 desc.add("");
-                desc.add(GUI.CLICK_HERE_TO_CHANGE);
+                if(isClickToEdit()) desc.add(GUI.CLICK_HERE_TO_CHANGE);
                 if (isGiveButton()) desc.add(TM.g(Text.EDITOR_GIVE_SHIFT_RIGHT_DESCRIPTION));
                 if (isDeleteButton()) desc.add(GUI.SHIFT_LEFT_CLICK_TO_REMOVE);
                 desc.addAll(object.getDescription());
@@ -55,7 +61,15 @@ public abstract class SObjectsNoFileEditor<T extends SObject & SObjectEditable> 
                         descArray[j] = desc.get(j);
                     }
                 }
-                createItem(itemS, 1, i, CREATION_ID + " &e&o" + object.getId(), false, false, descArray);
+                String prefix = "";
+                if(!isHideCreation()) prefix = CREATION_ID+ " &e&o";
+                if(getSubSettings().containsKey("custom_identifier")){
+                    String customIdentifier = getSubSettings().get("custom_identifier");
+                    if(customIdentifier != null && !customIdentifier.isEmpty()){
+                        prefix = customIdentifier;
+                    }
+                }
+                createItem(itemS, 1, i, prefix + object.getId(), false, false, descArray);
                 i++;
             }
             total++;
@@ -70,7 +84,7 @@ public abstract class SObjectsNoFileEditor<T extends SObject & SObjectEditable> 
         createItem(RED, 1, 36, EXIT, false, false);
 
         // change lang menu
-        createItem(YELLOW, 1, 37, GUI.CHANGE_LANGUAGE, false, false, GeneralConfig.getInstance().getAvailableLocales("", "&e&oClick here to change the language"));
+        if(isLanguageButton()) createItem(YELLOW, 1, 37, GUI.CHANGE_LANGUAGE, false, false, GeneralConfig.getInstance().getAvailableLocales("", "&e&oClick here to change the language"));
 
         String[] desc = new String[1 + TM.gA(Text.EDITOR_PATH_DESCRIPTION).length];
         desc[0] = "&7";

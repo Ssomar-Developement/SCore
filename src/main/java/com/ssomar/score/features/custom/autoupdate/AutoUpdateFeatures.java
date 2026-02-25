@@ -36,6 +36,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
     private BooleanFeature updateArmorSettings;
     private BooleanFeature updateHiders;
     private BooleanFeature updateEquippable;
+    private BooleanFeature updateTooltipModel;
 
     public AutoUpdateFeatures(FeatureParentInterface parent) {
         super(parent, FeatureSettingsSCore.autoUpdateFeatures);
@@ -55,6 +56,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
         this.updateArmorSettings = new BooleanFeature(this, false, FeatureSettingsSCore.updateArmorSettings);
         this.updateHiders = new BooleanFeature(this, false, FeatureSettingsSCore.updateHiders);
         this.updateEquippable = new BooleanFeature(this, false, FeatureSettingsSCore.updateEquippable);
+        this.updateTooltipModel = new BooleanFeature(this, false, FeatureSettingsSCore.updateTooltipModel);
     }
 
     @Override
@@ -71,6 +73,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
         errors.addAll(updateArmorSettings.load(plugin, config, isPremiumLoading));
         errors.addAll(updateHiders.load(plugin, config, isPremiumLoading));
         errors.addAll(updateEquippable.load(plugin, config, isPremiumLoading));
+        errors.addAll(updateTooltipModel.load(plugin, config, isPremiumLoading));
 
         return errors;
     }
@@ -87,6 +90,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
         if(updateArmorSettings.getValue()) resetSettings.add(ResetSetting.ARMOR_SETTINGS);
         if(updateHiders.getValue()) resetSettings.add(ResetSetting.HIDERS);
         if(updateEquippable.getValue()) resetSettings.add(ResetSetting.EQUIPPABLE);
+        if(updateTooltipModel.getValue()) resetSettings.add(ResetSetting.TOOLTIP_MODEL);
         return resetSettings;
     }
 
@@ -103,6 +107,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
         updateArmorSettings.save(config);
         updateHiders.save(config);
         updateEquippable.save(config);
+        updateTooltipModel.save(config);
     }
 
     @Override
@@ -112,7 +117,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
 
     @Override
     public AutoUpdateFeatures initItemParentEditor(GUI gui, int slot) {
-        int length = 12;
+        int length = 13;
         String[] finalDescription = new String[getEditorDescription().length + length];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - length] = GUI.CLICK_HERE_TO_CHANGE;
@@ -186,6 +191,12 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
             finalDescription[finalDescription.length - length] = "&7Update Equippable: &c&l✘";
         length--;
 
+        if (updateTooltipModel.getValue())
+            finalDescription[finalDescription.length - length] = "&7Update Tooltip Model: &a&l✔";
+        else
+            finalDescription[finalDescription.length - length] = "&7Update Tooltip Model: &c&l✘";
+        length--;
+
         gui.createItem(GUI.GRINDSTONE, 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;
     }
@@ -209,6 +220,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
         dropFeatures.updateArmorSettings = updateArmorSettings.clone(dropFeatures);
         dropFeatures.updateHiders = updateHiders.clone(dropFeatures);
         dropFeatures.updateEquippable = updateEquippable.clone(dropFeatures);
+        dropFeatures.updateTooltipModel = updateTooltipModel.clone(dropFeatures);
         return dropFeatures;
     }
 
@@ -226,6 +238,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
         features.add(updateArmorSettings);
         features.add(updateHiders);
         features.add(updateEquippable);
+        features.add(updateTooltipModel);
         return features;
     }
 
@@ -260,6 +273,7 @@ public class AutoUpdateFeatures extends FeatureWithHisOwnEditor<AutoUpdateFeatur
                 hiders.setUpdateArmorSettings(updateArmorSettings);
                 hiders.setUpdateHiders(updateHiders);
                 hiders.setUpdateEquippable(updateEquippable);
+                hiders.setUpdateTooltipModel(updateTooltipModel);
             }
         }
     }

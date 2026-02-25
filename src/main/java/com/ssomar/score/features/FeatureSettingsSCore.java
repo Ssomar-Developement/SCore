@@ -71,11 +71,13 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     cancelLoom(getFeatureSettings("cancelLoom", "cancel-loom", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     cancelDecoratedPot(getFeatureSettings("cancelDecoratedPot", "cancel-decorated-pot", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     cancelCrafter(getFeatureSettings("cancelCrafter", "cancel-crafter", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelPlaceInBundle(getFeatureSettings("cancelPlaceInBundle", "cancel-place-in-bundle", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     cancelMerchant(getFeatureSettings("cancelMerchant", "cancel-merchant", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     cancelSmithingTable(getFeatureSettings("cancelSmithingTable", "cancel-smithing-table", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     cancelStoneCutter(getFeatureSettings("cancelStoneCutter", "cancel-stone-cutter", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     cancelSwapHand(getFeatureSettings("cancelSwapHand", "cancel-swap-hand", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     cancelToolInteractions(getFeatureSettings("cancelToolInteractions", "cancel-tool-interactions", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelSpawner(getFeatureSettings("cancelSpawner", "cancel-spawner", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     charged(getFeatureSettings("charged")),
     color(getFeatureSettings("color")),
     containerContent(getFeatureSettings("containerContent")),
@@ -100,6 +102,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     weaponFeatures(getFeatureSettings("weaponFeatures")),
     detailedEffects(getFeatureSettings("detailedEffects")),
     detailedItems(getFeatureSettings("detailedItems")),
+    detailedTargetItems(getFeatureSettings("detailedTargetItems")),
     detailedSlots(getFeatureSettings("detailedSlots")),
     displayCooldownMessage(getFeatureSettings("displayCooldownMessage", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     displayNameDrop(getFeatureSettings("displayNameDrop")),
@@ -172,6 +175,11 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     ifUseCooldown(getFeatureSettings("ifUseCooldown", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifEntityHealth(getFeatureSettings("ifEntityHealth", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifEntityInRegion(getFeatureSettings("ifEntityInRegion",SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifEntityIsInWater(getFeatureSettings("ifEntityIsInWater", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifEntityIsInLava(getFeatureSettings("ifEntityIsInLava", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifEntityAge(getFeatureSettings("ifEntityAge", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifEntityLastDamageCause(getFeatureSettings("ifEntityLastDamageCause", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifEntityVelocity(getFeatureSettings("ifEntityVelocity", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifFlying(getFeatureSettings("ifFlying", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifFromSpawner(getFeatureSettings("ifFromSpawner", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifFrozen(getFeatureSettings("ifFrozen", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
@@ -258,6 +266,12 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     ifPlayerMustBeOnTheBlock(getFeatureSettings("ifPlayerMustBeOnTheBlock", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifPlayerNotHasEffect(getFeatureSettings("ifPlayerNotHasEffect", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifPlayerNotMounts(getFeatureSettings("ifPlayerNotMounts", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifPlayerIsRiding(getFeatureSettings("ifPlayerIsRiding", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifPlayerLastDamage(getFeatureSettings("ifPlayerLastDamage", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifPlayerOxygen(getFeatureSettings("ifPlayerOxygen", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifPlayerBedSpawnLocationX(getFeatureSettings("ifPlayerBedSpawnLocationX", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifPlayerBedSpawnLocationY(getFeatureSettings("ifPlayerBedSpawnLocationY", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifPlayerBedSpawnLocationZ(getFeatureSettings("ifPlayerBedSpawnLocationZ", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifPosX(getFeatureSettings("ifPosX", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifPosY(getFeatureSettings("ifPosY", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     ifPosZ(getFeatureSettings("ifPosZ", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
@@ -429,6 +443,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     vanillaUseCooldown(getFeatureSettings("vanillaUseCooldown")),
     typeTarget(getFeatureSettings("typeTarget")),
     detailedClick(getFeatureSettings("detailedClick")),
+    detailedInput(getFeatureSettings("detailedInput")),
     usageModification(getFeatureSettings("usageModification", true)),
     cancelEvent(getFeatureSettings("cancelEvent")),
     noActivatorRunIfTheEventIsCancelled(getFeatureSettings("noActivatorRunIfTheEventIsCancelled")),
@@ -447,12 +462,9 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     detailedMessagesEquals(getFeatureSettings("detailedMessagesEquals")),
     detailedInventories(getFeatureSettings("detailedInventories")),
     mustBeItsOwnInventory(getFeatureSettings("mustBeItsOwnInventory")),
-    commands_player(getFeatureSettings("commands_player", "commands")),
-    commands_block(getFeatureSettings("commands_block", "commands")),
     targetCommands(getFeatureSettings("targetCommands")),
     entityCommands(getFeatureSettings("entityCommands")),
     blockCommands(getFeatureSettings("blockCommands")),
-    blockCommands_target_block(getFeatureSettings("blockCommands_target_block", "blockCommands")),
     playerCommands(getFeatureSettings("playerCommands")),
     playerSettings(getFeatureSettings("playerSettings")),
     ownerCommands(getFeatureSettings("ownerCommands")),
@@ -537,6 +549,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     updateArmorSettings(getFeatureSettings("updateArmorSettings", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     updateHiders(getFeatureSettings("updateHiders", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     updateEquippable(getFeatureSettings("updateEquippable", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    updateTooltipModel(getFeatureSettings("updateTooltipModel", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     brewingStandFeatures(getFeatureSettings("brewingStandFeatures", true)),
     brewingStandSpeed(getFeatureSettings("brewingStandSpeed", true)),
     boundingBoxZones(getFeatureSettings("boundingBoxZones")),
@@ -654,6 +667,10 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     itemTextures(getFeatureSettings("itemTextures")),
     itemAdvancedComponents(getFeatureSettings("itemAdvancedComponents")),
     ifGameMode(getFeatureSettings("ifGameMode", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifNearbyEntityCount(getFeatureSettings("ifNearbyEntityCount", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifLineOfSight(getFeatureSettings("ifLineOfSight", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifPlayerSpeed(getFeatureSettings("ifPlayerSpeed", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifNearbyPlayerCount(getFeatureSettings("ifNearbyPlayerCount", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     suspiciousBlockLoot(getFeatureSettings("suspiciousBlockLoot"))
     ;
 
@@ -692,6 +709,8 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
                 return FeatureSettingsSCoreHI.values();
             case IT:
                 return FeatureSettingsSCoreIT.values();
+            case PL:
+                return FeatureSettingsSCorePL.values();
             default:
                 return FeatureSettingsSCoreEN.values();
         }

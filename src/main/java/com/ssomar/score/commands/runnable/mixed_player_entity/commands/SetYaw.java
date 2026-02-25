@@ -48,13 +48,14 @@ public class SetYaw extends MixedCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("SET_YAW");
         names.add("SETYAW");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "SETYAW {yaw_number} [keepVelocity]";
+        return "SET_YAW {yaw_number} [keepVelocity]";
     }
 
     @Override

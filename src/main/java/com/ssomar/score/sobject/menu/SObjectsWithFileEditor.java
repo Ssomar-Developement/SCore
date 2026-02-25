@@ -121,8 +121,11 @@ public abstract class SObjectsWithFileEditor<T extends SObject & SObjectEditable
                         if(isDeleteButton()) desc.add(GUI.SHIFT_LEFT_CLICK_TO_REMOVE);
                         desc.addAll(sObject.getDescription());
 
-                        String[] descArray = new String[desc.size()];
-                        for (int j = 0; j < desc.size(); j++) {
+                        // A limit had to be added here because some users may have items that contain 249+ activators.
+                        // How are activators involved? When you go to "/ei show" for example, the icons show the list
+                        // of activators and their ids and an error tripped due to an icon surpassing 256 lore lines.
+                        String[] descArray = new String[Math.min(desc.size(), 25)];
+                        for (int j = 0; j < Math.min(desc.size(), 25); j++) {
                             if (desc.get(j).length() > 40) {
                                 descArray[j] = desc.get(j).substring(0, 39) + "...";
                             } else {

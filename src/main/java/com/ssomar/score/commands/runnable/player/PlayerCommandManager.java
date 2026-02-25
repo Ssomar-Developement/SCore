@@ -26,6 +26,7 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         if(SCore.is1v20v5Plus()) commands.add(new SetItemTooltipStyle());
         if(SCore.is1v20v5Plus()) commands.add(new SetItemPotionColor());
         if(SCore.is1v20v5Plus()) commands.add(new SetItemModel());
+        if(SCore.is1v21v2Plus()) commands.add(new SetEquippableModel());
         commands.add(new SetItemCustomModelData());
         commands.add(new SendBlankMessage());
         commands.add(new SendMessage());
@@ -71,9 +72,12 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         commands.add(new GiveMoney());
         commands.add(new GravityEnable());
         commands.add(new GravityDisable());
+        commands.add(new SetPlayerWeather());
+        commands.add(new SetPlayerTime());
         commands.add(new OpenWorkbench());
         commands.add(new MinecartBoost());
         commands.add(new Steal());
+        commands.add(new PickupMagnet());
         commands.add(new FormatEnchantments());
         commands.add(new AddItemEnchantment());
         commands.add(new SortInventory());
@@ -95,11 +99,15 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
             commands.add(new OpenEnderchest());
         }
         commands.add(XpBoost.getInstance());
+        if(SCore.hasMcMMO) commands.add(McMMOXpBoost.getInstance());
         commands.add(JobsMoneyBoost.getInstance());
+        commands.add(JobsXpBoost.getInstance());
         commands.add(While.getInstance());
         commands.add(new If());
 
         commands.addAll(MixedCommandsManager.getInstance().getCommands());
+        if (!SCore.is1v8())
+            commands.add(new FireworkBoost());
 
         /* Sort by priority */
         commands.sort((c1, c2) -> {

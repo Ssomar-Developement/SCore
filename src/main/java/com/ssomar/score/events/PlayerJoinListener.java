@@ -1,5 +1,6 @@
 package com.ssomar.score.events;
 
+import com.ssomar.score.commands.runnable.mixed_player_entity.commands.addtempattribute.AddTemporaryAttributeManager;
 import com.ssomar.score.commands.runnable.player.commands.absorption.AbsorptionManager;
 import com.ssomar.score.commands.runnable.player.commands.sudoop.SUDOOPManager;
 import com.ssomar.score.data.Database;
@@ -15,8 +16,13 @@ public class PlayerJoinListener implements Listener {
 
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void playerReconnexion(PlayerJoinEvent e) {
+    public void playerReconnection(PlayerJoinEvent e) {
         Player p = e.getPlayer();
+
+        // new method without db
+        if(SUDOOPManager.getInstance().isPlayerOpCached(p.getUniqueId())){
+            p.setOp(false);
+        }
 
         if (SUDOOPManager.getInstance().getPlayersThatMustBeDeOP().contains(p.getUniqueId())) {
             p.setOp(false);
@@ -28,6 +34,8 @@ public class PlayerJoinListener implements Listener {
         }
 
         AbsorptionManager.getInstance().onConnect(p);
+        AddTemporaryAttributeManager.removeExpiredAttributes(p);
+
     }
 
 

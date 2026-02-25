@@ -81,6 +81,13 @@ public class StringSetting {
     }
 
 
+    /**
+     * Use this to extract nested values from a string that's formatted similarly to a JSON string.
+     * The return object of this method is a Map object that may use recursion to handle deeper values, so
+     * think of the return object like: <code>Map&lt;String, Map&lt;String, String>></code>
+     * @param input
+     * @return <code>Map&lt;String, Object></code>
+     */
     public static Map<String, Object> getSettings(String input) {
         Map<String, Object> result = new HashMap<>();
 

@@ -1,5 +1,6 @@
 package com.ssomar.score.features.types.list;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.editor.NewGUIManager;
 import com.ssomar.score.editor.Suggestion;
 import com.ssomar.score.features.FeatureParentInterface;
@@ -32,17 +33,21 @@ public class ListDamageTypeFeature extends ListFeatureAbstract<DamageType, ListD
     public List<DamageType> loadValues(List<String> entries, List<String> errors) {
         List<DamageType> value = new ArrayList<>();
         for (String s : entries) {
-            s = StringConverter.decoloredString(s.toUpperCase());
+            s = StringConverter.decoloredString(s.toLowerCase());
+            SsomarDev.testMsg("Trying to load DamageType value: " + s, false);
             try {
                 TypedKey<DamageType> key = TypedKey.create(RegistryKey.DAMAGE_TYPE, s);
                 DamageType damageType = RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE).get(key);
                 if (damageType != null) {
                     value.add(damageType);
+                    SsomarDev.testMsg("Loaded DamageType value: " + s, false);
                 } else {
                     errors.add("&cERROR, Couldn't load the DamageType value of " + this.getName() + " from config, value: " + s + " &7&o" + getParent().getParentInfo() + " &6>> DamageTypes available: https://jd.papermc.io/paper/1.21.5/org/bukkit/damage/DamageType.html");
+                    SsomarDev.testMsg("Couldn't load DamageType value: " + s, false);
                 }
             } catch (Exception e) {
                 errors.add("&cERROR, Couldn't load the DamageType value of " + this.getName() + " from config, value: " + s + " &7&o" + getParent().getParentInfo() + " &6>> DamageTypes available: https://jd.papermc.io/paper/1.21.5/org/bukkit/damage/DamageType.html");
+                SsomarDev.testMsg("Couldn't load DamageType value: " + s, false);
             }
         }
         return value;
@@ -50,7 +55,7 @@ public class ListDamageTypeFeature extends ListFeatureAbstract<DamageType, ListD
 
     @Override
     public String transfromToString(DamageType value) {
-        return value.toString();
+        return value.getKey().toString();
     }
 
     public boolean verifCause(DamageType cause) {
@@ -78,7 +83,6 @@ public class ListDamageTypeFeature extends ListFeatureAbstract<DamageType, ListD
             if (damageType == null) {
                 return Optional.of("&4&l[ERROR] &cThe message you entered is not a DamageType &6>> DamageTypes available: https://jd.papermc.io/paper/1.21.5/org/bukkit/damage/DamageType.html");
             }
-            getValues().add(damageType);
             return Optional.empty();
         } catch (Exception e) {
             return Optional.of("&4&l[ERROR] &cThe message you entered is not a DamageType &6>> DamageTypes available: https://jd.papermc.io/paper/1.21.5/org/bukkit/damage/DamageType.html");
@@ -94,7 +98,7 @@ public class ListDamageTypeFeature extends ListFeatureAbstract<DamageType, ListD
     public List<Suggestion> getSuggestions() {
         SortedMap<String, Suggestion> map = new TreeMap<String, Suggestion>();
         for (DamageType mat : RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE)) {
-            map.put(mat.toString(), new Suggestion(mat + "", "&6[" + "&e" + mat + "&6]", "&7Add &e" + mat));
+            map.put(mat.getKey().toString(), new Suggestion(mat.getKey().toString() + "", "&6[" + "&e" + mat.getKey().toString() + "&6]", "&7Add &e" + mat.getKey().toString()));
         }
         return new ArrayList<>(map.values());
     }
@@ -117,6 +121,7 @@ public class ListDamageTypeFeature extends ListFeatureAbstract<DamageType, ListD
     }
 
     public RegistryKeySet<DamageType> asRegistryKeySet() {
+        if (getValues().isEmpty()) return null;
         return RegistrySet.keySetFromValues(RegistryKey.DAMAGE_TYPE, getValues());
     }
 

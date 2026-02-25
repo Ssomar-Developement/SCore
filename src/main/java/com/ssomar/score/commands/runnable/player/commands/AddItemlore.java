@@ -20,7 +20,7 @@ public class AddItemlore extends PlayerCommand {
         slot.setSlot(true);
         CommandSetting text = new CommandSetting("text", 1, String.class, "New lore");
         text.setAcceptUnderScoreForLongText(true);
-        CommandSetting insertIndex = new CommandSetting("insertIndex", 2, Integer.class, -1);
+        CommandSetting insertIndex = new CommandSetting("insertIndex", -1, Integer.class, -1);
         List<CommandSetting> settings = getSettings();
         settings.add(slot);
         settings.add(text);

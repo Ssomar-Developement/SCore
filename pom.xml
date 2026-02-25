@@ -84,7 +84,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.11.0</version>
                 <configuration>
                     <source>8</source>
                     <target>8</target>
@@ -221,11 +221,21 @@
                                         <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
                                               tofile="E:\Razer\Documents\GitHub\ExecutableItems\src\main\resources\SCore.jar"/>
                                         <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="E:\Razer\Documents\GitHub\ExecutableEvents\src\main\resources\SCore.jar"/>
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="E:\Razer\Documents\GitHub\ExecutableBlocks\src\main\resources\SCore.jar"/>
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
                                               tofile="E:\Razer\Documents\Server Files\PAPERSPIGOT 1.21.4\plugins\SCore.jar"/>
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="E:\Razer\Documents\Server Files\PAPERSPIGOT 1.21.4 - Copy\plugins\SCore.jar"/>
                                         <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
                                               tofile="E:\Razer\Documents\Server Files\PAPERSPIGOT 1.21.6\plugins\SCore.jar"/>
                                         <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
-                                              tofile="E:\Razer\Documents\GitHub\ExecutableBlocks\src\main\resources\SCore.jar"/>
+                                              tofile="E:\Razer\Documents\Server Files\PAPERSPIGOT 1.21.8\plugins\SCore.jar"/>
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="E:\Razer\Documents\Server Files\PAPERSPIGOT 1.21.10\plugins\SCore.jar"/>
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="/Users/josefmikourquico/Documents/Server Files/PAPERSPIGOT 1.21.4/plugins/SCore.jar"/>
                                     </target>
                                 </configuration>
                             </execution>
@@ -289,10 +299,10 @@
             <id>spigotmc-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-        <repository>
+        <!--<repository>
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
+        </repository>-->
         <!--<repository>
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
@@ -323,6 +333,10 @@
             <url>https://repo.codemc.org/repository/maven-public</url>
         </repository>
         <repository>
+            <id>CodeMC-snap</id>
+            <url>https://repo.codemc.io/repository/maven-snapshots</url>
+        </repository>
+        <repository>
             <id>papermc</id>
             <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
@@ -344,10 +358,27 @@
             <id>inject repo</id>
             <url>https://maven.andante.dev/releases/</url>
         </repository>
+        <repository>
+            <id>nightexpressdev</id>
+            <name>NightExpressDev Repository</name>
+            <url>https://repo.nightexpressdev.com/releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
-
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.tngtech.archunit/archunit-junit5 -->
+        <dependency>
+            <groupId>com.tngtech.archunit</groupId>
+            <artifactId>archunit-junit5</artifactId>
+            <version>1.4.1</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>io.netty</groupId>
@@ -359,8 +390,22 @@
         <dependency>
             <groupId>com.github.retrooper</groupId>
             <artifactId>packetevents-spigot</artifactId>
-            <version>2.7.0</version>
+            <version>2.11.1-SNAPSHOT</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>adventure-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>adventure-key</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>adventure-nbt</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
 
@@ -413,13 +458,6 @@
             <scope>compile</scope>
         </dependency>
 
-        <!--<dependency>
-           <groupId>net.kyori</groupId>
-           <artifactId>adventure-text-minimessage</artifactId>
-           <version>4.17.0</version>
-           <scope>compile</scope>
-       </dependency> -->
-
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
@@ -430,7 +468,7 @@
         <dependency>
             <groupId>com.github.Ssomar-Developement</groupId>
             <artifactId>SEvents</artifactId>
-            <version>main-ec0dc01282-1</version>
+            <version>main-f77389553d-1</version>
             <scope>compile</scope>
         </dependency>
 
@@ -450,9 +488,17 @@
         </dependency>
 
         <dependency>
+            <groupId>com.gmail.nossr50.mcMMO</groupId>
+            <artifactId>mcMMO</artifactId>
+            <version>2.2.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/mcMMO.jar</systemPath>
+        </dependency>
+
+        <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.21.8-R0.1-SNAPSHOT</version>
+            <version>1.21.11-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
@@ -606,6 +652,7 @@
             <systemPath>${project.basedir}/src/main/resources/Jobs5.2.2.3.jar</systemPath>
         </dependency>
 
+
         <dependency>
             <groupId>com.bgsoftware</groupId>
             <artifactId>SuperiorSkyblock</artifactId>
@@ -642,7 +689,25 @@
             <artifactId>GriefPrevention</artifactId>
             <version>16.17.1</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>event-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>adventure-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+
+        <!--<dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>event-api</artifactId>
+            <version>5.0.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/event-api-5.0.0.jar</systemPath>
+        </dependency>-->
 
         <dependency>
             <groupId>com.github.Auxilor</groupId>
@@ -663,6 +728,16 @@
             <artifactId>api</artifactId>
             <version>2.0.0-20211206.072436-12</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>event-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>adventure-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -871,11 +946,24 @@
         </dependency>
 
         <dependency>
+            <groupId>com.github.nulli0n</groupId>
+            <artifactId>ExcellentClaims-spigot</artifactId>
+            <version>fd57663fc5</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>me.neznamy.tab</groupId>
             <artifactId>TAB</artifactId>
             <version>1.2</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/TAB.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

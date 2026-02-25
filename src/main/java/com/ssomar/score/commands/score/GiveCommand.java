@@ -138,19 +138,21 @@ public class GiveCommand<X extends SPlugin, Y extends SObjectManager<Z>, Z exten
             Player p = playerOpt.get().get();
             PlayerInventory inventory = p.getInventory();
             boolean callAddInInventoryEvent = false;
-            if (inventory.getItem(slotOpt.get()) == null) {
-                inventory.setItem(slotOpt.get(), objectOpt.get().buildItem(amountOpt.get(), playerOpt.get(), settings));
+            int slotInt = slotOpt.get();
+            if(slotInt == -1) slotInt = inventory.getHeldItemSlot();
+            if (inventory.getItem(slotInt) == null) {
+                inventory.setItem(slotInt, objectOpt.get().buildItem(amountOpt.get(), playerOpt.get(), settings));
                 callAddInInventoryEvent = true;
             } else {
-                ItemStack item = inventory.getItem(slotOpt.get()).clone();
+                ItemStack item = inventory.getItem(slotInt).clone();
                 ItemStack toCompare = item.clone();
                 toCompare.setAmount(1);
 
                 if (toCompare.isSimilar(objectOpt.get().buildItem(1, playerOpt.get(), settings)) && objectOpt.get().canBeStacked()) {
-                    inventory.getItem(slotOpt.get()).setAmount(inventory.getItem(slotOpt.get()).getAmount() + amountOpt.get());
+                    inventory.getItem(slotInt).setAmount(inventory.getItem(slotInt).getAmount() + amountOpt.get());
                     callAddInInventoryEvent = true;
                 } else if (override) {
-                    inventory.setItem(slotOpt.get(), objectOpt.get().buildItem(amountOpt.get(), playerOpt.get(), settings));
+                    inventory.setItem(slotInt, objectOpt.get().buildItem(amountOpt.get(), playerOpt.get(), settings));
                     callAddInInventoryEvent = true;
 
                     /* Move the item that is override to not lose it */
@@ -161,7 +163,7 @@ public class GiveCommand<X extends SPlugin, Y extends SObjectManager<Z>, Z exten
             }
             if (callAddInInventoryEvent && getSPlugin().getShortName().equals("EI")) {
                 /* Call add event */
-                AddItemInPlayerInventoryEvent eventToCall = new AddItemInPlayerInventoryEvent(p, inventory.getItem(slotOpt.get()), slotOpt.get());
+                AddItemInPlayerInventoryEvent eventToCall = new AddItemInPlayerInventoryEvent(p, inventory.getItem(slotInt), slotInt);
                 Bukkit.getPluginManager().callEvent(eventToCall);
             }
             if (!getSPlugin().getPluginConfig().getBooleanSetting("silentGive"))

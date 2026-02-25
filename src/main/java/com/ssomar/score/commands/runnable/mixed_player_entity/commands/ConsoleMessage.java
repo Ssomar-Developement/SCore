@@ -34,13 +34,14 @@ public class ConsoleMessage extends MixedCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("CONSOLE_MESSAGE");
         names.add("CONSOLEMESSAGE");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "CONSOLEMESSAGE {text}";
+        return "CONSOLE_MESSAGE {text}";
     }
 
     @Override

@@ -35,13 +35,14 @@ public class DropItem extends BlockCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("DROP_ITEM");
         names.add("DROPITEM");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "DROPITEM {material} {quantity}";
+        return "DROP_ITEM {material} {quantity}";
     }
 
     @Override

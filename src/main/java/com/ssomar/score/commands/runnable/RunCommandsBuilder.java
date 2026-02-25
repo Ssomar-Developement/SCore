@@ -243,7 +243,7 @@ public abstract class RunCommandsBuilder {
 
     public abstract RunCommand buildRunCommand(Integer delay, String command, ActionInfo aInfo);
 
-    public void inserFinalCommands(Integer delay, String command) {
+    public void insertFinalCommands(Integer delay, String command) {
         RunCommand runCommand = this.buildRunCommand(delay, command, actionInfo);
         if (finalCommands.containsKey(delay)) {
             finalCommands.get(delay).add(runCommand);
@@ -393,7 +393,7 @@ public abstract class RunCommandsBuilder {
 
             /* No edits for the commands executed by score run-... the edits are made after */
             if (command.startsWith("score run-")) {
-                this.inserFinalCommands(delay, command);
+                this.insertFinalCommands(delay, command);
                 continue;
             }
 
@@ -430,7 +430,7 @@ public abstract class RunCommandsBuilder {
                 delay = delay + (Integer.parseInt(secondPart) * 20);
             } else {
                 //SsomarDev.testMsg(" insert command step3 : "+command, true);
-                this.inserFinalCommands(delay, command);
+                this.insertFinalCommands(delay, command);
             }
         }
 

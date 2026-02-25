@@ -397,4 +397,39 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
     public ItemStack getIconItem() {
         return new ItemStack(icon.getValue().get());
     }
+
+
+
+    public boolean equals(Variable obj) {
+
+        // Reference equality check (fastest)
+        if (this == obj) {
+            return true;
+        }
+
+        // Null check
+        if (obj == null) {
+            return false;
+        }
+
+        if(type.getValue().get() != obj.getType().getValue().get()) return false;
+
+        if(forFeature.getValue().get() != obj.getForFeature().getValue().get()) return false;
+
+        for (String key : this.values.keySet()) {
+            if(!obj.getValues().containsKey(key)) return false;
+            List<String> thisList = this.values.get(key);
+            List<String> objList = obj.getValues().get(key);
+            if(thisList.size() != objList.size()) return false;
+            for(int i=0; i<thisList.size(); i++) {
+                if(!thisList.get(i).equals(objList.get(i))) return false;
+            }
+        }
+
+        if(!defaultValue.getValue().isPresent() && obj.getDefaultValue().getValue().isPresent()) return false;
+        if(defaultValue.getValue().isPresent() && !obj.getDefaultValue().getValue().isPresent()) return false;
+        if(defaultValue.getValue().isPresent() && obj.getDefaultValue().getValue().isPresent() && !defaultValue.getValue().get().equals(obj.getDefaultValue().getValue().get())) return false;
+
+        return true;
+    }
 }

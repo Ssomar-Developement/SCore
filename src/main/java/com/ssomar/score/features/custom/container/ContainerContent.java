@@ -62,7 +62,10 @@ public class ContainerContent extends ListStringFeature implements FeatureForIte
                     Inventory inv = container.getInventory();
                     for (String value : getValues()) {
                         String[] split = value.split(";");
-                        int slot = Integer.parseInt(split[0].split(":")[1]);
+                        if (split.length == 0) continue;
+                        String[] slotSplit = split[0].split(":");
+                        if (slotSplit.length < 2) continue;
+                        int slot = Integer.parseInt(slotSplit[1]);
                         String itemString = value.substring(value.indexOf(";") + 1);
                         int amount = 1;
                         if(itemString.contains(";amount:")) {
@@ -150,7 +153,12 @@ public class ContainerContent extends ListStringFeature implements FeatureForIte
                     SsomarDev.testMsg("ItemContainerFeature applyOnItemMeta: the value is not valid " + value, DEBUG);
                     continue;
                 }
-                int slot = Integer.parseInt(split[0].split(":")[1]);
+                String[] slotSplit = split[0].split(":");
+                if (slotSplit.length < 2) {
+                    SsomarDev.testMsg("ItemContainerFeature applyOnItemMeta: invalid slot format " + split[0], DEBUG);
+                    continue;
+                }
+                int slot = Integer.parseInt(slotSplit[1]);
                 String itemString = value.substring(value.indexOf(";") + 1);
                 int amount = 1;
                 if(itemString.contains(";amount:")) {

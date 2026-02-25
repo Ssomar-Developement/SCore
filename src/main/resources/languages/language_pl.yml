@@ -1,0 +1,70 @@
+editor:
+  back:
+    name: "&4&l⬅ &cWstecz"
+  creation:
+    id:
+      name: "&2&l✚ &a&lID tworzenia:"
+  delete:
+    name: "&4&l✘ &cUsuń"
+    normal:
+      description: "&4&lX &cKliknij tutaj, aby usunąć"
+    shift:
+      left:
+        description: "&4&lX &cShift + Lewy klik, aby usunąć"
+      description: "&4&lX &cShift + Klik, aby usunąć"
+    message: "&cHej, jeśli chcesz usunąć %object%"
+  edit:
+    description: "&a✎ Kliknij tutaj, aby zmienić"
+  exit:
+    name: "&4&l✘ &cWyjdź"
+  folder:
+    name: "&2&l✦ FOLDER: &a"
+    description: ["", "&7Kliknij tutaj, aby otworzyć folder"]
+  give:
+    shift:
+      right:
+        description: "&2✔ &aShift + prawy klik, aby dać sobie"
+    receivedMessage: "&aOtrzymałeś &e"
+  invalid:
+    file:
+      name: "&4&l✦ NIEPRAWIDŁOWY PLIK: &c&o"
+      description: "&7Plugin może wczytać tylko pliki &e.yml"
+    configuration:
+        name: "&4&l✦ NIEPRAWIDŁOWA KONFIGURACJA: &c&o"
+        description: "&7Powinieneś edytować plik konfiguracyjny"
+        freeLimit: "&7Upewnij się również, że nie osiągnąłeś limitu darmowej wersji"
+  new:
+    name: "&a&l➕ &aNowy"
+  page:
+    name: " - Strona "
+    next:
+        name: "&dNastępna strona &5&l▶"
+    previous:
+        name: "&5&l◀ &dPoprzednia strona"
+  path:
+    name: "&6&l✦ &eŚCIEŻKA:"
+    description: ["&8&oKliknij tutaj, aby wrócić", "&8&odo poprzedniego folderu"]
+  premade:
+    premium:
+      name: "&5&l✚ &dDomyślne Premium %object%"
+    packs:
+      name: "&5&l✚ &d%object% z niestandardowych paczek"
+  premium:
+    description: "&5&l❂ &d&lTylko wersja Premium &5&l❂"
+    requirePremiumToAddMore: "&cWYMAGANE PREMIUM: aby dodać więcej niż %limit% %object% potrzebujesz wersji premium"
+  reset:
+    name: "&4&l✘ &cResetuj"
+    description:
+      - ""
+      - "&c&oKliknij tutaj, aby zresetować"
+      - "&c&owszystkie opcje tego tworzenia"
+  save:
+    name: "&a&l✔ &aZapisz"
+    description:
+      - ""
+      - "&a&oKliknij tutaj, aby zapisać"
+      - "&a&oswoją konfigurację!"
+  title:
+    color: "&e&l"
+  currently:
+    name: "&7✦ Aktualnie:"

@@ -39,6 +39,7 @@ public enum RestrictionEnum {
     CANCEL_LOOM(FeatureSettingsSCore.cancelLoom),
     CANCEL_DECORATED_POT(FeatureSettingsSCore.cancelDecoratedPot),
     CANCEL_CRAFTER(FeatureSettingsSCore.cancelCrafter),
+    CANCEL_PLACE_IN_BUNDLE(FeatureSettingsSCore.cancelPlaceInBundle),
 
     CANCEL_MERCHANT(FeatureSettingsSCore.cancelMerchant),
     CANCEL_HORSE(FeatureSettingsSCore.cancelHorse),
@@ -48,7 +49,8 @@ public enum RestrictionEnum {
     CANCEL_ITEM_DELETE_BY_LIGHTNING(FeatureSettingsSCore.cancelItemDeleteByLightning),
 
     CANCEL_SWAPHAND(FeatureSettingsSCore.cancelSwapHand),
-    LOCKED_INVENTORY(FeatureSettingsSCore.lockedInventory);
+    LOCKED_INVENTORY(FeatureSettingsSCore.lockedInventory),
+    CANCEL_SPAWNER(FeatureSettingsSCore.cancelSpawner);
 
     @Getter
     public final FeatureSettingsInterface featureSetting;

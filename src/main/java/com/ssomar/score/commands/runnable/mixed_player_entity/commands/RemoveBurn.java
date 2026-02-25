@@ -25,13 +25,14 @@ public class RemoveBurn extends MixedCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("REMOVE_BURN");
         names.add("REMOVEBURN");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "REMOVEBURN";
+        return "REMOVE_BURN";
     }
 
     @Override

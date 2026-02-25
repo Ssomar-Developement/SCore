@@ -21,6 +21,7 @@ public class RegionisedSchedulerHook implements SchedulerHook {
 
     @Override
     public ScheduledTask runTask(Runnable runnable, long delay) {
+        if(plugin == null || !plugin.isEnabled()) return null;
         if(delay > 0)
             return new RegionisedScheduledTask(((GlobalRegionScheduler)getReflectedObjectOfBukkit("getGlobalRegionScheduler")).runDelayed(plugin, task -> runnable.run(), delay));
         else
@@ -30,12 +31,14 @@ public class RegionisedSchedulerHook implements SchedulerHook {
 
     @Override
     public ScheduledTask runRepeatingTask(Runnable runnable, long initDelay, long period) {
+        if(plugin == null || !plugin.isEnabled()) return null;
         if(initDelay <= 0) initDelay = 1;
         return new RegionisedScheduledTask(((GlobalRegionScheduler)getReflectedObjectOfBukkit("getGlobalRegionScheduler")).runAtFixedRate(plugin, task -> runnable.run(), initDelay, period));
     }
 
     @Override
     public ScheduledTask runAsyncTask(Runnable runnable, long delay) {
+        if(plugin == null || !plugin.isEnabled()) return null;
         // convert tick to ms
         delay *= 50;
         if(delay > 0)
@@ -46,6 +49,7 @@ public class RegionisedSchedulerHook implements SchedulerHook {
 
     @Override
     public ScheduledTask runAsyncRepeatingTask(Runnable runnable, long initDelay, long period) {
+        if(plugin == null || !plugin.isEnabled()) return null;
         // convert tick to ms
         initDelay *= 50;
         period *= 50;
@@ -55,6 +59,7 @@ public class RegionisedSchedulerHook implements SchedulerHook {
 
     @Override
     public ScheduledTask runEntityTask(Runnable runnable, Runnable retired, Entity entity, long delay) {
+        if(plugin == null || !plugin.isEnabled()) return null;
         io.papermc.paper.threadedregions.scheduler.ScheduledTask scheduledTask = null;
         EntityScheduler scheduler = null;
         try {
@@ -75,6 +80,7 @@ public class RegionisedSchedulerHook implements SchedulerHook {
 
     @Override
     public ScheduledTask runEntityTaskAsap(Runnable runnable, Runnable retired, Entity entity) {
+        if(plugin == null || !plugin.isEnabled()) return null;
 
         boolean isOwnedByCurrentRegion = false;
         try {
@@ -104,6 +110,7 @@ public class RegionisedSchedulerHook implements SchedulerHook {
 
     @Override
     public ScheduledTask runLocationTask(Runnable runnable,Location location, long delay) {
+        if(plugin == null || !plugin.isEnabled()) return null;
         io.papermc.paper.threadedregions.scheduler.ScheduledTask scheduledTask = null;
         if(delay > 0)
             scheduledTask = ((RegionScheduler)getReflectedObjectOfBukkit("getRegionScheduler")).runDelayed(plugin, location, task -> runnable.run(), delay);
@@ -113,6 +120,7 @@ public class RegionisedSchedulerHook implements SchedulerHook {
 
     @Override
     public ScheduledTask runLocationTaskAsap(Runnable runnable, Location location) {
+        if(plugin == null || !plugin.isEnabled()) return null;
 
         boolean isOwnedByCurrentRegion = false;
         try {

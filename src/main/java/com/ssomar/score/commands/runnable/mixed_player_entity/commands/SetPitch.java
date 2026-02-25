@@ -48,13 +48,14 @@ public class SetPitch extends MixedCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("SET_PITCH");
         names.add("SETPITCH");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "SETPITCH {pitch_number} [keepVelocity]";
+        return "SET_PITCH {pitch_number} [keepVelocity]";
     }
 
     @Override

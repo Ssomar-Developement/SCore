@@ -43,6 +43,7 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
     private static final Boolean DEBUG = true;
 
     private static final String symbolStartMaterialTag = "#"; // #minecraft:mineable/pickaxe
+    private static final String customListPrefix = "SCORE:";
     private List<String> listOfCustomBlocksPluginSupported;
 
     /* If it checks blocks tags or not, if not it checks item tags */
@@ -76,7 +77,35 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
     public List<String> loadValues(List<String> entries, List<String> errors) {
         List<String> values = new ArrayList<>();
         //DONT ADD BECAUSE IT RESET IT AT THE SECOND TIME WHEN THE LOADING OF BLACKLIST specificationOfAtLeastOneState = false;
+
+        // Expand custom lists
+        List<String> expandedEntries = new ArrayList<>();
         for (String s : entries) {
+            s = StringConverter.decoloredString(s);
+            String checkValue = s.replace("!", "");
+
+            // Check if this is a custom list reference
+            if (checkValue.toUpperCase().startsWith(customListPrefix)) {
+                String listName = checkValue.substring(customListPrefix.length());
+                Optional<List<String>> customList = com.ssomar.score.features.custom.customlists.CustomListsManager.getInstance().getBlockList(listName);
+                if (customList.isPresent()) {
+                    // Add all blocks from the custom list
+                    boolean isNegated = s.startsWith("!");
+                    for (String block : customList.get()) {
+                        expandedEntries.add(isNegated ? "!" + block : block);
+                    }
+                } else {
+                    String parentInfo = "";
+                    if(getParent() != null) parentInfo = getParent().getParentInfo();
+                    errors.add("&cERROR, Custom block list '" + listName + "' not found in SCore config.yml &7&o" + parentInfo);
+                }
+                continue;
+            }
+
+            expandedEntries.add(s);
+        }
+
+        for (String s : expandedEntries) {
             s = StringConverter.decoloredString(s);
             String materialStr = s;
 
@@ -504,6 +533,16 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
         String s = StringConverter.decoloredString(message).replace("!", "");
         String str = s;
 
+        // Allow custom list references
+        if (str.toUpperCase().startsWith(customListPrefix)) {
+            String listName = str.substring(customListPrefix.length());
+            if (com.ssomar.score.features.custom.customlists.CustomListsManager.getInstance().hasBlockList(listName)) {
+                return Optional.empty();
+            } else {
+                return Optional.of("&4&l[ERROR] &cCustom block list '" + listName + "' not found in SCore config.yml");
+            }
+        }
+
         boolean isCustomBlock = false;
         for (String customPlugin : listOfCustomBlocksPluginSupported) {
             if (str.startsWith(customPlugin)) {
@@ -552,8 +591,8 @@ public class ListDetailedMaterialFeature extends ListFeatureAbstract<String, Lis
 
     @Override
     public String getTips() {
-        if (forBlocks) return "&8Example &7&oFURNACE &8- &7&oBEETROOTS{age:3} &8- &7&oITEMSADDER:turquoise_block";
-        else return "&8Example &7&oDIAMOND_SWORD &8- &7&oTORCH{CustomModelData:3} &8- &7&oITEMSADDER:ruby_sword &8- &7&oEXECUTABLEITEMS:my_ei_sword";
+        if (forBlocks) return "&8Example &7&oFURNACE &8- &7&oBEETROOTS{age:3} &8- &7&oITEMSADDER:turquoise_block &8- &e(for custom lists) &7&oSCORE:LIST_NAME";
+        else return "&8Example &7&oDIAMOND_SWORD &8- &7&oTORCH{CustomModelData:3} &8- &7&oITEMSADDER:ruby_sword &8- &7&oEXECUTABLEITEMS:my_ei_sword &8- &e(for custom lists) &7&oSCORE:LIST_NAME";
     }
 
     @Override

@@ -11,6 +11,8 @@ public enum Dependency {
 
     EXECUTABLE_BLOCKS("ExecutableBlocks"),
 
+    EXECUTABLE_CRAFTING("ExecutableCrafting"),
+
     EXECUTABLE_EVENTS("ExecutableEvents"),
 
     CUSTOM_PIGLINS_TRADES("CustomPiglinsTrades"),
@@ -58,6 +60,8 @@ public enum Dependency {
 
     JOBS("Jobs"),
 
+    MCMMO("mcMMO"),
+
     MYTHIC_MOBS("MythicMobs"),
 
     DECENT_HOLOGRAMS("DecentHolograms"),
@@ -85,6 +89,8 @@ public enum Dependency {
     MMO_CORE("MMOCore"),
 
     PROTECTION_STONES("ProtectionStones"),
+
+    EXCELLENT_CLAIMS("ExcellentClaims"),
 
     TAB("TAB"),
 

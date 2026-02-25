@@ -595,7 +595,9 @@ public abstract class SObjectWithFileLoader<T extends SObjectWithFile> {
             if (fileEntry.isDirectory()) result.addAll(getAllObjectsOfFolder(fileEntry));
             else {
                 if (!fileEntry.getName().contains(".yml")) continue;
-                String id = fileEntry.getName().split(".yml")[0];
+                String[] split = fileEntry.getName().split(".yml");
+                if (split.length == 0) continue; // to avoid stupid issue with files named .yml
+                String id = split[0];
 
                 result.add(id);
             }

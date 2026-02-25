@@ -41,13 +41,14 @@ public class SetGlow extends MixedCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("SET_GLOW");
         names.add("SETGLOW");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "SETGLOW [color]";
+        return "SET_GLOW [color]";
     }
 
     @Override

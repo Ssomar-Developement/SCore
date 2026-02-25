@@ -2,8 +2,10 @@ package com.ssomar.score.utils.placeholders;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
+import com.ssomar.score.commands.runnable.RunCommandsBuilder;
 import com.ssomar.score.commands.runnable.mixed_player_entity.commands.DamageBoost;
 import com.ssomar.score.commands.runnable.mixed_player_entity.commands.DamageResistance;
+import com.ssomar.score.features.custom.conditions.placeholders.placeholder.PlaceholderConditionFeature;
 import com.ssomar.score.features.custom.variables.real.VariableReal;
 import com.ssomar.score.utils.strings.StringUtils;
 import com.ssomar.score.variables.manager.VariablesManager;
@@ -12,6 +14,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
@@ -96,6 +99,15 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
     private String item = "";
     private String activator = "";
 
+    /**
+     * This method is dedicated to parsing the <code>%rand:L|H%</code> placeholder.
+     * This exists just to have SCore plugins to have a personal number rng placeholder.
+     * <br/><br/>
+     * If the string has multiple %rand placeholders while having the same <code>L|H</code> numbers,
+     * all of those patterns will receive the same value unlike how the RNG Expansion of PlaceholderAPI works.
+     * @param s The provided string
+     * @return The provided stirng but the valid RNG placeholders are parsed.
+     */
     public static String replaceRandomPlaceholders(String s) {
         String result = s;
         if (result.contains("%rand:")) {
@@ -213,7 +225,14 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         return this;
     }
 
+    /**
+     * By reloading the mentioned placeholders, you'd be able to immediately obtain the latest
+     * information of their sources.
+     */
     public StringPlaceholder reloadAllPlaceholders() {
+        /**
+         * Player information is linked via {@link StringPlaceholder#setPlayerPlcHldr(UUID)}
+         */
         playerPlch.reloadPlayerPlcHldr();
         targetPlch.reloadPlayerPlcHldr();
         ownerPlch.reloadPlayerPlcHldr();
@@ -238,21 +257,57 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         return result;
     }
 
+    /**
+     * An overload method of {@link StringPlaceholder#replacePlaceholder(String, boolean)} but the second argument will be
+     * provided a boolean value of <code>true</code>
+     * @param str The string whose valid placeholder texts will be parsed
+     * @return The provided string with the valid placeholders in it parsed
+     */
     public String replacePlaceholder(String str) {
         if (!str.contains("%")) return str;
         return replacePlaceholder(str, true);
     }
 
+    /**
+     * A method where any valid placeholder ({@link PlaceholdersInterface}  / PlaceholderAPI Placeholders)
+     * would be parsed while reloading all placeholders via {@link StringPlaceholder#reloadAllPlaceholders()}.
+     * <br/><br/><hr/><br/>
+     * Used by (Not complete):<ul>
+     *     <li>{@link PlaceholderConditionFeature#verify(OfflinePlayer, Player, StringPlaceholder)}</li>
+     *     <li>{@link RunCommandsBuilder#initFinalCommands()}</li>
+     * </ul>
+     * This list is for assisting developers on where to look if ever they need to track the method calls for
+     * this method.
+     *
+     * @param str The string whose valid placeholder texts will be parsed
+     * @param withPAPI If <code>false</code>, it will only parse {@link PlaceholdersInterface}  placeholders.
+     * @return The provided string with the valid placeholders in it parsed
+     */
     public String replacePlaceholder(String str, boolean withPAPI) {
         if (!str.contains("%")) return str;
         this.reloadAllPlaceholders();
         return replacePlaceholderWithoutReload(str, withPAPI);
     }
 
+    /**
+     * A method overload of {@link StringPlaceholder#replacePlaceholderWithoutReload(String, boolean, boolean)} but the
+     * third argument will be provided a boolean value of <code>true</code>
+     * @param str The string whose valid placeholder texts will be parsed
+     * @param withPAPI If <code>false</code>, it will only parse {@link PlaceholdersInterface}  placeholders.
+     * @return
+     */
     public String replacePlaceholderWithoutReload(String str, boolean withPAPI) {
         return replacePlaceholderWithoutReload(str, withPAPI, true);
     }
 
+    /**
+     * A method where any valid placeholder ({@link PlaceholdersInterface}  / PlaceholderAPI Placeholders)
+     * would be parsed without reloading via {@link StringPlaceholder#reloadAllPlaceholders()}.
+     * @param str The string whose valid placeholder texts will be parsed
+     * @param withPAPI If <code>false</code>, it will only parse {@link PlaceholdersInterface}  placeholders.
+     * @param withVariables If <code>true</code>, it will parse valid variable placeholders. See {@link VariableReal#replaceVariablePlaceholder(String)} for details.<br/>
+     * @return
+     */
     public String replacePlaceholderWithoutReload(String str, boolean withPAPI, boolean withVariables) {
         String s = str;
         //SsomarDev.testMsg("replacePlaceholderWithoutReload: " + s, true);
@@ -352,9 +407,7 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 
         s = StringUtils.replaceEach(s, keys, values);
 
-        //SsomarDev.testMsg("replacePlaceholderWithoutReload3: " + s, true);
-        //SsomarDev.testMsg("111111: " + s, true);
-
+        // This is responsible for parsing PAPI Placeholders
         if (withPAPI) s = replacePlaceholderOfPAPI(s);
         //SsomarDev.testMsg("222222: " + s, true);
         s = replacePlaceholderOfSCore(s);

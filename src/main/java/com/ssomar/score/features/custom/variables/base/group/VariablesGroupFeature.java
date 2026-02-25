@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.variables.base.group;
 
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.variables.base.variable.VariableFeature;
@@ -8,11 +9,13 @@ import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.strings.StringConverter;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.net.ServerSocket;
 import java.util.*;
 
 @Getter
@@ -96,10 +99,22 @@ public class VariablesGroupFeature extends FeatureWithHisOwnEditor<VariablesGrou
 
     @Override
     public VariablesGroupFeature initItemParentEditor(GUI gui, int slot) {
-        String[] finalDescription = new String[getEditorDescription().length + 2];
-        System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
-        finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
-        finalDescription[finalDescription.length - 1] = "&7&oVariable(s) added: &e" + variables.size();
+        String[] finalDescription;
+        // To add a reminder for users when adding variables to ExecutableBlocks
+        if (gui.getClass().getSimpleName().toString().equals("ExecutableBlockEditor")) {
+            finalDescription = new String[getEditorDescription().length + 5];
+            System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
+            finalDescription[finalDescription.length - 5] = GUI.CLICK_HERE_TO_CHANGE;
+            finalDescription[finalDescription.length - 4] = "&7&oVariable(s) added: &e" + variables.size();
+            finalDescription[finalDescription.length - 3] = "&cFor IMPORT_FROM_EXECUTABLE_ITEMS:";
+            finalDescription[finalDescription.length - 2] = "&cSource ExecutableItem must include";
+            finalDescription[finalDescription.length - 1] = "&cthis block's variables.";
+        } else {
+            finalDescription = new String[getEditorDescription().length + 2];
+            System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
+            finalDescription[finalDescription.length - 2] = GUI.CLICK_HERE_TO_CHANGE;
+            finalDescription[finalDescription.length - 1] = "&7&oVariable(s) added: &e" + variables.size();
+        }
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
         return this;

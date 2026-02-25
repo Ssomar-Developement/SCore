@@ -78,8 +78,20 @@ public class NameSpaceKeyWriterReader {
     }
 
     public static Optional<Integer> readInteger(Plugin splugin, PersistentDataContainer dataContainer, String key) {
-        NamespacedKey key3 = new NamespacedKey(splugin, key);
-        return Optional.ofNullable(dataContainer.get(key3, PersistentDataType.INTEGER));
+        NamespacedKey nsKey = new NamespacedKey(splugin, key);
+
+        // Try Integer first
+        if (dataContainer.has(nsKey, PersistentDataType.INTEGER)) {
+            return Optional.ofNullable(dataContainer.get(nsKey, PersistentDataType.INTEGER));
+        }
+
+        // Fall back to Byte (legacy data compatibility)
+        if (dataContainer.has(nsKey, PersistentDataType.BYTE)) {
+            Byte value = dataContainer.get(nsKey, PersistentDataType.BYTE);
+            return value != null ? Optional.of(value.intValue()) : Optional.empty();
+        }
+
+        return Optional.empty();
     }
 
 

@@ -40,13 +40,14 @@ public class CopyEffects extends MixedCommand {
     @Override
     public List<String> getNames() {
         List<String> names = new ArrayList<>();
+        names.add("COPY_EFFECTS");
         names.add("COPYEFFECTS");
         return names;
     }
 
     @Override
     public String getTemplate() {
-        return "COPYEFFECTS [limitDuration]";
+        return "COPY_EFFECTS [limitDuration]";
     }
 
     @Override

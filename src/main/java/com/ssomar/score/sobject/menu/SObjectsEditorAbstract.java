@@ -38,8 +38,11 @@ public abstract class SObjectsEditorAbstract<T extends SObject & SObjectEditable
     private boolean giveButton = true;
     private boolean newButton = true;
     private boolean defaultObjectsButton = true;
+    private boolean clickToEdit = true;
     private boolean deleteButton = true;
+    private boolean languageButton = true;
     private boolean pathButton = true;
+    private boolean hideCreation = false;
 
     private List<Predicate<T>> predicates = new ArrayList<>();
 

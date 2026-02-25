@@ -36,15 +36,15 @@ public class MusicIntrusmentFeature extends FeatureAbstract<Optional<MusicInstru
     @Override
     public List<String> load(SPlugin plugin, ConfigurationSection config, boolean isPremiumLoading) {
         List<String> errors = new ArrayList<>();
-        String colorStr = config.getString(this.getName(), "NULL").toUpperCase();
-        if (colorStr.equals("NULL")) {
+        String colorStr = config.getString(this.getName(), "null").toLowerCase();
+        if (colorStr.equals("null")) {
             if (defaultValue.isPresent()) {
                 value = defaultValue;
             } else {
                 errors.add("&cERROR, Couldn't load the MusicInstrument value of " + this.getName() + " from config, value: " + colorStr + " &7&o" + getParent().getParentInfo() + " &6>> https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/MusicInstrument.html");
                 value = Optional.empty();
+                return errors;
             }
-            return errors;
         }
         try {
             MusicInstrument attributeSlot = Registry.INSTRUMENT.get(NamespacedKey.minecraft(colorStr));
