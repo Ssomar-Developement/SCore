@@ -11,6 +11,8 @@ public class BlockBreakEventExtension extends BlockBreakEvent {
     public enum BreakCause {
         MINE_IN_CUBE,
         SMELT,
+        VEIN_BREAK,
+        MINE_IN_SPHERE,
         OTHER
     }
 

@@ -2,6 +2,7 @@ package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.events.BlockBreakEventExtension;
@@ -20,8 +21,23 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.ssomar.score.commands.runnable.block.commands.Smelt.dropSmeltedItem;
+
 /* MINEINSPHERE {radius} {ActiveDrop true or false} */
 public class MineInSphere extends BlockCommand {
+
+    public MineInSphere() {
+        CommandSetting radius = new CommandSetting("radius", 0, Integer.class, 1, true);
+        CommandSetting drop = new CommandSetting("drop", 1, Boolean.class, true, true);
+        CommandSetting createBBEvent = new CommandSetting("createBBEvent", 2, Boolean.class, false, true);
+        CommandSetting smelt = new CommandSetting("smelt", 3, Boolean.class, false, true);
+        List<CommandSetting> settings = getSettings();
+        settings.add(radius);
+        settings.add(drop);
+        settings.add(createBBEvent);
+        settings.add(smelt);
+        setNewSettingsMode(true);
+    }
 
     /**
      * THIS COMMAND MUST BE DELAYED OF AT LEAST 1 TICK
@@ -51,11 +67,15 @@ public class MineInSphere extends BlockCommand {
      * Y 5
      * Y 6
      **/
-
     @Override
     public void run(Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
         List<String> args = sCommandToExec.getOtherArgs();
         ActionInfo aInfo = sCommandToExec.getActionInfo();
+
+        int radius = (int) sCommandToExec.getSettingValue("radius");
+        boolean drop = (boolean) sCommandToExec.getSettingValue("drop");
+        boolean createBBEvent = (boolean) sCommandToExec.getSettingValue("createBBEvent");
+        boolean smelt = (boolean) sCommandToExec.getSettingValue("smelt");
 
         Runnable runnable3 = new Runnable() {
             @Override
@@ -64,15 +84,8 @@ public class MineInSphere extends BlockCommand {
                 if (aInfo.isEventFromCustomBreakCommand()) return;
 
                 try {
-                    int radius = Integer.parseInt(args.get(0));
                     int radiusSquared = radius * radius;
                     Location origin = block.getLocation();
-
-                    boolean drop = true;
-                    if (args.size() >= 2) drop = Boolean.parseBoolean(args.get(1));
-
-                    boolean createBBEvent = true;
-                    if (args.size() >= 3) createBBEvent = Boolean.parseBoolean(args.get(2));
 
                     List<Material> blackList = new ArrayList<>();
                     blackList.add(Material.BEDROCK);
@@ -105,7 +118,13 @@ public class MineInSphere extends BlockCommand {
 
                                         UUID pUUID = null;
                                         if (p != null) pUUID = p.getUniqueId();
-                                        SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), drop, createBBEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE);
+                                        if (smelt && drop) {
+                                            Material blockMat = toBreak.getType();
+                                            boolean safeBreakStatus = SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), false, createBBEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_SPHERE);
+                                            if (safeBreakStatus) dropSmeltedItem(toBreak, p, blockMat);
+                                        } else {
+                                            SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), drop, createBBEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_SPHERE);
+                                        }
                                     }
                                 }
                             }

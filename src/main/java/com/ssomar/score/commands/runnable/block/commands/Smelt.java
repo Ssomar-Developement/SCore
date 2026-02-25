@@ -61,7 +61,27 @@ public class Smelt extends BlockCommand {
         }
     }
 
-    public ItemStack getSmeltedItem(Material material) {
+    public static void dropSmeltedItem(Block b, Player p, Material blockMat) {
+        ItemStack smelted = getSmeltedItem(blockMat);
+        // fallback if there's no smelt result for this
+        if (smelted == null) smelted = new ItemStack(blockMat);
+        int amountToDrop = 1;
+        Enchantment fortune = SCore.is1v20v5Plus() ? Enchantment.FORTUNE : Enchantment.getByName("LOOT_BONUS_BLOCKS");
+
+        ItemStack itemInHand = p.getInventory().getItemInMainHand();
+        if (!itemInHand.isEmpty() && itemInHand.containsEnchantment(fortune)) {
+            int fortuneLevel = itemInHand.getEnchantmentLevel(fortune);
+            amountToDrop = ThreadLocalRandom.current().nextInt(fortuneLevel + 1) + 1;
+        }
+        b.getWorld().dropItemNaturally(b.getLocation(), new ItemStack(smelted.getType(), amountToDrop));
+    }
+
+    /**
+     * Has complications when dealing with unsmeltable items
+     * @param material
+     * @return smelt version of a material (returned ItemStack is just a regular material)
+     */
+    public static ItemStack getSmeltedItem(Material material) {
         ItemStack result = null;
         switch (material) {
             case STONE:
