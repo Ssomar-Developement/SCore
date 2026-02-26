@@ -61,10 +61,7 @@ public class Smelt extends BlockCommand {
         }
     }
 
-    public static void dropSmeltedItem(Block b, Player p, Material blockMat) {
-        ItemStack smelted = getSmeltedItem(blockMat);
-        // fallback if there's no smelt result for this
-        if (smelted == null) smelted = new ItemStack(blockMat);
+    public static void dropItemWithFortune(Block b, Player p, Material blockMat) {
         int amountToDrop = 1;
         Enchantment fortune = SCore.is1v20v5Plus() ? Enchantment.FORTUNE : Enchantment.getByName("LOOT_BONUS_BLOCKS");
 
@@ -73,7 +70,7 @@ public class Smelt extends BlockCommand {
             int fortuneLevel = itemInHand.getEnchantmentLevel(fortune);
             amountToDrop = ThreadLocalRandom.current().nextInt(fortuneLevel + 1) + 1;
         }
-        b.getWorld().dropItemNaturally(b.getLocation(), new ItemStack(smelted.getType(), amountToDrop));
+        b.getWorld().dropItemNaturally(b.getLocation(), new ItemStack(blockMat, amountToDrop));
     }
 
     /**

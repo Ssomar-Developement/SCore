@@ -14,6 +14,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.ssomar.score.commands.runnable.block.commands.Smelt.dropSmeltedItem;
+import static com.ssomar.score.commands.runnable.block.commands.Smelt.dropItemWithFortune;
 
 /* MINEINSPHERE {radius} {ActiveDrop true or false} */
 public class MineInSphere extends BlockCommand {
@@ -118,12 +119,12 @@ public class MineInSphere extends BlockCommand {
 
                                         UUID pUUID = null;
                                         if (p != null) pUUID = p.getUniqueId();
-                                        if (smelt && drop) {
-                                            Material blockMat = toBreak.getType();
-                                            boolean safeBreakStatus = SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), false, createBBEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_SPHERE);
-                                            if (safeBreakStatus) dropSmeltedItem(toBreak, p, blockMat);
+                                        ItemStack smeltItem = Smelt.getSmeltedItem(toBreak.getType());
+                                        if (smelt && drop && smeltItem != null) {
+                                            boolean safeBreakStatus = SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), false, createBBEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE);
+                                            if (safeBreakStatus) dropItemWithFortune(toBreak, p, smeltItem.getType());
                                         } else {
-                                            SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), drop, createBBEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_SPHERE);
+                                            SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), drop, createBBEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE);
                                         }
                                     }
                                 }
