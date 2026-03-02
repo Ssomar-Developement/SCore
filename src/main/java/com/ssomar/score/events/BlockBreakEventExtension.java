@@ -13,6 +13,7 @@ public class BlockBreakEventExtension extends BlockBreakEvent {
         SMELT,
         VEIN_BREAK,
         MINE_IN_SPHERE,
+        INLINE_MINEINCUBE,
         OTHER
     }
 

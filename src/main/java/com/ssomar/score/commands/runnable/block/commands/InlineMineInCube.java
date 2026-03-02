@@ -215,10 +215,10 @@ public class InlineMineInCube extends BlockCommand {
                                                 UUID pUUID = p.getUniqueId();
                                                 ItemStack smeltItem = Smelt.getSmeltedItem(toBreak.getType());
                                                 if (smelt && smeltItem != null) {
-                                                    boolean safeBreakStatus = SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), false, createBBEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE);
+                                                    boolean safeBreakStatus = SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), false, createBBEvent, true, BlockBreakEventExtension.BreakCause.INLINE_MINEINCUBE);
                                                     if (safeBreakStatus) dropItemWithFortune(toBreak, p, smeltItem.getType());
                                                 } else {
-                                                    SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), true, createBBEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE);
+                                                    SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), true, createBBEvent, true, BlockBreakEventExtension.BreakCause.INLINE_MINEINCUBE);
                                                 }
                                             }
                                         }
