@@ -61,7 +61,31 @@ public class Smelt extends BlockCommand {
         }
     }
 
-    public ItemStack getSmeltedItem(Material material) {
+    public static void dropItemWithFortune(Block b, Player p, Material blockMat) {
+        int amountToDrop = 1;
+        // Smelt fortune will only work for ores
+        ArrayList<Material> whitelist = new ArrayList<>(List.of(Material.IRON_INGOT, Material.GOLD_INGOT, Material.getMaterial("COPPER_INGOT")));
+
+        if (whitelist.contains(blockMat)) {
+            Enchantment fortune = SCore.is1v20v5Plus() ? Enchantment.FORTUNE : Enchantment.getByName("LOOT_BONUS_BLOCKS");
+
+            ItemStack itemInHand = p.getInventory().getItemInMainHand();
+            if (!itemInHand.isEmpty() && itemInHand.containsEnchantment(fortune)) {
+                int fortuneLevel = itemInHand.getEnchantmentLevel(fortune);
+                amountToDrop = ThreadLocalRandom.current().nextInt(fortuneLevel + 1) + 1;
+            }
+        }
+        b.getWorld().dropItemNaturally(b.getLocation(), new ItemStack(blockMat, amountToDrop));
+    }
+
+    /**
+     * Redstone, Lapis, Diamond and Emerald ores are ignored because
+     * when you break those ores, they do not need to be smelt.
+     * @param material
+     * @return smelt version of a material (returned ItemStack is just a regular material). If there's no
+     * smeltable version of the provided Material enum, it will return a null ItemStack.
+     */
+    public static ItemStack getSmeltedItem(Material material) {
         ItemStack result = null;
         switch (material) {
             case STONE:
@@ -155,22 +179,6 @@ public class Smelt extends BlockCommand {
             case RAW_IRON:
             case DEEPSLATE_IRON_ORE:
                 result = new ItemStack(Material.IRON_INGOT);
-                break;
-            case LAPIS_ORE:
-            case DEEPSLATE_LAPIS_ORE:
-                result = new ItemStack(Material.LAPIS_LAZULI);
-                break;
-            case REDSTONE_ORE:
-            case DEEPSLATE_REDSTONE_ORE:
-                result = new ItemStack(Material.REDSTONE);
-                break;
-            case DIAMOND_ORE:
-            case DEEPSLATE_DIAMOND_ORE:
-                result = new ItemStack(Material.DIAMOND);
-                break;
-            case EMERALD_ORE:
-            case DEEPSLATE_EMERALD_ORE:
-                result = new ItemStack(Material.EMERALD);
                 break;
             case CACTUS:
                 result = new ItemStack(Material.GREEN_DYE);

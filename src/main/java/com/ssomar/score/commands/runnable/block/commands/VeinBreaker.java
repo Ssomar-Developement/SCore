@@ -14,12 +14,15 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static com.ssomar.score.commands.runnable.block.commands.Smelt.dropItemWithFortune;
 
 public class VeinBreaker extends BlockCommand {
 
@@ -54,17 +57,20 @@ public class VeinBreaker extends BlockCommand {
 
     public VeinBreaker() {
         CommandSetting maxVeinSize = new CommandSetting("maxVeinSize", 0, Integer.class, 10, true);
-        CommandSetting triggerEvent = new CommandSetting("triggerEvent", 1, Boolean.class, true, true);
+        CommandSetting createBBEvent = new CommandSetting("createBBEvent", 1, Boolean.class, true, true);
+        CommandSetting smelt = new CommandSetting("smelt", 2, Boolean.class, false, true);
         List<CommandSetting> settings = getSettings();
         settings.add(maxVeinSize);
-        settings.add(triggerEvent);
+        settings.add(createBBEvent);
+        settings.add(smelt);
         setNewSettingsMode(true);
     }
 
     @Override
     public void run(Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
         int maxVeinSize = (int) sCommandToExec.getSettingValue("maxVeinSize");
-        boolean triggerEvent = (boolean) sCommandToExec.getSettingValue("triggerEvent");
+        boolean createBBEvent = (boolean) sCommandToExec.getSettingValue("createBBEvent");
+        boolean smelt = (boolean) sCommandToExec.getSettingValue("smelt");
         ActionInfo aInfo = sCommandToExec.getActionInfo();
         Material oldMaterial = aInfo.getOldBlockMaterial();
 
@@ -86,12 +92,24 @@ public class VeinBreaker extends BlockCommand {
                 List<Block> vein;
                 UUID pUUID = null;
                 if (p != null) pUUID = p.getUniqueId();
-                SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), true, triggerEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE);
+                if (smelt) {
+                    Material blockMat = block.getType();
+                    boolean safeBreakStatus = SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), false, createBBEvent, true, BlockBreakEventExtension.BreakCause.VEIN_BREAK);
+                    if (safeBreakStatus) dropItemWithFortune(block, p, blockMat);
+                } else {
+                    SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), true, createBBEvent, true, BlockBreakEventExtension.BreakCause.VEIN_BREAK);
+                }
 
                 vein = getVein(block, oldMaterial, maxVeinSize);
 
                 for (Block b : vein) {
-                    SafeBreak.breakBlockWithEvent(b, pUUID, aInfo.getSlot(), true, triggerEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE);
+                    ItemStack smeltItem = Smelt.getSmeltedItem(b.getType());
+                    if (smelt && smeltItem != null) {
+                        boolean safeBreakStatus = SafeBreak.breakBlockWithEvent(b, pUUID, aInfo.getSlot(), false, createBBEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE);
+                        if (safeBreakStatus) dropItemWithFortune(b, p, smeltItem.getType());
+                    } else {
+                        SafeBreak.breakBlockWithEvent(b, pUUID, aInfo.getSlot(), true, createBBEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE);
+                    }
                 }
             }
         };

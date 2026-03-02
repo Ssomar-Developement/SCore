@@ -172,6 +172,14 @@ public class SafeBreak {
         }
     }
 
+    /**
+     * Requires the drop argument to be true and has RoseLoot installed to
+     * simulate RoseLoot drops
+     * @param player
+     * @param block
+     * @param drop
+     * @return
+     */
     public static boolean breakRoseloot(@Nullable Player player, Block block, boolean drop) {
         if(drop && SCore.hasRoseLoot) {
             try {
