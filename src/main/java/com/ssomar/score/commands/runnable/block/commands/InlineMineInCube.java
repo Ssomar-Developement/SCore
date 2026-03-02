@@ -127,7 +127,7 @@ public class InlineMineInCube extends BlockCommand {
                             case "down":
                                 directionWritten = BlockFace.DOWN;
                                 break;
-                            case "papi":
+                            case "auto":
                                 directionWritten = getPAPIPlayerXZDirection(p);
                                 break;
                         }
