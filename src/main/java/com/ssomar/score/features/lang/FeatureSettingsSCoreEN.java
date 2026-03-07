@@ -536,6 +536,7 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     removeWhenHitBlock("removeWhenHitBlock", "Remove when hit block", new String[]{"&7&oRemove when hit block"}, null),
     repairCost("repairCost", "Repair Cost", new String[]{"&7&oThe repair cost"}, GUI.CLOCK),
     repairableFeatures("repairableFeatures", "Repairable Features", new String[]{"&7&oThe repairable features"}, Material.ANVIL),
+    repairableItems("repairableItems", "Repairable Items", new String[]{"&7&oItems that can repair this item in an anvil", "&7&o(Paper 1.21.4+ only)"}, Material.CACTUS),
     requiredExecutableItem("requiredExecutableItem", "Required Executable Item", new String[]{"&7&oA required ExecutableItem"}, Material.PAPER),
     requiredExecutableItems("requiredExecutableItems", "Required Executable Items", new String[]{"&7&oThe required executable items"}, Material.DIAMOND_PICKAXE),
     requiredExperience("requiredExperience", "Required Experience", new String[]{"&7&oRequired experience"}, FixedMaterial.getMaterial(Arrays.asList("EXPERIENCE_BOTTLE", "EXP_BOTTLE"))),

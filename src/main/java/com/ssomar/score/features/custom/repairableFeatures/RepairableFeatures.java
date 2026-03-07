@@ -7,15 +7,24 @@ import com.ssomar.score.features.editor.GenericFeatureParentEditor;
 import com.ssomar.score.features.editor.GenericFeatureParentEditorManager;
 import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.IntegerFeature;
+import com.ssomar.score.features.types.list.ListMaterialFeature;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.emums.ResetSetting;
+import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.utils.strings.StringConverter;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
+import io.papermc.paper.registry.set.RegistryKeySet;
+import io.papermc.paper.registry.set.RegistrySet;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.meta.Repairable;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -26,10 +35,11 @@ import java.util.Optional;
 
 @Getter
 @Setter
-public class RepairableFeatures extends FeatureWithHisOwnEditor<RepairableFeatures, RepairableFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements FeatureForItem {
+public class RepairableFeatures extends FeatureWithHisOwnEditor<RepairableFeatures, RepairableFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> implements FeatureForItemNewPaperComponents {
 
     private BooleanFeature enable;
     private IntegerFeature repairCost;
+    private ListMaterialFeature repairableItems;
 
     public RepairableFeatures(FeatureParentInterface parent) {
         super(parent, FeatureSettingsSCore.repairableFeatures);
@@ -40,6 +50,7 @@ public class RepairableFeatures extends FeatureWithHisOwnEditor<RepairableFeatur
     public void reset() {
         enable = new BooleanFeature(this, false, FeatureSettingsSCore.enable);
         repairCost = new IntegerFeature(this, Optional.of(2), FeatureSettingsSCore.repairCost);
+        repairableItems = new ListMaterialFeature(this, new ArrayList<>(), FeatureSettingsSCore.repairableItems);
     }
 
     @Override
@@ -63,7 +74,7 @@ public class RepairableFeatures extends FeatureWithHisOwnEditor<RepairableFeatur
         for (FeatureInterface feature : getFeatures()) {
             feature.save(section);
         }
-        if(isSavingOnlyIfDiffDefault() && section.getKeys(false).isEmpty()){
+        if (isSavingOnlyIfDiffDefault() && section.getKeys(false).isEmpty()) {
             config.set(getName(), null);
             return;
         }
@@ -80,7 +91,7 @@ public class RepairableFeatures extends FeatureWithHisOwnEditor<RepairableFeatur
 
     @Override
     public RepairableFeatures initItemParentEditor(GUI gui, int slot) {
-        int len = 3;
+        int len = 4;
         String[] finalDescription = new String[getEditorDescription().length + len];
         System.arraycopy(getEditorDescription(), 0, finalDescription, 0, getEditorDescription().length);
         finalDescription[finalDescription.length - len] = GUI.CLICK_HERE_TO_CHANGE;
@@ -89,6 +100,8 @@ public class RepairableFeatures extends FeatureWithHisOwnEditor<RepairableFeatur
         finalDescription[finalDescription.length - len] = "&7Enable: &e" + (enable.getValue() ? "&a&l✔" : "&c&l✘");
         len--;
         finalDescription[finalDescription.length - len] = "&7Repair Cost: &e" + repairCost.getValue().get();
+        len--;
+        finalDescription[finalDescription.length - len] = "&7Repairable Items: &e" + repairableItems.getValues().size() + " item(s)";
         len--;
 
         gui.createItem(getEditorMaterial(), 1, slot, GUI.TITLE_COLOR + getEditorName(), false, false, finalDescription);
@@ -103,11 +116,11 @@ public class RepairableFeatures extends FeatureWithHisOwnEditor<RepairableFeatur
 
     @Override
     public RepairableFeatures clone(FeatureParentInterface newParent) {
-        RepairableFeatures dropFeatures = new RepairableFeatures(newParent);
-        dropFeatures.setEnable(enable.clone(dropFeatures));
-        dropFeatures.setRepairCost(repairCost.clone(dropFeatures));
-
-        return dropFeatures;
+        RepairableFeatures clone = new RepairableFeatures(newParent);
+        clone.setEnable(enable.clone(clone));
+        clone.setRepairCost(repairCost.clone(clone));
+        clone.setRepairableItems(repairableItems.clone(clone));
+        return clone;
     }
 
     @Override
@@ -115,6 +128,7 @@ public class RepairableFeatures extends FeatureWithHisOwnEditor<RepairableFeatur
         List<FeatureInterface> features = new ArrayList<>();
         features.add(enable);
         features.add(repairCost);
+        features.add(repairableItems);
         return features;
     }
 
@@ -140,6 +154,7 @@ public class RepairableFeatures extends FeatureWithHisOwnEditor<RepairableFeatur
                 RepairableFeatures hiders = (RepairableFeatures) feature;
                 hiders.setEnable(enable);
                 hiders.setRepairCost(repairCost);
+                hiders.setRepairableItems(repairableItems);
             }
         }
     }
@@ -161,28 +176,67 @@ public class RepairableFeatures extends FeatureWithHisOwnEditor<RepairableFeatur
 
     @Override
     public boolean isApplicable(@NotNull FeatureForItemArgs args) {
-        return args.getMeta() instanceof Repairable;
+        return args.getMeta() instanceof org.bukkit.inventory.meta.Repairable;
     }
 
     @Override
     public void applyOnItemMeta(@NotNull FeatureForItemArgs args) {
-
         if (!isAvailable() || !isApplicable(args)) return;
         if (enable.getValue()) {
-            Repairable repairable = (Repairable) args.getMeta();
+            org.bukkit.inventory.meta.Repairable repairable = (org.bukkit.inventory.meta.Repairable) args.getMeta();
             repairable.setRepairCost(repairCost.getValue().get());
         }
-
     }
 
     @Override
     public void loadFromItemMeta(@NotNull FeatureForItemArgs args) {
-
         if (!isAvailable() || !isApplicable(args)) return;
-        Repairable repairable = (Repairable) args.getMeta();
-        if(((Repairable) args.getMeta()).hasRepairCost()) {
+        org.bukkit.inventory.meta.Repairable repairable = (org.bukkit.inventory.meta.Repairable) args.getMeta();
+        if (repairable.hasRepairCost()) {
             enable.setValue(true);
             repairCost.setValue(Optional.of(repairable.getRepairCost()));
+        }
+    }
+
+    @Override
+    public void applyOnItem(@NotNull FeatureForItemArgs args) {
+        if (!isAvailableForNewComponents()) return;
+        if (!enable.getValue() || repairableItems.getValues().isEmpty()) return;
+        ItemStack item = args.getItem();
+        try {
+            List<ItemType> itemTypes = new ArrayList<>();
+            for (Material mat : repairableItems.getValues()) {
+                ItemType itemType = mat.asItemType();
+                if (itemType != null) itemTypes.add(itemType);
+            }
+            if (itemTypes.isEmpty()) return;
+            RegistryKeySet<ItemType> keySet = RegistrySet.keySetFromValues(RegistryKey.ITEM, itemTypes);
+            item.setData(DataComponentTypes.REPAIRABLE, io.papermc.paper.datacomponent.item.Repairable.repairable(keySet));
+        } catch (Exception e) {
+            Utils.sendConsoleMsg(SCore.plugin, "&cError while applying repairable items on an item");
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void loadFromItem(@NotNull FeatureForItemArgs args) {
+        if (!isAvailableForNewComponents()) return;
+        ItemStack item = args.getItem();
+        try {
+            if (item.hasData(DataComponentTypes.REPAIRABLE)) {
+                io.papermc.paper.datacomponent.item.Repairable repairableData = item.getData(DataComponentTypes.REPAIRABLE);
+                RegistryKeySet<ItemType> repairWith = repairableData.repairWith();
+                for (ItemType itemType : repairWith.resolve(RegistryAccess.registryAccess().getRegistry(RegistryKey.ITEM))) {
+                    Material mat = Material.matchMaterial(itemType.key().asString());
+                    if (mat != null) {
+                        repairableItems.getValues().add(mat);
+                        enable.setValue(true);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Utils.sendConsoleMsg(SCore.plugin, "&cError while loading repairable items from an item");
+            e.printStackTrace();
         }
     }
 
