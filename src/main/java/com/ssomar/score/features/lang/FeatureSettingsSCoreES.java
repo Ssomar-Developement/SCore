@@ -521,6 +521,7 @@ public enum FeatureSettingsSCoreES implements FeatureSettingsInterface {
     removeWhenHitBlock("removeWhenHitBlock", "Eliminar al Golpear Bloque", new String[]{"&7&oEliminar al golpear bloque"}, null),
     repairCost("repairCost", "Costo de Reparación", new String[]{"&7&oEl costo de reparación"}, GUI.CLOCK),
     repairableFeatures("repairableFeatures", "Características de Reparación", new String[]{"&7&oLas características de reparación"}, Material.ANVIL),
+    repairableItems("repairableItems", "Ítems Reparables", new String[]{"&7&oÍtems que pueden reparar este ítem en un yunque", "&7&o(Solo Paper 1.21.4+)"}, Material.CACTUS),
     requiredExecutableItem("requiredExecutableItem", "ExecutableItem Requerido", new String[]{"&7&oUn ExecutableItem requerido"}, Material.PAPER),
     requiredExecutableItems("requiredExecutableItems", "ExecutableItems Requeridos", new String[]{"&7&oLos ExecutableItems requeridos"}, Material.DIAMOND_PICKAXE),
     requiredExperience("requiredExperience", "Experiencia Requerida", new String[]{"&7&oExperiencia requerida"}, FixedMaterial.getMaterial(Arrays.asList("EXPERIENCE_BOTTLE", "EXP_BOTTLE"))),
