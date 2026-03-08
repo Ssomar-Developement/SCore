@@ -225,7 +225,7 @@ public class RepairableFeatures extends FeatureWithHisOwnEditor<RepairableFeatur
         try {
             if (item.hasData(DataComponentTypes.REPAIRABLE)) {
                 io.papermc.paper.datacomponent.item.Repairable repairableData = item.getData(DataComponentTypes.REPAIRABLE);
-                RegistryKeySet<ItemType> repairWith = repairableData.repairWith();
+                RegistryKeySet<ItemType> repairWith = repairableData.types();
                 for (ItemType itemType : repairWith.resolve(RegistryAccess.registryAccess().getRegistry(RegistryKey.ITEM))) {
                     Material mat = Material.matchMaterial(itemType.key().asString());
                     if (mat != null) {
