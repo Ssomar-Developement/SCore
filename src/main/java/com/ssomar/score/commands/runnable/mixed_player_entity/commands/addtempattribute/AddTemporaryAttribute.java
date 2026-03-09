@@ -168,7 +168,7 @@ public class AddTemporaryAttribute extends MixedCommand  {
         Runnable runlater = new Runnable() {
             @Override
             public void run() {
-                if (!entity.isDead() || (entity instanceof Player && ((Player) entity).isOnline())) {
+                if (entity.isValid() && (!entity.isDead() || (entity instanceof Player && ((Player) entity).isOnline()))) {
                     AttributeUtils.removeSpecificAttribute((LivingEntity) entity, finalAttrTypeID1, finalAttrKeyString);
                     if (entity instanceof Player) {
                         SCore.schedulerHook.runAsyncTask(
