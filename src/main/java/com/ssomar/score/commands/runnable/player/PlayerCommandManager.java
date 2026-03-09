@@ -84,7 +84,7 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         commands.add(new Oxygen());
         commands.add(new RemoveEnchantment());
         commands.add(new Chat());
-        commands.add(new ForceDrop());
+        // ForceDrop is handled by MixedCommandsManager (supports both slot and ei_id modes)
         commands.add(OpenChest.getInstance());
         commands.add(new EICooldown());
         commands.add(new EBCooldown());
