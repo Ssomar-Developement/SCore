@@ -423,6 +423,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     allowedEntities(getFeatureSettings("allowedEntities")),
     repairableFeatures(getFeatureSettings("repairableFeatures")),
     repairCost(getFeatureSettings("repairCost")),
+    repairableItems(getFeatureSettings("repairableItems")),
     glider(getFeatureSettings("glider")),
     itemModel(getFeatureSettings("itemModel")),
     tooltipModel(getFeatureSettings("tooltipModel")),
@@ -711,6 +712,8 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
                 return FeatureSettingsSCoreIT.values();
             case PL:
                 return FeatureSettingsSCorePL.values();
+            case VI:
+                return FeatureSettingsSCoreVI.values();
             default:
                 return FeatureSettingsSCoreEN.values();
         }

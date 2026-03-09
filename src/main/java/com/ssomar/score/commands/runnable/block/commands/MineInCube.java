@@ -14,10 +14,12 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+import static com.ssomar.score.commands.runnable.block.commands.Smelt.dropItemWithFortune;
 import static org.bukkit.block.BlockFace.*;
 
 /* MINEINCUBE {radius} {ActiveDrop true or false} */
@@ -28,11 +30,13 @@ public class MineInCube extends BlockCommand {
         CommandSetting droploot = new CommandSetting("droploot", 1, Boolean.class, true);
         CommandSetting createEvent = new CommandSetting("createEvent", 2, Boolean.class, true);
         CommandSetting offsetBreak = new CommandSetting("offsetBreak", 3, Boolean.class, false);
+        CommandSetting smelt = new CommandSetting("smelt", 4, Boolean.class, false);
         List<CommandSetting> settings = getSettings();
         settings.add(radius);
         settings.add(droploot);
         settings.add(createEvent);
         settings.add(offsetBreak);
+        settings.add(smelt);
         setNewSettingsMode(true);
     }
 
@@ -66,7 +70,6 @@ public class MineInCube extends BlockCommand {
      **/
     @Override
     public void run(Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
-        List<String> args = sCommandToExec.getOtherArgs();
         ActionInfo aInfo = sCommandToExec.getActionInfo();
 
         //SsomarDev.testMsg("MINEINCUBE command", true);
@@ -83,6 +86,7 @@ public class MineInCube extends BlockCommand {
                     boolean createBBEvent = Boolean.parseBoolean(sCommandToExec.getSettingValue("createEvent").toString());
 
                     boolean offset = Boolean.parseBoolean(sCommandToExec.getSettingValue("offsetBreak").toString());
+                    boolean smelt = Boolean.parseBoolean(sCommandToExec.getSettingValue("smelt").toString());
 
                     List<Material> blackList = new ArrayList<>();
                     blackList.add(Material.BEDROCK);
@@ -151,7 +155,14 @@ public class MineInCube extends BlockCommand {
 
                                         UUID pUUID = null;
                                         if (p != null) pUUID = p.getUniqueId();
-                                        SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), drop, createBBEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE);
+
+                                        ItemStack smeltItem = Smelt.getSmeltedItem(toBreak.getType());
+                                        if (smelt && drop && smeltItem != null) {
+                                            boolean safeBreakStatus = SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), false, createBBEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE);
+                                            if (safeBreakStatus) dropItemWithFortune(toBreak, p, smeltItem.getType());
+                                        } else {
+                                            SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), drop, createBBEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE);
+                                        }
                                     }
                                 }
                             }

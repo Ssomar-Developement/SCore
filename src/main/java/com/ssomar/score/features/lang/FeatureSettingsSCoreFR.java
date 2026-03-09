@@ -376,6 +376,7 @@ public enum FeatureSettingsSCoreFR implements FeatureSettingsInterface {
     allowedEntities("allowedEntities", "Entités Autorisées", new String[]{"&7&oLes entités autorisées"}, FixedMaterial.getMaterial(Arrays.asList("ZOMBIE_HEAD", "MONSTER_EGG"))),
     repairableFeatures("repairableFeatures", "Fonctionnalités de Réparation", new String[]{"&7&oLes fonctionnalités de réparation"}, Material.ANVIL),
     repairCost("repairCost", "Coût de Réparation", new String[]{"&7&oLe coût de réparation"}, GUI.CLOCK),
+    repairableItems("repairableItems", "Objets Réparables", new String[]{"&7&oObjets pouvant réparer cet item dans une enclume", "&7&o(Paper 1.21.4+ uniquement)"}, Material.CACTUS),
     glider("glider", "Planeur", new String[]{"&7&oLe planeur"}, FixedMaterial.getMaterial(Arrays.asList("ELYTRA"))),
     itemModel("itemModel", "Modèle d'Item", new String[]{"&7&oLe modèle de l'item", "&7&oFormat: namespace:id", "&7&oFera référence au modèle /assets/<namespace>/models/item/<id>"}, FixedMaterial.getMaterial(Arrays.asList("BLUE_GLAZED_TERRACOTTA"))),
     tooltipModel("tooltipModel", "Modèle d'Info-bulle", new String[]{"&7&oLe modèle d'info-bulle", "&7&oFormat: namespace:id", "&7&oFera référence au modèle /assets/<namespace>/textures/gui/sprites/tooltip/<id>_background", "&7&oFera référence au modèle /assets/<namespace>/textures/gui/sprites/tooltip/<id>_frame"}, FixedMaterial.getMaterial(Arrays.asList("BLUE_GLAZED_TERRACOTTA"))),

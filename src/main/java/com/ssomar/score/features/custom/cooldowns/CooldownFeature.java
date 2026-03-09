@@ -1,8 +1,8 @@
 package com.ssomar.score.features.custom.cooldowns;
 
-import com.ssomar.executableitems.configs.Message;
 import com.ssomar.score.SCore;
 import com.ssomar.score.config.GeneralConfig;
+import com.ssomar.score.configs.messages.Message;
 import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.activators.activator.SActivator;

@@ -511,8 +511,18 @@ public abstract class GUI implements IGUI {
 
         if (list.isEmpty()) loreUpdate.add(StringConverter.coloredString(emptyStr));
         else {
-            for (String str : list) {
-                loreUpdate.add(StringConverter.coloredString("&6➤ &e" + str));
+            int maxLines = 50;
+
+            list.stream()
+                    .limit(maxLines)
+                    .forEach(str ->
+                            loreUpdate.add(StringConverter.coloredString("&6➤ &e" + str))
+                    );
+
+            if (list.size() > maxLines) {
+                loreUpdate.add(StringConverter.coloredString(
+                        "&6➤ &eAnd " + (list.size() - maxLines) + " more"
+                ));
             }
         }
         toChange.setLore(loreUpdate);

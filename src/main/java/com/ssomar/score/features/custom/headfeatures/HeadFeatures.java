@@ -27,7 +27,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -90,8 +89,8 @@ public class HeadFeatures extends FeatureWithHisOwnEditor<HeadFeatures, HeadFeat
             if (SCore.is1v18Plus()) {
                 try {
                     newHead = HeadBuilder118.getHead(HeadBuilder118.getUrlFromBase64(headValue.getValue().get()).toString());
-                } catch (MalformedURLException e) {
-                    throw new RuntimeException(e);
+                } catch (Exception e) {
+                    SCore.plugin.getLogger().severe("Error when creating the Head with headValue: " + headValue.getValue().get() + " - " + e.getMessage());
                 }
             } else {
                 GameProfile profile = getGameProfile(this.headValue.getValue().get());
