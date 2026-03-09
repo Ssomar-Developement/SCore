@@ -140,7 +140,10 @@ public class AddTemporaryAttribute extends MixedCommand  {
             tempModifier = new AttributeModifier(randomUUID, attrKeyString, Double.parseDouble(sCommandToExec.getSettingValue("amount").toString()), operation);
         }
 
-        assert attrInstance != null;
+        if (attrInstance == null) {
+            SCore.plugin.getLogger().info("[ADD_TEMPORARY_ATTRIBUTE] Attribute " + attrTypeID + " is not applicable to entity " + entity.getType().name() + ", skipping.");
+            return;
+        }
 
         attrInstance.addModifier(tempModifier);
 
