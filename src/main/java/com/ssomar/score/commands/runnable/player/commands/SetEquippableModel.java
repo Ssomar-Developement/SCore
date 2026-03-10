@@ -44,8 +44,9 @@ public class SetEquippableModel extends PlayerCommand {
 
         itemMeta = item.getItemMeta();
 
+        boolean hasEquippable = itemMeta.hasEquippable();
         EquippableComponent equippable = itemMeta.getEquippable();
-        if (!itemMeta.hasEquippable()) {
+        if (!hasEquippable) {
             ArmorType armorType = ArmorType.matchType(item, false);
             if (armorType != null) {
                 EquipmentSlot equipSlot;
