@@ -319,27 +319,36 @@ public class AttributeUtils {
      */
     public static void removeSpecificAttribute(LivingEntity entity_arg, String attribute_type, String key) {
         LivingEntity entity = entity_arg;
-        if (entity_arg instanceof Player) {
-            // using this method was required because relogging players produce complications.
+
+        if (entity == null) return;
+
+        if (entity instanceof Player) {
             entity = Bukkit.getPlayer(entity.getUniqueId());
+            if (entity == null) return; // player logged out
         }
 
         Attribute attribute = AttributeUtils.getAttribute(attribute_type);
-        assert attribute != null;
-        assert entity != null;
-        AttributeInstance attrInstance = entity.getAttribute(attribute);
+        if (attribute == null) return;
 
-        assert attrInstance != null;
-        Collection<AttributeModifier> attributeModifiers = attrInstance.getModifiers();
-        for (AttributeModifier modifier : attributeModifiers) {
+        AttributeInstance attrInstance = entity.getAttribute(attribute);
+        if (attrInstance == null) return;
+
+        Collection<AttributeModifier> modifiers = attrInstance.getModifiers();
+        if (modifiers == null || modifiers.isEmpty()) return;
+
+        for (AttributeModifier modifier : new ArrayList<>(modifiers)) {
+            if (modifier == null) continue;
+
             String modifierKey;
+
             if (SCore.is1v21Plus()) {
+                if (modifier.getKey() == null) continue;
                 modifierKey = modifier.getKey().toString();
             } else {
                 // For versions below 1.21, use getName() which contains the UUID string
                 modifierKey = modifier.getName();
             }
-            if (modifierKey.equals(key)) {
+            if (modifierKey != null && modifierKey.equals(key)) {
                 attrInstance.removeModifier(modifier);
                 return;
             }

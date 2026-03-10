@@ -44,7 +44,7 @@ public class AddTemporaryAttributeManager {
                         },0);
                     }
                 };
-                SCore.schedulerHook.runTask(runnableSync, 0);
+                SCore.schedulerHook.runTask(runnableSync, 1);
             }
         };
         SCore.schedulerHook.runAsyncTask(runnableAsync, 0);
