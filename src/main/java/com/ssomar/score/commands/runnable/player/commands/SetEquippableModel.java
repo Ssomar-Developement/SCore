@@ -3,10 +3,12 @@ package com.ssomar.score.commands.runnable.player.commands;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.player.PlayerCommand;
+import com.ssomar.sevents.events.player.equip.armor.ArmorType;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.components.EquippableComponent;
@@ -43,6 +45,27 @@ public class SetEquippableModel extends PlayerCommand {
         itemMeta = item.getItemMeta();
 
         EquippableComponent equippable = itemMeta.getEquippable();
+        if (!itemMeta.hasEquippable()) {
+            ArmorType armorType = ArmorType.matchType(item, false);
+            if (armorType != null) {
+                EquipmentSlot equipSlot;
+                switch (armorType) {
+                    case CHESTPLATE:
+                        equipSlot = EquipmentSlot.CHEST;
+                        break;
+                    case LEGGINGS:
+                        equipSlot = EquipmentSlot.LEGS;
+                        break;
+                    case BOOTS:
+                        equipSlot = EquipmentSlot.FEET;
+                        break;
+                    default:
+                        equipSlot = EquipmentSlot.HEAD;
+                        break;
+                }
+                equippable.setSlot(equipSlot);
+            }
+        }
         equippable.setModel(NamespacedKey.fromString(model));
         itemMeta.setEquippable(equippable);
 
