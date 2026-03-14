@@ -5,6 +5,7 @@ import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.item.ItemMetaCommand;
 import com.ssomar.score.utils.DynamicMeta;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -27,7 +28,11 @@ public class SetEquippableModel extends ItemMetaCommand {
         String model = (String) sCommandToExec.getSettingValue("model");
         ItemMeta itemMeta = dMeta.getMeta();
 
+        boolean hasEquippable = itemMeta.hasEquippable();
         EquippableComponent equippable = itemMeta.getEquippable();
+        if (!hasEquippable && dMeta.getMaterial() == Material.ELYTRA) {
+            equippable.setDamageOnHurt(false);
+        }
         equippable.setModel(NamespacedKey.fromString(model));
         itemMeta.setEquippable(equippable);
     }
