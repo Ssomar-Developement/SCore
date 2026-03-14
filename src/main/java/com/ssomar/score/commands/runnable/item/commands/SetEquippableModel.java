@@ -4,10 +4,11 @@ import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.item.ItemMetaCommand;
 import com.ssomar.score.utils.DynamicMeta;
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.components.EquippableComponent;
 
@@ -30,8 +31,13 @@ public class SetEquippableModel extends ItemMetaCommand {
 
         boolean hasEquippable = itemMeta.hasEquippable();
         EquippableComponent equippable = itemMeta.getEquippable();
-        if (!hasEquippable && dMeta.getMaterial() == Material.ELYTRA) {
-            equippable.setDamageOnHurt(false);
+        if (!hasEquippable) {
+            ItemStack defaultItem = new ItemStack(dMeta.getMaterial());
+            if (defaultItem.hasData(DataComponentTypes.EQUIPPABLE)) {
+                io.papermc.paper.datacomponent.item.Equippable defaultEquippable = defaultItem.getData(DataComponentTypes.EQUIPPABLE);
+                equippable.setDamageOnHurt(defaultEquippable.damageOnHurt());
+                equippable.setSlot(defaultEquippable.slot());
+            }
         }
         equippable.setModel(NamespacedKey.fromString(model));
         itemMeta.setEquippable(equippable);
