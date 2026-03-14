@@ -4,11 +4,13 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
+import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.MaterialFeature;
 import com.ssomar.score.features.types.VariableForFeature;
 import com.ssomar.score.features.types.VariableTypeFeature;
 import com.ssomar.score.menu.GUI;
+import me.clip.placeholderapi.PlaceholderAPI;
 import com.ssomar.score.projectiles.SProjectileEditor;
 import com.ssomar.score.projectiles.SProjectileEditorManager;
 import com.ssomar.score.sobject.SObjectWithFileEditable;
@@ -39,6 +41,8 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
     private Map<String, List<String>> values;
 
     private ColoredStringFeature defaultValue;
+
+    private BooleanFeature parsePlaceholders;
 
     private MaterialFeature icon;
 
@@ -111,6 +115,7 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
         type = new VariableTypeFeature(this, Optional.of(VariableType.NUMBER), FeatureSettingsSCore.type, false);
         forFeature = new VariableForFeature(this, Optional.empty(), FeatureSettingsSCore.for_);
         values = new HashMap<>();
+        parsePlaceholders = new BooleanFeature(this, false, FeatureSettingsSCore.parsePlaceholders);
         icon = new MaterialFeature(this, Optional.of(Material.PAPER), FeatureSettingsSCore.icon);
     }
 
@@ -120,6 +125,7 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
         clone.setType(type.clone(clone));
         clone.setForFeature(forFeature.clone(clone));
         clone.setDefaultValue(defaultValue.clone(clone));
+        clone.setParsePlaceholders(parsePlaceholders.clone(clone));
         clone.setValues(new HashMap<>(values));
         clone.setIcon(icon.clone(clone));
         return clone;
@@ -131,6 +137,7 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
         features.add(type);
         features.add(forFeature);
         features.add(defaultValue);
+        features.add(parsePlaceholders);
         features.add(icon);
         return features;
     }
@@ -147,6 +154,7 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
             variable.setType(type);
             variable.setForFeature(forFeature);
             variable.setDefaultValue(defaultValue);
+            variable.setParsePlaceholders(parsePlaceholders);
             variable.setIcon(icon);
             //SsomarDev.testMsg("RELOAD INTO "+variable.hashCode());
         }
@@ -185,15 +193,16 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
 
     public String getValue(Optional<OfflinePlayer> optPlayer, Optional<Integer> indexOpt) {
         if(!forFeature.getValue().isPresent()) return "Invalid variable configuration";
+        String result = null;
         if (forFeature.getValue().get().equals(VariableForEnum.PLAYER)) {
             if (optPlayer.isPresent()) {
                 List<String> playerValues;
                 if (values.containsKey(optPlayer.get().getUniqueId() + "") && (playerValues = values.get(optPlayer.get().getUniqueId() + "")).size() > indexOpt.orElse(0)) {
                     if (type.getValue().get().equals(VariableType.LIST)) {
                         if (indexOpt.isPresent()) {
-                            return playerValues.get(indexOpt.get());
-                        } else return playerValues.toString();
-                    } else return playerValues.get(0);
+                            result = playerValues.get(indexOpt.get());
+                        } else result = playerValues.toString();
+                    } else result = playerValues.get(0);
                 }
             }
         } else {
@@ -201,13 +210,19 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
             if (values.containsKey("global") && (globalValues = values.get("global")).size() > indexOpt.orElse(0)) {
                 if (type.getValue().get().equals(VariableType.LIST)) {
                     if (indexOpt.isPresent()) {
-                        return globalValues.get(indexOpt.get());
-                    } else return globalValues.toString();
-                } else return globalValues.get(0);
+                        result = globalValues.get(indexOpt.get());
+                    } else result = globalValues.toString();
+                } else result = globalValues.get(0);
             }
         }
-        if (defaultValue.getValue().isPresent()) return defaultValue.getValue().get();
-        return "";
+        if (result == null) {
+            result = defaultValue.getValue().isPresent() ? defaultValue.getValue().get() : "";
+        }
+        if (parsePlaceholders.getValue() && SCore.hasPlaceholderAPI) {
+            Player onlinePlayer = (optPlayer.isPresent() && optPlayer.get().getPlayer() != null) ? optPlayer.get().getPlayer() : null;
+            result = PlaceholderAPI.setPlaceholders(onlinePlayer, result);
+        }
+        return result;
     }
 
     public int sizeValue(Optional<OfflinePlayer> optPlayer, Optional<Integer> indexOpt) {
@@ -429,6 +444,8 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
         if(!defaultValue.getValue().isPresent() && obj.getDefaultValue().getValue().isPresent()) return false;
         if(defaultValue.getValue().isPresent() && !obj.getDefaultValue().getValue().isPresent()) return false;
         if(defaultValue.getValue().isPresent() && obj.getDefaultValue().getValue().isPresent() && !defaultValue.getValue().get().equals(obj.getDefaultValue().getValue().get())) return false;
+
+        if(parsePlaceholders.getValue() != obj.getParsePlaceholders().getValue()) return false;
 
         return true;
     }

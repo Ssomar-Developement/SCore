@@ -491,6 +491,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     playerCooldownFeatures(getFeatureSettings("playerCooldownFeatures")),
     entityCooldownFeatures(getFeatureSettings("entityCooldownFeatures")),
     isRefreshableClean(getFeatureSettings("isRefreshableClean")),
+    parsePlaceholders(getFeatureSettings("parsePlaceholders", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     refreshTag(getFeatureSettings("refreshTag", "refreshTagDoNotEdit")),
     otherEICooldowns(getFeatureSettings("otherEICooldowns")),
     cooldown_activators(getFeatureSettings("activators")),
