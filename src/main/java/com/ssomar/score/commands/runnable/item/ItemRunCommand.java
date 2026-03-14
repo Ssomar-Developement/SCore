@@ -64,7 +64,7 @@ public class ItemRunCommand extends RunCommand {
 
         if(sCommandToExec.getSCommand() instanceof ItemMetaSCommand) {
             ItemMetaSCommand pCommand = (ItemMetaSCommand) sCommandToExec.getSCommand();
-            DynamicMeta dMeta = new DynamicMeta(itemStack.getItemMeta());
+            DynamicMeta dMeta = new DynamicMeta(itemStack.getItemMeta(), itemStack.getType());
             pCommand.run(launcher, dMeta, sCommandToExec);
             itemStack.setItemMeta(dMeta.getMeta());
         } else if(sCommandToExec.getSCommand() instanceof ItemSCommand) {

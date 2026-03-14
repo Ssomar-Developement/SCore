@@ -4,6 +4,7 @@ import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.item.ItemCommand;
 import com.ssomar.sevents.events.player.equip.armor.ArmorType;
+import io.papermc.paper.datacomponent.DataComponentTypes;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -39,24 +40,31 @@ public class SetEquippableModel extends ItemCommand {
         boolean hasEquippable = itemMeta.hasEquippable();
         EquippableComponent equippable = itemMeta.getEquippable();
         if (!hasEquippable) {
-            ArmorType armorType = ArmorType.matchType(item, false);
-            if (armorType != null) {
-                EquipmentSlot equipSlot;
-                switch (armorType) {
-                    case CHESTPLATE:
-                        equipSlot = EquipmentSlot.CHEST;
-                        break;
-                    case LEGGINGS:
-                        equipSlot = EquipmentSlot.LEGS;
-                        break;
-                    case BOOTS:
-                        equipSlot = EquipmentSlot.FEET;
-                        break;
-                    default:
-                        equipSlot = EquipmentSlot.HEAD;
-                        break;
+            ItemStack defaultItem = new ItemStack(item.getType());
+            if (defaultItem.hasData(DataComponentTypes.EQUIPPABLE)) {
+                io.papermc.paper.datacomponent.item.Equippable defaultEquippable = defaultItem.getData(DataComponentTypes.EQUIPPABLE);
+                equippable.setDamageOnHurt(defaultEquippable.damageOnHurt());
+                equippable.setSlot(defaultEquippable.slot());
+            } else {
+                ArmorType armorType = ArmorType.matchType(item, false);
+                if (armorType != null) {
+                    EquipmentSlot equipSlot;
+                    switch (armorType) {
+                        case CHESTPLATE:
+                            equipSlot = EquipmentSlot.CHEST;
+                            break;
+                        case LEGGINGS:
+                            equipSlot = EquipmentSlot.LEGS;
+                            break;
+                        case BOOTS:
+                            equipSlot = EquipmentSlot.FEET;
+                            break;
+                        default:
+                            equipSlot = EquipmentSlot.HEAD;
+                            break;
+                    }
+                    equippable.setSlot(equipSlot);
                 }
-                equippable.setSlot(equipSlot);
             }
         }
 
