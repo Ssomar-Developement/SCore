@@ -64,8 +64,9 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
 
         updateSlotMainHand(i, slots.contains(-1));
         i++;
-        i++;
 
+        updateSlotCursor(i, slots.contains(-2));
+        i++;
 
         // Back
         createItem(RED, 1, i, GUI.BACK, false, false);
@@ -88,7 +89,8 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
 
     public void enableAllSlots() {
         List<Integer> slots = new ArrayList<>();
-        for (int i = -1; i <= 40; i++) {
+        /* -2 = cursor slot, -1 = mainHand alias, 0-40 = regular inventory slots */
+        for (int i = -2; i <= 40; i++) {
             slots.add(i);
         }
         detailedSlots.setSlots(slots);
@@ -110,6 +112,21 @@ public class DetailedSlotsEditor extends FeatureEditorInterface<DetailedSlots> {
         if (addOrRemoveEnchant(item)) {
             detailedSlots.getSlots().remove(Integer.valueOf(-1));
         } else detailedSlots.getSlots().add(-1);
+    }
+
+    public void updateSlotCursor(int i, boolean enable) {
+        if (enable) {
+            createItem(Material.CHEST, 1, i, "&eSlot: cursor", true, false, "", "&a✎ Click here to change", TM.g(Text.EDITOR_CURRENTLY_NAME)+" &aEnable");
+        } else {
+            createItem(Material.CHEST, 1, i, "&eSlot: cursor", false, false, "", "&a✎ Click here to change", TM.g(Text.EDITOR_CURRENTLY_NAME)+" &cDisable");
+        }
+    }
+
+    public void changeSlotCursor() {
+        ItemStack item = this.getByIdentifier("Slot: cursor");
+        if (addOrRemoveEnchant(item)) {
+            detailedSlots.getSlots().remove(Integer.valueOf(-2));
+        } else detailedSlots.getSlots().add(-2);
     }
 
     public void updateSlotOffHand(int i, boolean enable) {

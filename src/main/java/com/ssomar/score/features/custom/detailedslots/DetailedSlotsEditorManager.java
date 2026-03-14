@@ -50,6 +50,9 @@ public class DetailedSlotsEditorManager extends FeatureEditorManagerAbstract<Det
                         case "helmet":
                             i.gui.changeSlotHelmet();
                             break;
+                        case "cursor":
+                            i.gui.changeSlotCursor();
+                            break;
                         default:
                             break;
                     }

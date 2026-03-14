@@ -48,7 +48,8 @@ public class DetailedSlots extends FeatureWithHisOwnEditor<DetailedSlots, Detail
             }
         }
         if (slots.isEmpty()) {
-            for (int i = -1; i <= 40; i++) {
+            /* -2 = cursor slot, -1 = mainHand alias, 0-40 = regular inventory slots */
+            for (int i = -2; i <= 40; i++) {
                 slots.add(i);
             }
         }
@@ -67,8 +68,8 @@ public class DetailedSlots extends FeatureWithHisOwnEditor<DetailedSlots, Detail
 
     @Override
     public void save(ConfigurationSection config) {
-        /* Empty list = all slots */
-        if (slots.size() == 42) config.set(getName(), new ArrayList<>());
+        /* Empty list = all slots (-2 to 40 = 43 entries) */
+        if (slots.size() == 43) config.set(getName(), new ArrayList<>());
         else config.set(getName(), slots);
 
         if (GeneralConfig.getInstance().isEnableCommentsInConfig())
