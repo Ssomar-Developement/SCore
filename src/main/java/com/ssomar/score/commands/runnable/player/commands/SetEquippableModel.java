@@ -51,6 +51,7 @@ public class SetEquippableModel extends PlayerCommand {
                 io.papermc.paper.datacomponent.item.Equippable defaultEquippable = defaultItem.getData(DataComponentTypes.EQUIPPABLE);
                 equippable.setDamageOnHurt(defaultEquippable.damageOnHurt());
                 equippable.setSlot(defaultEquippable.slot());
+                equippable.setDispensable(defaultEquippable.dispensable());
             }
         }
         equippable.setModel(NamespacedKey.fromString(model));
