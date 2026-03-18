@@ -48,6 +48,7 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
         CommandSetting limit = new CommandSetting("limit", -1, Integer.class, -1);
         CommandSetting sort = new CommandSetting("sort", -1, String.class, "NEAREST");
         CommandSetting regionCheck = new CommandSetting("regionCheck", -1, Boolean.class, false);
+        CommandSetting nonliving = new CommandSetting("nonliving", -1, Boolean.class, false);
         List<CommandSetting> settings = getSettings();
         settings.add(distance);
         settings.add(displayMsgIfNoPlayer);
@@ -59,6 +60,7 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
         settings.add(limit);
         settings.add(sort);
         settings.add(regionCheck);
+        settings.add(nonliving);
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }
@@ -82,6 +84,7 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
                     String sort = (String) sCommandToExec.getSettingValue("sort");
 
                     boolean regionCheck = (boolean) sCommandToExec.getSettingValue("regionCheck");
+                    boolean nonliving = (boolean) sCommandToExec.getSettingValue("nonliving");
 
                     Vector offset = XParticle.calculDirection(offsetYaw, offsetPitch).multiply(offsetDistance);
 
@@ -131,6 +134,51 @@ public class MobAround extends MixedCommand implements FeatureParentInterface {
                             }
 
                             if (target.hasMetadata("NPC") || target.equals(receiver)) continue;
+                            entities.add(target);
+                        }
+                        /**
+                         * UNSUPPORTED OPTION.
+                         *
+                         * The nonliving option is developed to allow users to target other entities such as Item and Projectile entities.
+                         * There may be issues in other entity commands because custom Entity Commands were developed with only LivingEntities
+                         * in mind.
+                         *
+                         * If those issues ever occur, they will be ignored as it's beyond scope.
+                         */
+                        else if (!(e instanceof LivingEntity) && nonliving) {
+
+                            if (launcher != null && regionCheck && SCore.hasGriefPrevention && !GriefPreventionAPI.playerIsInHisClaim((Player) launcher, e.getLocation(), true)) continue;
+
+                            Entity target = e;
+
+                            if (safeDistance > 0) {
+                                Location targetLoc = target.getLocation();
+                                if (receiverLoc.distance(targetLoc) <= safeDistance) continue;
+                            }
+
+                            if (!throughBlocks) {
+                                if (receiver instanceof LivingEntity)
+                                    receiverLoc = ((LivingEntity) receiver).getEyeLocation();
+
+                                // Check see feet and yers
+                                List<Location> toCheck = new ArrayList<>();
+                                toCheck.add(target.getLocation());
+                                //toCheck.add(target.getEyeLocation());
+                                // middle between locatiuon and eyelocation
+                                toCheck.add(target.getLocation().add(0, 1, 0));
+                                boolean valid = false;
+                                for (Location loc : toCheck) {
+                                    double distanceBetween = receiverLoc.distance(loc);
+                                    Vector direction = loc.toVector().subtract(receiverLoc.toVector()).normalize();
+                                    RayTraceResult rayTraceResult = receiverLoc.getWorld().rayTraceBlocks(receiverLoc, direction, distanceBetween, FluidCollisionMode.NEVER, true);
+                                    if (rayTraceResult == null) {
+                                        valid = true;
+                                        break;
+                                    }
+                                }
+                                if (!valid) continue;
+                            }
+
                             entities.add(target);
                         }
                     }
