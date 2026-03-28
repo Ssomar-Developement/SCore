@@ -1,19 +1,9 @@
 package com.ssomar.score.sparticles;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.events.ListenerPriority;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
-import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.event.PacketListenerAbstract;
-import com.github.retrooper.packetevents.event.PacketSendEvent;
-import com.github.retrooper.packetevents.protocol.packettype.PacketType.Play;
 import com.ssomar.score.SCore;
 import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.utils.logging.Utils;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -127,47 +117,11 @@ public class ParticleToggleManager {
         }
     }
 
-    // -------------------------------------------------------------------------
-    // ProtocolLib integration
-    // -------------------------------------------------------------------------
-
-    /**
-     * Registers a ProtocolLib packet listener that cancels WORLD_PARTICLES
-     * packets for players who have opted out.
-     */
     private void registerProtocolLibListener() {
-        Plugin plugin = SCore.plugin;
-        SCore.protocolManager.addPacketListener(
-                new PacketAdapter(plugin, ListenerPriority.NORMAL, PacketType.Play.Server.WORLD_PARTICLES) {
-                    @Override
-                    public void onPacketSending(PacketEvent event) {
-                        Player recipient = event.getPlayer();
-                        if (recipient != null && hiddenPlayers.contains(recipient.getUniqueId())) {
-                            event.setCancelled(true);
-                        }
-                    }
-                }
-        );
+        com.ssomar.score.usedapi.ProtocolLibAPI.registerParticleToggleListener(hiddenPlayers);
     }
 
-    // -------------------------------------------------------------------------
-    // PacketEvents integration
-    // -------------------------------------------------------------------------
-
-    /**
-     * Registers a PacketEvents listener that cancels PARTICLE packets
-     * for players who have opted out.
-     */
     private void registerPacketEventsListener() {
-        PacketEvents.getAPI().getEventManager().registerListener(new PacketListenerAbstract() {
-            @Override
-            public void onPacketSend(PacketSendEvent event) {
-                if (event.getPacketType() != Play.Server.PARTICLE) return;
-                Player recipient = (Player) event.getPlayer();
-                if (recipient != null && hiddenPlayers.contains(recipient.getUniqueId())) {
-                    event.setCancelled(true);
-                }
-            }
-        });
+        com.ssomar.score.usedapi.PacketEventsTool.registerParticleToggleListener(hiddenPlayers);
     }
 }
