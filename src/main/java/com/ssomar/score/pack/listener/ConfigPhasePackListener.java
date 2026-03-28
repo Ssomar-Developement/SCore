@@ -62,7 +62,10 @@ public class ConfigPhasePackListener implements Listener {
                 );
                 user.sendPacket(packet);
             } catch (Exception | Error e) {
-                // Silently fail — JoinQuitListener will send on join
+                // JoinQuitListener will send on join as fallback
+                if (com.ssomar.score.config.GeneralConfig.getInstance().isSelfHostPackDebug()) {
+                    e.printStackTrace();
+                }
             }
         }
     }
