@@ -8,7 +8,6 @@ import com.ssomar.particles.commands.Shape;
 import com.ssomar.particles.commands.ShapesExamples;
 import com.ssomar.particles.commands.ShapesManager;
 import com.ssomar.score.SCore;
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandsExecutor;
 import com.ssomar.score.commands.runnable.block.BlockCommandManager;
@@ -33,7 +32,9 @@ import com.ssomar.score.projectiles.SProjectile;
 import com.ssomar.score.projectiles.SProjectilesEditor;
 import com.ssomar.score.projectiles.manager.SProjectilesManager;
 import com.ssomar.score.sobject.menu.NewSObjectsManagerEditor;
+import com.ssomar.score.sparticles.ParticleToggleManager;
 import com.ssomar.score.usedapi.AllWorldManager;
+import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.utils.emums.VariableType;
 import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.utils.messages.CenteredMessage;
@@ -44,7 +45,6 @@ import com.ssomar.score.utils.strings.StringJoiner;
 import com.ssomar.score.variables.Variable;
 import com.ssomar.score.variables.VariableForEnum;
 import com.ssomar.score.variables.VariablesEditor;
-import com.ssomar.score.sparticles.ParticleToggleManager;
 import com.ssomar.score.variables.manager.VariablesManager;
 import lombok.RequiredArgsConstructor;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -62,9 +62,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.ServerSocket;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -494,6 +492,11 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                 // /score particles-toggle [player]
                 // Without argument: toggles for the command sender (must be a player)
                 // With a player argument: admin override for another player
+                // it requires packetevents or Protocolib to hide them
+                if(!(SCore.hasProtocolLib || Dependency.PACKET_EVENTS.isEnabled())){
+                    sender.sendMessage(StringConverter.coloredString("&4[SCore] &cThis command can only be used when Protocolib or Packevents is installed on the server."));
+                    return;
+                }
                 if (args.length == 0) {
                     if (player == null) {
                         sender.sendMessage(StringConverter.coloredString("&4[SCore] &cThis command can only be used by players."));
