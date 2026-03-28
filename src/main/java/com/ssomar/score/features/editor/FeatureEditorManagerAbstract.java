@@ -62,6 +62,13 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
                     i.gui.getParent().reload();
                     i.gui.getParent().save();
                     FeatureParentInterface parent = (FeatureParentInterface) feature;
+                    // Propagate GUI texture char to sub-feature if it doesn't have its own
+                    if (parent instanceof FeatureWithHisOwnEditor && i.gui.getGuiTextureChar() != '\0') {
+                        FeatureWithHisOwnEditor<?,?,?,?> subFeature = (FeatureWithHisOwnEditor<?,?,?,?>) parent;
+                        if (subFeature.getEditorGuiTextureChar() == '\0') {
+                            subFeature.setEditorGuiTextureChar(i.gui.getGuiTextureChar());
+                        }
+                    }
                     parent.openEditor(i.player);
                 }
                 return true;
