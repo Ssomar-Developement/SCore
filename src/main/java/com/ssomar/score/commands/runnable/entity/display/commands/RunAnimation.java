@@ -3,6 +3,7 @@ package com.ssomar.score.commands.runnable.entity.display.commands;
 import com.ssomar.myfurniture.api.MyFurnitureAPI;
 import com.ssomar.myfurniture.features.animation.*;
 import com.ssomar.myfurniture.furniture.placedfurniture.FurniturePlaced;
+import com.ssomar.myfurniture.furniture.placedfurniture.FurniturePlaced;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.display.DisplayCommand;
 import org.bukkit.ChatColor;
@@ -62,10 +63,12 @@ public class RunAnimation extends DisplayCommand {
             // Stop existing animation on this entity if any
             FurnitureAnimationManager.getInstance().removeAndUnregister(animId);
 
-            // Hide the furniture's display entity
-            if (entity instanceof org.bukkit.entity.ItemDisplay) {
-                org.bukkit.entity.ItemDisplay display = (org.bukkit.entity.ItemDisplay) entity;
-                display.setItemStack(new org.bukkit.inventory.ItemStack(org.bukkit.Material.AIR));
+            // Hide the furniture for all online players
+            Optional<FurniturePlaced> fpOpt = MyFurnitureAPI.getFurniturePlacedManager().getFurniturePlaced(entity);
+            if (fpOpt.isPresent()) {
+                for (org.bukkit.entity.Player online : org.bukkit.Bukkit.getOnlinePlayers()) {
+                    fpOpt.get().hideFurniture(online);
+                }
             }
 
             // Spawn animation at the furniture's location
@@ -73,7 +76,7 @@ public class RunAnimation extends DisplayCommand {
                     parser, entity.getLocation(), animIndex, "myfurniture", bbmodelFile);
 
             if (instance != null) {
-                instance.setFurnitureEntity(entity);
+                instance.setFurniturePlaced(fpOpt.orElse(null));
                 FurnitureAnimationManager.getInstance().register(animId, instance);
             }
         } catch (Exception e) {

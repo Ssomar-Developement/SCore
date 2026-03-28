@@ -23,7 +23,7 @@ public class StopAnimation extends DisplayCommand {
         UUID animId = entity.getUniqueId();
         AnimationInstance instance = FurnitureAnimationManager.getInstance().get(animId);
         if (instance != null) {
-            instance.restoreFurnitureEntity();
+            instance.restoreFurniture();
         }
         FurnitureAnimationManager.getInstance().removeAndUnregister(animId);
     }
