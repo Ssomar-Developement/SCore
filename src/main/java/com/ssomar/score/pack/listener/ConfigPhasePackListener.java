@@ -8,78 +8,37 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLinksSendEvent;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Sends resource packs during the configuration phase (before world join) using PlayerLinksSendEvent.
- * This provides a better UX — players see the loading screen before entering the world instead of
- * getting a visual glitch period after join.
+ * Players see the loading screen before entering the world — no visual glitch period.
  *
- * Available on Paper 1.20.5+.
+ * Only sends if the pack hosted URL is already resolved (non-blocking).
+ * First player joining resolves the URL via JoinQuitListener, subsequent players
+ * get the pack here during config phase for instant loading.
+ *
+ * The JoinQuitListener is NOT skipped — Minecraft deduplicates same-UUID packs client-side.
  */
 public class ConfigPhasePackListener implements Listener {
 
-    private static final Set<UUID> playersServedInConfigPhase = Collections.synchronizedSet(new HashSet<>());
-
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerLinksSend(PlayerLinksSendEvent event) {
+        Player player = event.getPlayer();
         Map<UUID, PackSettings> packs = PackManager.getInstance().getPacks();
-        if (packs.isEmpty()) return;
 
-        // Try Spigot API first: PlayerLinksSendEvent extends PlayerEvent → getPlayer() exists
-        Player player = null;
-        try {
-            Method getPlayerMethod = event.getClass().getMethod("getPlayer");
-            player = (Player) getPlayerMethod.invoke(event);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {
-            // Not Spigot's version — fall through to Paper path
-        }
+        for (PackSettings pack : packs.values()) {
+            // Only send if the hosted path is already cached (non-blocking)
+            // getHostedPath() does HTTP checks on first call — we don't want that during config phase
+            String cachedPath = pack.getCachedHostedPath();
+            if (cachedPath == null) continue;
 
-        if (player != null) {
-            // Spigot path: player is fully available during this event
-            boolean sent = false;
-            for (PackSettings pack : packs.values()) {
-                try {
-                    player.addResourcePack(pack.getUuid(), pack.getHostedPath(),
-                            pack.getHash(), pack.getCustomPromptMessage(), pack.isForce());
-                    sent = true;
-                } catch (Exception | Error e) {
-                    // Silently fail — JoinQuitListener will handle as fallback
-                }
+            try {
+                player.addResourcePack(pack.getUuid(), cachedPath, pack.getHash(), pack.getCustomPromptMessage(), pack.isForce());
+            } catch (Exception | Error e) {
+                // Silently fail — JoinQuitListener will send on join
             }
-            if (sent) {
-                playersServedInConfigPhase.add(player.getUniqueId());
-            }
-            return;
         }
-
-        // Paper path: event only exposes getConnection(), not getPlayer()
-        // The player isn't fully constructed yet, so we can't call addResourcePack().
-        // Instead, retrieve the UUID from the connection and defer pack sending.
-        try {
-            Method getConnectionMethod = event.getClass().getMethod("getConnection");
-            Object connection = getConnectionMethod.invoke(event);
-
-            // PlayerCommonConnection extends PlayerConnection which has getPlayer()...
-            // but during configuration phase, we can at least get the UUID
-            Method getUniqueIdMethod = connection.getClass().getMethod("getUniqueId");
-            UUID uuid = (UUID) getUniqueIdMethod.invoke(connection);
-
-            // Mark for deferred sending — your JoinQuitListener fallback
-            // will pick this up on PlayerJoinEvent instead
-            playersServedInConfigPhase.add(uuid);
-        } catch (Exception | Error e) {
-            // Neither path worked — JoinQuitListener fallback will handle it
-        }
-    }
-
-    /**
-     * Check if this player already received packs during config phase.
-     * Clears the flag after checking (one-time use per join).
-     */
-    public static boolean wasServedInConfigPhase(UUID playerUuid) {
-        return playersServedInConfigPhase.remove(playerUuid);
     }
 }

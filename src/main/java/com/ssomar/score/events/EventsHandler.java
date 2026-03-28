@@ -96,13 +96,13 @@ public class EventsHandler {
 
         main.getServer().getPluginManager().registerEvents(new JoinQuitListener(), main);
 
-        // Config-phase pack dispatch (PlayerLinksSendEvent) is intentionally NOT registered here.
-        // The config-phase send can silently fail and block the join-phase fallback.
-        // Pack sending is handled entirely by JoinQuitListener for reliability.
-        if (false) { // Disabled — kept for future reference
+        // Config-phase pack dispatch — sends packs during PlayerLinksSendEvent (before world join)
+        // Only sends if the URL is already cached (non-blocking). JoinQuitListener is NOT skipped.
+        if (SCore.is1v20v5Plus()) {
             try {
                 main.getServer().getPluginManager().registerEvents(new ConfigPhasePackListener(), main);
             } catch (Exception | Error e) {
+                // PlayerLinksSendEvent not available
             }
         }
     }

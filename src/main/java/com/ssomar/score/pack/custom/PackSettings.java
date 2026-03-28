@@ -98,6 +98,14 @@ public class PackSettings {
         LOCALHOST
     }
 
+    /**
+     * Returns the cached hosted path without triggering HTTP connectivity checks.
+     * Returns null if the path hasn't been resolved yet.
+     */
+    public String getCachedHostedPath() {
+        return hostedPath;
+    }
+
     public String getHostedPath() {
         if (hostedPath != null) return hostedPath;
 
