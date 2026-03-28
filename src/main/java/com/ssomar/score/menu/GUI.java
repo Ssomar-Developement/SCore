@@ -183,6 +183,7 @@ public abstract class GUI implements IGUI {
         if (guiTextureChar != '\0') {
             int rows = size / 9;
             char textureChar = (char) (guiTextureChar + (rows - 1));
+            Utils.sendConsoleMsg("&7[GUI-Debug] applyGuiTexture size=" + size + " rows=" + rows + " char=\\u" + String.format("%04X", (int) textureChar) + " title=" + name);
             return "§f" + OFFSET_N8 + textureChar + OFFSET_N128 + OFFSET_N32 + " " + name;
         }
         return name;
