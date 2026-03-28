@@ -20,9 +20,6 @@ public class JoinQuitListener implements Listener {
     public void onPlayerJoinEvent(PlayerJoinEvent e) {
         Player p = e.getPlayer();
 
-        // Skip if already sent during config phase (Paper 1.20.5+)
-        if (ConfigPhasePackListener.wasServedInConfigPhase(p.getUniqueId())) return;
-
         Map<UUID, PackSettings> packs = PackManager.getInstance().getPacks();
         // For some reason when ItemsAdder is installed on the server, we need to add a delay between each resource pack addition
         // https://discord.com/channels/701066025516531753/1443583007788105751
