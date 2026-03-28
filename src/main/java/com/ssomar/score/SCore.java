@@ -30,6 +30,7 @@ import com.ssomar.score.projectiles.SProjectile;
 import com.ssomar.score.projectiles.loader.SProjectileLoader;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.sparticles.ParticleToggleManager;
 import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.usedapi.PlaceholderAPISCoreExpansion;
 import com.ssomar.score.usedapi.ProtocolLibAPI;
@@ -622,6 +623,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
         }
 
         FilterManager.getInstance().reload();
+
+        /* Particle toggle instance part */
+        ParticleToggleManager.getInstance();
 
         Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
 

@@ -44,6 +44,7 @@ import com.ssomar.score.utils.strings.StringJoiner;
 import com.ssomar.score.variables.Variable;
 import com.ssomar.score.variables.VariableForEnum;
 import com.ssomar.score.variables.VariablesEditor;
+import com.ssomar.score.sparticles.ParticleToggleManager;
 import com.ssomar.score.variables.manager.VariablesManager;
 import lombok.RequiredArgsConstructor;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -85,7 +86,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
     @NotNull
     private final SCore main;
 
-    private final String[] commands = new String[]{"clear", "cooldowns", "hardnesses", "hardnesses-create", "hardnesses-delete", "inspect-loop", "particles", "particles-info", "projectiles", "projectiles-create", "projectiles-delete", "reload", "run-entity-command", "run-block-command", "run-player-command", "variables", "variables-create", "variables-define", "variables-delete", "webhook", "no-translated"};
+    private final String[] commands = new String[]{"clear", "cooldowns", "hardnesses", "hardnesses-create", "hardnesses-delete", "inspect-loop", "particles", "particles-info", "particles-toggle", "projectiles", "projectiles-create", "projectiles-delete", "reload", "run-entity-command", "run-block-command", "run-player-command", "variables", "variables-create", "variables-define", "variables-delete", "webhook", "no-translated"};
 
     /**
      * Called when a {@link CommandSender} types /score.
@@ -489,6 +490,44 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                     SendMessage.sendMessageNoPlch(sender, "&4[SCore] &cExample: &6/score particles-info &eshape:blackhole&c.");
                 }
                 break;
+            case "particles-toggle":
+                // /score particles-toggle [player]
+                // Without argument: toggles for the command sender (must be a player)
+                // With a player argument: admin override for another player
+                if (args.length == 0) {
+                    if (player == null) {
+                        sender.sendMessage(StringConverter.coloredString("&4[SCore] &cThis command can only be used by players."));
+                        return;
+                    }
+                    boolean nowHidden = ParticleToggleManager.getInstance().toggle(player.getUniqueId());
+                    if (nowHidden) {
+                        SendMessage.sendMessageNoPlch(player, "&2[SCore] &aParticles are now &chidden&a.");
+                    } else {
+                        SendMessage.sendMessageNoPlch(player, "&2[SCore] &aParticles are now &avisible&a.");
+                    }
+                } else {
+                    // Admin toggling for another player
+                    Player target = Bukkit.getPlayer(args[0]);
+                    if (target == null) {
+                        try {
+                            target = Bukkit.getPlayer(UUID.fromString(args[0]));
+                        } catch (Exception ignored) {}
+                    }
+                    if (target == null) {
+                        sender.sendMessage(StringConverter.coloredString("&4[SCore] &cPlayer not found: &6" + args[0]));
+                        return;
+                    }
+                    boolean nowHidden = ParticleToggleManager.getInstance().toggle(target.getUniqueId());
+                    if (nowHidden) {
+                        SendMessage.sendMessageNoPlch(sender, "&2[SCore] &aParticles are now &chidden &afor &e" + target.getName() + "&a.");
+                        SendMessage.sendMessageNoPlch(target, "&2[SCore] &aParticles are now &chidden &a(toggled by an admin).");
+                    } else {
+                        SendMessage.sendMessageNoPlch(sender, "&2[SCore] &aParticles are now &avisible &afor &e" + target.getName() + "&a.");
+                        SendMessage.sendMessageNoPlch(target, "&2[SCore] &aParticles are now &avisible &a(toggled by an admin).");
+                    }
+                }
+                break;
+
             case "reload":
                 this.main.onReload();
 
@@ -1032,6 +1071,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                 arguments.add("hardnesses-delete");
                 arguments.add("particles");
                 arguments.add("particles-info");
+                arguments.add("particles-toggle");
                 arguments.add("variables");
                 arguments.add("variables-create");
                 arguments.add("variables-define NAME TYPE SCOPE ICON default arguments...");
@@ -1147,6 +1187,12 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                             }
                         }
 
+                        break;
+                    case "particles-toggle":
+                        if (args.length == 2) {
+                            for (final Player p : Bukkit.getOnlinePlayers())
+                                arguments.add(p.getName());
+                        }
                         break;
                     case "hardnesses-delete":
                         if (args.length == 2)
