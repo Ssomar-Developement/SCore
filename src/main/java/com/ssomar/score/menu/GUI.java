@@ -106,6 +106,22 @@ public abstract class GUI implements IGUI {
     @Getter
     private String titleString;
 
+    /**
+     * Optional GUI texture character. When set, the inventory title is prefixed with
+     * negative-space offset chars + this texture char, rendered via bitmap font provider
+     * as a full GUI background overlay. Set to '\0' (default) to disable.
+     *
+     * Requires the resource pack to have the font providers in assets/minecraft/font/default.json.
+     * The texture char must map to a bitmap provider in the Private Use Area (e.g. \uE000-\uE00F).
+     */
+    @Getter @Setter
+    private char guiTextureChar = '\0';
+
+    // Negative space chars used for GUI texture positioning (defined in font default.json)
+    private static final char OFFSET_N8 = '\uF801';
+    private static final char OFFSET_N128 = '\uF805';
+    private static final char OFFSET_N32 = '\uF803';
+
 
     public GUI(FeatureSettingsInterface settings, int size) {
         this.settings = settings;
@@ -137,7 +153,8 @@ public abstract class GUI implements IGUI {
     }
 
     public void initInventory(String name, int size) {
-        inv = Bukkit.createInventory(this, size, StringConverter.coloredString(name));
+        String displayName = applyGuiTexture(name);
+        inv = Bukkit.createInventory(this, size, StringConverter.coloredString(displayName));
         this.size = size;
         for (int j = 0; j < size; j++) {
             createBackGroundItem(j);
@@ -145,6 +162,18 @@ public abstract class GUI implements IGUI {
         if(WRITABLE_BOOK == null) init();
     }
 
+
+    /**
+     * Apply GUI texture prefix to a title string if guiTextureChar is set.
+     * §f = white color to prevent Minecraft from darkening the texture.
+     * Negative offsets position the texture over the inventory.
+     */
+    private String applyGuiTexture(String name) {
+        if (guiTextureChar != '\0') {
+            return "§f" + OFFSET_N8 + guiTextureChar + OFFSET_N128 + OFFSET_N32 + " " + name;
+        }
+        return name;
+    }
 
     public void fullReloadAndReopen(Player player) {
         if (settings != null) {
