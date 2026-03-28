@@ -8,6 +8,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLinksSendEvent;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -23,22 +25,53 @@ public class ConfigPhasePackListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerLinksSend(PlayerLinksSendEvent event) {
-        Player player = event.getPlayer();
         Map<UUID, PackSettings> packs = PackManager.getInstance().getPacks();
-
         if (packs.isEmpty()) return;
 
-        boolean sent = false;
-        for (PackSettings pack : packs.values()) {
-            try {
-                player.addResourcePack(pack.getUuid(), pack.getHostedPath(), pack.getHash(), pack.getCustomPromptMessage(), pack.isForce());
-                sent = true;
-            } catch (Exception | Error e) {
-                // Silently fail — JoinQuitListener will handle as fallback
-            }
+        // Try Spigot API first: PlayerLinksSendEvent extends PlayerEvent → getPlayer() exists
+        Player player = null;
+        try {
+            Method getPlayerMethod = event.getClass().getMethod("getPlayer");
+            player = (Player) getPlayerMethod.invoke(event);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {
+            // Not Spigot's version — fall through to Paper path
         }
-        if (sent) {
-            playersServedInConfigPhase.add(player.getUniqueId());
+
+        if (player != null) {
+            // Spigot path: player is fully available during this event
+            boolean sent = false;
+            for (PackSettings pack : packs.values()) {
+                try {
+                    player.addResourcePack(pack.getUuid(), pack.getHostedPath(),
+                            pack.getHash(), pack.getCustomPromptMessage(), pack.isForce());
+                    sent = true;
+                } catch (Exception | Error e) {
+                    // Silently fail — JoinQuitListener will handle as fallback
+                }
+            }
+            if (sent) {
+                playersServedInConfigPhase.add(player.getUniqueId());
+            }
+            return;
+        }
+
+        // Paper path: event only exposes getConnection(), not getPlayer()
+        // The player isn't fully constructed yet, so we can't call addResourcePack().
+        // Instead, retrieve the UUID from the connection and defer pack sending.
+        try {
+            Method getConnectionMethod = event.getClass().getMethod("getConnection");
+            Object connection = getConnectionMethod.invoke(event);
+
+            // PlayerCommonConnection extends PlayerConnection which has getPlayer()...
+            // but during configuration phase, we can at least get the UUID
+            Method getUniqueIdMethod = connection.getClass().getMethod("getUniqueId");
+            UUID uuid = (UUID) getUniqueIdMethod.invoke(connection);
+
+            // Mark for deferred sending — your JoinQuitListener fallback
+            // will pick this up on PlayerJoinEvent instead
+            playersServedInConfigPhase.add(uuid);
+        } catch (Exception | Error e) {
+            // Neither path worked — JoinQuitListener fallback will handle it
         }
     }
 
