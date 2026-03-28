@@ -429,6 +429,7 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     isLocked("isLocked", "Is locked", new String[]{"&7&oIs the container locked?"}, null),
     isMeat("isMeat", "Is Meat", new String[]{"&7Is the food meat?"}, null),
     isRefreshableClean("isRefreshableClean", "Is Refreshable Clean", new String[]{"&7&oIs refreshable clean"}, null),
+    parsePlaceholders("parsePlaceholders", "Parse Placeholders", new String[]{"&7&oIf enabled, placeholders like", "&7&o%player_name% inside the variable", "&7&ovalues will be parsed when read"}, null),
     itemCheckerType("itemCheckerType", "Item Checker Type", new String[]{"&7&oThe item checker type"}, Material.ANVIL),
     itemCheckers("itemCheckers", "Item Checkers", new String[]{"&7&oThe item checkers"}, Material.ANVIL),
     input1ItemCheckers("input1ItemCheckers", "Input 1 Item Checkers", new String[]{"&7&oThe item checkers"}, Material.ANVIL),
