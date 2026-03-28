@@ -120,7 +120,7 @@ public abstract class GUI implements IGUI {
     public void setGuiTextureChar(char guiTextureChar) {
         this.guiTextureChar = guiTextureChar;
         if (guiTextureChar != '\0' && inv != null) {
-            initInventory(titleString, size);
+            initInventory(titleString, inv.getSize());
         }
     }
 
