@@ -103,14 +103,19 @@ public abstract class GUI implements IGUI {
 
     private FeatureSettingsInterface settings;
 
+    @Getter
+    private String titleString;
+
 
     public GUI(FeatureSettingsInterface settings, int size) {
         this.settings = settings;
-        initInventory("&l"+settings.getEditorName()+" Editor", size);
+        this.titleString = "&l"+settings.getEditorName()+" Editor";
+        initInventory(titleString, size);
         this.subSettings = new HashMap<>();
     }
 
     public GUI(String name, int size) {
+        this.titleString = name;
         initInventory(name, size);
         this.subSettings = new HashMap<>();
     }
@@ -142,11 +147,12 @@ public abstract class GUI implements IGUI {
 
 
     public void fullReloadAndReopen(Player player) {
-        // Not compatible reload
-        if(settings == null) return;
-        initInventory("&l"+settings.getEditorName()+" Editor", size);
+        if (settings != null) {
+            titleString = "&l"+settings.getEditorName()+" Editor";
+        }
+        if (titleString == null) return;
+        initInventory(titleString, size);
         update();
-        //player.closeInventory();
         openGUISync(player);
     }
 
