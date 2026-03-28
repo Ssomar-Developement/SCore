@@ -64,10 +64,6 @@ public abstract class SObjectsEditorAbstract<T extends SObject & SObjectEditable
         this.manager = manager;
 
         this.initSettings();
-        // If initSettings set a guiTextureChar, re-init inventory to apply the textured title
-        if (getGuiTextureChar() != '\0') {
-            initInventory(getTitleString(), getSize());
-        }
     }
 
     public SObjectsEditorAbstract(SPlugin sPlugin, String title, SObjectManager<T> manager) {

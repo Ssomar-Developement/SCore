@@ -21,7 +21,6 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
             char textureChar = ((FeatureWithHisOwnEditor<?,?,?,?>) feature).getEditorGuiTextureChar();
             if (textureChar != '\0') {
                 editorGui.setGuiTextureChar(textureChar);
-                editorGui.initInventory(editorGui.getTitleString(), editorGui.getSize());
                 editorGui.load();
             }
         }

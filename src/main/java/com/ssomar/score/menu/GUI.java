@@ -114,8 +114,15 @@ public abstract class GUI implements IGUI {
      * Requires the resource pack to have the font providers in assets/minecraft/font/default.json.
      * The texture char must map to a bitmap provider in the Private Use Area (e.g. \uE000-\uE00F).
      */
-    @Getter @Setter
+    @Getter
     private char guiTextureChar = '\0';
+
+    public void setGuiTextureChar(char guiTextureChar) {
+        this.guiTextureChar = guiTextureChar;
+        if (guiTextureChar != '\0' && inv != null) {
+            initInventory(titleString, size);
+        }
+    }
 
     // Negative space chars used for GUI texture positioning (defined in font default.json)
     private static final char OFFSET_N8 = '\uF801';
