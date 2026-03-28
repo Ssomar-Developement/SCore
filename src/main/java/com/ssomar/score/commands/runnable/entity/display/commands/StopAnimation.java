@@ -1,5 +1,6 @@
 package com.ssomar.score.commands.runnable.entity.display.commands;
 
+import com.ssomar.myfurniture.features.animation.AnimationInstance;
 import com.ssomar.myfurniture.features.animation.FurnitureAnimationManager;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.entity.display.DisplayCommand;
@@ -20,6 +21,10 @@ public class StopAnimation extends DisplayCommand {
     @Override
     public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
         UUID animId = entity.getUniqueId();
+        AnimationInstance instance = FurnitureAnimationManager.getInstance().get(animId);
+        if (instance != null) {
+            instance.restoreFurnitureEntity();
+        }
         FurnitureAnimationManager.getInstance().removeAndUnregister(animId);
     }
 

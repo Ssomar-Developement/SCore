@@ -62,12 +62,18 @@ public class RunAnimation extends DisplayCommand {
             // Stop existing animation on this entity if any
             FurnitureAnimationManager.getInstance().removeAndUnregister(animId);
 
-            // Spawn and animate
+            // Hide the furniture's display entity
+            if (entity instanceof org.bukkit.entity.ItemDisplay) {
+                org.bukkit.entity.ItemDisplay display = (org.bukkit.entity.ItemDisplay) entity;
+                display.setItemStack(new org.bukkit.inventory.ItemStack(org.bukkit.Material.AIR));
+            }
+
+            // Spawn animation at the furniture's location
             AnimationInstance instance = BBModelSpawner.spawnAndAnimate(
                     parser, entity.getLocation(), animIndex, "myfurniture", bbmodelFile);
 
             if (instance != null) {
-                // Re-register with entity UUID so STOP_ANIMATION can find it
+                instance.setFurnitureEntity(entity);
                 FurnitureAnimationManager.getInstance().register(animId, instance);
             }
         } catch (Exception e) {
