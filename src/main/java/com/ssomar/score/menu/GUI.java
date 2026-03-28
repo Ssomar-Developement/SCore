@@ -126,6 +126,7 @@ public abstract class GUI implements IGUI {
 
     // Negative space chars used for GUI texture positioning (defined in font default.json)
     private static final char OFFSET_N8 = '\uF801';
+    private static final char OFFSET_N16 = '\uF802';
     private static final char OFFSET_N128 = '\uF805';
     private static final char OFFSET_N32 = '\uF803';
 
@@ -183,7 +184,7 @@ public abstract class GUI implements IGUI {
         if (guiTextureChar != '\0') {
             int rows = size / 9;
             char textureChar = (char) (guiTextureChar + (rows - 1));
-            return "§f" + OFFSET_N8 + textureChar + OFFSET_N128 + OFFSET_N32 + " " + name;
+            return "§f" + OFFSET_N8 + textureChar + OFFSET_N128 + OFFSET_N32 + OFFSET_N16 + " " + name;
         }
         return name;
     }
