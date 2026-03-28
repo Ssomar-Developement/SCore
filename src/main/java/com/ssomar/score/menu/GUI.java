@@ -115,10 +115,6 @@ public abstract class GUI implements IGUI {
         this.subSettings = new HashMap<>();
     }
 
-    public GUI(net.kyori.adventure.text.Component title, int size) {
-        initInventory(title, size);
-        this.subSettings = new HashMap<>();
-    }
 
     /**
      * Constructor that accepts a pre-built Inventory (e.g. created with a Component title).
@@ -144,18 +140,6 @@ public abstract class GUI implements IGUI {
         if(WRITABLE_BOOK == null) init();
     }
 
-    /**
-     * Initialize inventory with an Adventure Component title (Paper API).
-     * Preserves custom fonts and colors in the title.
-     */
-    public void initInventory(net.kyori.adventure.text.Component title, int size) {
-        inv = Bukkit.createInventory(this, size, title);
-        this.size = size;
-        for (int j = 0; j < size; j++) {
-            createBackGroundItem(j);
-        }
-        if(WRITABLE_BOOK == null) init();
-    }
 
     public void fullReloadAndReopen(Player player) {
         // Not compatible reload
