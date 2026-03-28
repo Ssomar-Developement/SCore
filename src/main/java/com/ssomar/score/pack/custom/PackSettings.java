@@ -7,11 +7,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 @Getter
@@ -36,6 +35,9 @@ public class PackSettings {
 
     private boolean deleteInitialFile = false;
 
+    @Getter
+    private byte[] hash;
+
     public PackSettings(SPlugin sPlugin, UUID uuid, String filePath, String customPromptMessage, boolean force, boolean deleteInitialFile) {
         this.sPlugin = sPlugin;
         this.uuid = uuid;
@@ -47,6 +49,47 @@ public class PackSettings {
         hostedPathType = null;
         hostedPath = null;
         this.deleteInitialFile = deleteInitialFile;
+        this.hash = computeSha1(new File(filePath));
+    }
+
+    /**
+     * Compute SHA-1 hash of a file for resource pack integrity verification.
+     */
+    public static byte[] computeSha1(File file) {
+        if (file == null || !file.exists()) return null;
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-1");
+            try (FileInputStream fis = new FileInputStream(file)) {
+                byte[] buffer = new byte[8192];
+                int bytesRead;
+                while ((bytesRead = fis.read(buffer)) != -1) {
+                    digest.update(buffer, 0, bytesRead);
+                }
+            }
+            return digest.digest();
+        } catch (NoSuchAlgorithmException | IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Convert a byte array hash to hex string.
+     */
+    public static String hashToHex(byte[] hash) {
+        if (hash == null) return null;
+        StringBuilder sb = new StringBuilder();
+        for (byte b : hash) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Recompute the hash from the current file path (e.g. after the file is copied to cache).
+     */
+    public void recomputeHash() {
+        this.hash = computeSha1(new File(filePath));
     }
 
     public enum HostedPathType {
