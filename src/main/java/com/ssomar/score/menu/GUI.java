@@ -153,7 +153,7 @@ public abstract class GUI implements IGUI {
     }
 
     public void initInventory(String name, int size) {
-        String displayName = applyGuiTexture(name);
+        String displayName = applyGuiTexture(name, size);
         inv = Bukkit.createInventory(this, size, StringConverter.coloredString(displayName));
         this.size = size;
         for (int j = 0; j < size; j++) {
@@ -167,10 +167,16 @@ public abstract class GUI implements IGUI {
      * Apply GUI texture prefix to a title string if guiTextureChar is set.
      * §f = white color to prevent Minecraft from darkening the texture.
      * Negative offsets position the texture over the inventory.
+     *
+     * The guiTextureChar is the base char for a 1-row inventory.
+     * For each additional row, the char is incremented by 1.
+     * e.g. base=\uE000: 1-row=\uE000, 3-row=\uE002, 6-row=\uE005
      */
-    private String applyGuiTexture(String name) {
+    private String applyGuiTexture(String name, int size) {
         if (guiTextureChar != '\0') {
-            return "§f" + OFFSET_N8 + guiTextureChar + OFFSET_N128 + OFFSET_N32 + " " + name;
+            int rows = size / 9;
+            char textureChar = (char) (guiTextureChar + (rows - 1));
+            return "§f" + OFFSET_N8 + textureChar + OFFSET_N128 + OFFSET_N32 + " " + name;
         }
         return name;
     }
