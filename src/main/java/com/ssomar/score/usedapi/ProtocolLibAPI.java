@@ -110,6 +110,20 @@ public class ProtocolLibAPI {
     }
 
 
+    public static void registerParticleToggleListener(java.util.Set<java.util.UUID> hiddenPlayers) {
+        SCore.protocolManager.addPacketListener(
+                new PacketAdapter(SCore.plugin, ListenerPriority.NORMAL, PacketType.Play.Server.WORLD_PARTICLES) {
+                    @Override
+                    public void onPacketSending(PacketEvent event) {
+                        Player recipient = event.getPlayer();
+                        if (recipient != null && hiddenPlayers.contains(recipient.getUniqueId())) {
+                            event.setCancelled(true);
+                        }
+                    }
+                }
+        );
+    }
+
     public static void reduceDamageIndicator() {
 
         if (Dependency.PROTOCOL_LIB.isEnabled() && !SCore.is1v11Less() && GeneralConfig.getInstance().isReduceDamageIndicatorWithProtolcolLib()) {
