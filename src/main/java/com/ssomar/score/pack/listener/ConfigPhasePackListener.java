@@ -1,7 +1,11 @@
 package com.ssomar.score.pack.listener;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.protocol.player.User;
+import com.github.retrooper.packetevents.wrapper.configuration.server.WrapperConfigServerResourcePackSend;
 import com.ssomar.score.pack.custom.PackManager;
 import com.ssomar.score.pack.custom.PackSettings;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,12 +17,11 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Sends resource packs during the configuration phase (before world join).
+ * Sends resource packs during the configuration phase (before world join) using PacketEvents.
+ * Players see the loading screen before entering the world — like Nexo.
  *
- * Handles both API versions:
- * - Spigot / Paper <= 1.21.4: PlayerLinksSendEvent extends PlayerEvent → getPlayer() available
- * - Paper >= 1.21.10: PlayerLinksSendEvent extends Event → only getConnection() available,
- *   no Player object during config phase — we use reflection to call addResourcePack if possible
+ * Uses WrapperConfigServerResourcePackSend to send the pack during config phase,
+ * which works on both Spigot and Paper regardless of API version.
  *
  * Only sends if the pack URL is already cached (non-blocking).
  * JoinQuitListener is NEVER skipped — MC deduplicates same-UUID packs.
@@ -30,16 +33,34 @@ public class ConfigPhasePackListener implements Listener {
         Map<UUID, PackSettings> packs = PackManager.getInstance().getPacks();
         if (packs.isEmpty()) return;
 
-        // Try to get the Player object — works on Spigot and Paper <= 1.21.4
-        Player player = getPlayerFromEvent(event);
-        if (player == null) return; // Paper 1.21.10+ — no Player during config phase, skip
+        // Get the player or connection object to find the PacketEvents User
+        Object channelOwner = getChannelOwner(event);
+        if (channelOwner == null) return;
+
+        User user;
+        try {
+            user = PacketEvents.getAPI().getPlayerManager().getUser(channelOwner);
+        } catch (Exception | Error e) {
+            return; // PacketEvents not ready or can't find user
+        }
+        if (user == null) return;
 
         for (PackSettings pack : packs.values()) {
             String cachedPath = pack.getCachedHostedPath();
             if (cachedPath == null) continue;
 
             try {
-                player.addResourcePack(pack.getUuid(), cachedPath, pack.getHash(), pack.getCustomPromptMessage(), pack.isForce());
+                String hashHex = pack.getHash() != null ? PackSettings.hashToHex(pack.getHash()) : "";
+                WrapperConfigServerResourcePackSend packet = new WrapperConfigServerResourcePackSend(
+                        pack.getUuid(),
+                        cachedPath,
+                        hashHex,
+                        pack.isForce(),
+                        pack.getCustomPromptMessage() != null && !pack.getCustomPromptMessage().isEmpty()
+                                ? Component.text(pack.getCustomPromptMessage())
+                                : null
+                );
+                user.sendPacket(packet);
             } catch (Exception | Error e) {
                 // Silently fail — JoinQuitListener will send on join
             }
@@ -47,16 +68,24 @@ public class ConfigPhasePackListener implements Listener {
     }
 
     /**
-     * Try to get a Player from the event using reflection.
-     * On Spigot/Paper <= 1.21.4: event extends PlayerEvent → getPlayer() works.
-     * On Paper >= 1.21.10: event extends Event → getPlayer() doesn't exist, returns null.
+     * Get the object that PacketEvents can use to look up the User.
+     * - Spigot / Paper <= 1.21.4: getPlayer() returns a Player
+     * - Paper >= 1.21.10: getConnection() returns the config connection
      */
-    private Player getPlayerFromEvent(PlayerLinksSendEvent event) {
+    private Object getChannelOwner(PlayerLinksSendEvent event) {
+        // Try getPlayer() first (Spigot and older Paper)
         try {
             Method getPlayer = event.getClass().getMethod("getPlayer");
-            return (Player) getPlayer.invoke(event);
-        } catch (Exception | Error e) {
-            return null;
-        }
+            Object player = getPlayer.invoke(event);
+            if (player != null) return player;
+        } catch (Exception ignored) {}
+
+        // Try getConnection() (Paper 1.21.10+)
+        try {
+            Method getConnection = event.getClass().getMethod("getConnection");
+            return getConnection.invoke(event);
+        } catch (Exception ignored) {}
+
+        return null;
     }
 }
