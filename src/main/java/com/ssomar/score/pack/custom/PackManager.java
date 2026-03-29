@@ -48,12 +48,14 @@ public class PackManager {
             actualPackFile.delete();
         }
 
+        // Recompute hash from the cached file
+        pack.recomputeHash();
 
         packs.put(pack.getUuid(), pack);
         InjectSpigot.INSTANCE.registerInjector(pack.getInjector());
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             try {
-                player.addResourcePack(pack.getUuid(), pack.getHostedPath(), null, pack.getCustomPromptMessage(), pack.isForce());
+                player.addResourcePack(pack.getUuid(), pack.getHostedPath(), pack.getHash(), pack.getCustomPromptMessage(), pack.isForce());
             } catch (Exception | Error e) {
                 // Version not supported
             }

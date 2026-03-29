@@ -9,6 +9,7 @@ import com.ssomar.score.commands.runnable.player.events.*;
 import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.editor.NewEditorInteractionsListener;
 import com.ssomar.score.features.custom.cooldowns.CooldownsHandler;
+import com.ssomar.score.pack.listener.ConfigPhasePackListener;
 import com.ssomar.score.pack.listener.JoinQuitListener;
 import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.usedapi.JobsAPI;
@@ -94,5 +95,15 @@ public class EventsHandler {
         main.getServer().getPluginManager().registerEvents(new OpenChestListener(), main);
 
         main.getServer().getPluginManager().registerEvents(new JoinQuitListener(), main);
+
+        // Config-phase pack dispatch — sends packs during PlayerLinksSendEvent (before world join)
+        // Only sends if the URL is already cached (non-blocking). JoinQuitListener is NOT skipped.
+        if (SCore.is1v20v5Plus()) {
+            try {
+                main.getServer().getPluginManager().registerEvents(new ConfigPhasePackListener(), main);
+            } catch (Exception | Error e) {
+                // PlayerLinksSendEvent not available
+            }
+        }
     }
 }
