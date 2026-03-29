@@ -20,10 +20,14 @@ import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTType;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
 import java.io.IOException;
@@ -226,17 +230,69 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
     }
 
     public ItemStack writeNBTTags(ItemStack item) {
-        if (SCore.hasNBTAPI) {
-            // Creating a new empty NBT tag
-            // Optional to remove Error occurred while enabling ExecutableItems v7.24.6.23 (Is it up to date?)
-            //java.lang.NoClassDefFoundError: de/tr7zw/nbtapi/iface/ReadableNBT
+        if (tags.isEmpty()) return item;
+
+        // Separate tags that should go into the Persistent Data Container from
+        // those that should remain as raw NBT.  PDC is only available on 1.14+
+        // (i.e. !is1v13Less()), so on older versions every tag is treated as
+        // raw NBT regardless of the saveInPDC flag.
+        List<NBTTag> pdcTags = new ArrayList<>();
+        List<NBTTag> rawTags = new ArrayList<>();
+
+        for (NBTTag tag : tags) {
+            if (tag.isSaveInPDC() && !SCore.is1v13Less()) {
+                if (tag instanceof CompoundNBTTag || tag instanceof ListCompoundNBTTag) {
+                    SCore.plugin.getLogger().warning(
+                            "[ExecutableItems] NBT tag '" + tag.getKey() +
+                            "' has saveInPDC:true but its type (COMPOUND/COMPOUND_LIST) " +
+                            "cannot be stored in the Persistent Data Container. " +
+                            "The tag will be written as raw NBT instead.");
+                    rawTags.add(tag);
+                } else {
+                    pdcTags.add(tag);
+                }
+            } else {
+                rawTags.add(tag);
+            }
+        }
+
+        // Write raw NBT tags via NBT-API (existing behaviour)
+        if (!rawTags.isEmpty() && SCore.hasNBTAPI) {
             NBT.modify(item, nbtItem -> {
-                Optional<ReadWriteNBT> nbtItemOptional = Optional.of(nbtItem);
-                for (NBTTag nbtTag : tags) {
-                    nbtTag.applyTo(nbtItemOptional.get(), true);
+                for (NBTTag nbtTag : rawTags) {
+                    nbtTag.applyTo(nbtItem, true);
                 }
             });
         }
+
+        // Write PDC tags via Bukkit's PersistentDataContainer
+        if (!pdcTags.isEmpty()) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta != null) {
+                PersistentDataContainer pdc = meta.getPersistentDataContainer();
+                for (NBTTag tag : pdcTags) {
+                    NamespacedKey nsKey = new NamespacedKey(ExecutableItems.getPluginSt(), tag.getKey());
+                    if (tag instanceof StringNBTTag) {
+                        pdc.set(nsKey, PersistentDataType.STRING, ((StringNBTTag) tag).getValueString());
+                    } else if (tag instanceof IntNBTTag) {
+                        pdc.set(nsKey, PersistentDataType.INTEGER, ((IntNBTTag) tag).getValueInt());
+                    } else if (tag instanceof DoubleNBTTag) {
+                        pdc.set(nsKey, PersistentDataType.DOUBLE, ((DoubleNBTTag) tag).getValueDouble());
+                    } else if (tag instanceof BooleanNBTTag) {
+                        // PDC has no dedicated boolean type; store as BYTE (0/1)
+                        pdc.set(nsKey, PersistentDataType.BYTE,
+                                ((BooleanNBTTag) tag).isValueBoolean() ? (byte) 1 : (byte) 0);
+                    } else if (tag instanceof ByteNBTTag) {
+                        pdc.set(nsKey, PersistentDataType.BYTE, ((ByteNBTTag) tag).getValueByte());
+                    } else if (tag instanceof ListStringNBTTag) {
+                        List<String> list = ((ListStringNBTTag) tag).getValue();
+                        pdc.set(nsKey, PersistentDataType.STRING, list.toString());
+                    }
+                }
+                item.setItemMeta(meta);
+            }
+        }
+
         return item;
     }
 
