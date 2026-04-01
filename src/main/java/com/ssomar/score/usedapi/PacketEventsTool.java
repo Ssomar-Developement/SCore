@@ -1,10 +1,29 @@
 package com.ssomar.score.usedapi;
 
 import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.event.PacketListenerAbstract;
+import com.github.retrooper.packetevents.event.PacketSendEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType.Play;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerRotation;
 import org.bukkit.entity.Player;
 
+import java.util.Set;
+import java.util.UUID;
+
 public class PacketEventsTool {
+
+    public static void registerParticleToggleListener(Set<UUID> hiddenPlayers) {
+        PacketEvents.getAPI().getEventManager().registerListener(new PacketListenerAbstract() {
+            @Override
+            public void onPacketSend(PacketSendEvent event) {
+                if (event.getPacketType() != Play.Server.PARTICLE) return;
+                Player recipient = (Player) event.getPlayer();
+                if (recipient != null && hiddenPlayers.contains(recipient.getUniqueId())) {
+                    event.setCancelled(true);
+                }
+            }
+        });
+    }
 
     public static  int sendTest(Player player) {
         int entityId = (int) (Math.random() * Integer.MAX_VALUE);

@@ -171,7 +171,7 @@ public class RepairableFeatures extends FeatureWithHisOwnEditor<RepairableFeatur
 
     @Override
     public boolean isAvailable() {
-        return SCore.is1v21v2Plus();
+        return SCore.is1v21v2Plus() && SCore.isPaperOrFork();
     }
 
     @Override

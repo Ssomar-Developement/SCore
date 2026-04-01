@@ -103,20 +103,66 @@ public abstract class GUI implements IGUI {
 
     private FeatureSettingsInterface settings;
 
+    @Getter
+    private String titleString;
+
+    /**
+     * Optional GUI texture character. When set, the inventory title is prefixed with
+     * negative-space offset chars + this texture char, rendered via bitmap font provider
+     * as a full GUI background overlay. Set to '\0' (default) to disable.
+     *
+     * Requires the resource pack to have the font providers in assets/minecraft/font/default.json.
+     * The texture char must map to a bitmap provider in the Private Use Area (e.g. \uE000-\uE00F).
+     */
+    @Getter
+    private char guiTextureChar = '\0';
+
+    public void setGuiTextureChar(char guiTextureChar) {
+        this.guiTextureChar = guiTextureChar;
+        if (guiTextureChar != '\0' && inv != null) {
+            initInventory(titleString, inv.getSize());
+        }
+    }
+
+    // Negative space chars used for GUI texture positioning (defined in font default.json)
+    private static final char OFFSET_N8 = '\uF801';
+    private static final char OFFSET_N16 = '\uF802';
+    private static final char OFFSET_N128 = '\uF805';
+    private static final char OFFSET_N32 = '\uF803';
+
 
     public GUI(FeatureSettingsInterface settings, int size) {
         this.settings = settings;
-        initInventory("&l"+settings.getEditorName()+" Editor", size);
+        this.titleString = "&l"+settings.getEditorName()+" Editor";
+        initInventory(titleString, size);
         this.subSettings = new HashMap<>();
     }
 
     public GUI(String name, int size) {
+        this.titleString = name;
         initInventory(name, size);
         this.subSettings = new HashMap<>();
     }
 
+
+    /**
+     * Constructor that accepts a pre-built Inventory (e.g. created with a Component title).
+     * Use this when you need custom font/texture-based titles via Adventure API.
+     * Note: The inventory holder will NOT be this GUI instance since it was created externally.
+     */
+    public GUI(Inventory preBuiltInventory, int size) {
+        this.inv = preBuiltInventory;
+        this.size = size;
+        for (int j = 0; j < size; j++) {
+            createBackGroundItem(j);
+        }
+        if(WRITABLE_BOOK == null) init();
+        this.subSettings = new HashMap<>();
+    }
+
     public void initInventory(String name, int size) {
-        inv = Bukkit.createInventory(this, size, StringConverter.coloredString(name));
+        String displayName = applyGuiTexture(name, size);
+        inv = Bukkit.createInventory(this, size, StringConverter.coloredString(displayName));
         this.size = size;
         for (int j = 0; j < size; j++) {
             createBackGroundItem(j);
@@ -124,12 +170,32 @@ public abstract class GUI implements IGUI {
         if(WRITABLE_BOOK == null) init();
     }
 
+
+    /**
+     * Apply GUI texture prefix to a title string if guiTextureChar is set.
+     * §f = white color to prevent Minecraft from darkening the texture.
+     * Negative offsets position the texture over the inventory.
+     *
+     * The guiTextureChar is the base char for a 1-row inventory.
+     * For each additional row, the char is incremented by 1.
+     * e.g. base=\uE000: 1-row=\uE000, 3-row=\uE002, 6-row=\uE005
+     */
+    private String applyGuiTexture(String name, int size) {
+        if (guiTextureChar != '\0') {
+            int rows = size / 9;
+            char textureChar = (char) (guiTextureChar + (rows - 1));
+            return "§f" + OFFSET_N8 + textureChar + OFFSET_N128 + OFFSET_N32 + OFFSET_N16 + " " + name;
+        }
+        return name;
+    }
+
     public void fullReloadAndReopen(Player player) {
-        // Not compatible reload
-        if(settings == null) return;
-        initInventory("&l"+settings.getEditorName()+" Editor", size);
+        if (settings != null) {
+            titleString = "&l"+settings.getEditorName()+" Editor";
+        }
+        if (titleString == null) return;
+        initInventory(titleString, size);
         update();
-        //player.closeInventory();
         openGUISync(player);
     }
 
