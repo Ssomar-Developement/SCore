@@ -12,6 +12,8 @@ import com.ssomar.score.utils.strings.StringConverter;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.TypedKey;
+import io.papermc.paper.registry.set.RegistryKeySet;
+import io.papermc.paper.registry.set.RegistrySet;
 import io.papermc.paper.registry.tag.TagKey;
 import lombok.Getter;
 import lombok.Setter;
@@ -65,9 +67,26 @@ public class DamageTypeFeature extends FeatureAbstract<Optional<DamageType>, Dam
         this.value = Optional.ofNullable(RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE).get(value.key()));
     }
 
+    public void setValue(RegistryKeySet<DamageType> value) {
+        if (value == null || value.isEmpty()) {
+            this.value = Optional.empty();
+            return;
+        }
+        TypedKey<DamageType> first = value.values().iterator().next();
+        this.value = Optional.ofNullable(RegistryAccess.registryAccess().getRegistry(RegistryKey.DAMAGE_TYPE).get(first));
+    }
+
     public TagKey<DamageType> getValueTagKey() {
         if (value.isPresent()) {
             return TagKey.create(RegistryKey.DAMAGE_TYPE, getValue().get().getKey());
+        }
+        return null;
+    }
+
+    public RegistryKeySet<DamageType> getValueRegistryKeySet() {
+        if (value.isPresent()) {
+            TypedKey<DamageType> key = TypedKey.create(RegistryKey.DAMAGE_TYPE, getValue().get().getKey());
+            return RegistrySet.keySet(RegistryKey.DAMAGE_TYPE, key);
         }
         return null;
     }

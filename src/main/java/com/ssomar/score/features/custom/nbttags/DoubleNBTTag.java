@@ -52,6 +52,6 @@ public class DoubleNBTTag extends NBTTag {
 
     @Override
     public String toString() {
-        return "DOUBLE::" + getKey() + "::" + getValueDouble();
+        return "DOUBLE::" + getKey() + "::" + getValueDouble() + (isSaveInPDC() ? "::true" : "");
     }
 }

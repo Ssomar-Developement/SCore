@@ -16,6 +16,7 @@ import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.utils.strings.StringConverter;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import io.papermc.paper.datacomponent.item.BlocksAttacks;
+import org.bukkit.damage.DamageType;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
@@ -150,13 +151,27 @@ public class BlocksAttacksFeatures extends FeatureWithHisOwnEditor<BlocksAttacks
                 ItemStack item = args.getItem();
                 SsomarDev.testMsg("blockattacks features applyOnItem2", false);
                 try {
-                    item.setData(DataComponentTypes.BLOCKS_ATTACKS, BlocksAttacks.blocksAttacks()
-                    .blockSound(blockSound.getValue().isPresent() ? blockSound.getValue().get().getKey() : null)
+                    BlocksAttacks.Builder builder = BlocksAttacks.blocksAttacks()
+                            .blockSound(blockSound.getValue().isPresent() ? blockSound.getValue().get().getKey() : null)
                             .blockDelaySeconds(blockDelay.getValue().get())
                             .disableSound(disableSound.getValue().isPresent() ? disableSound.getValue().get().getKey() : null)
                             .disableCooldownScale(disableCooldownScale.getValue().get().floatValue())
-                            .damageReductions(damageReductions.asList())
-                            .bypassedBy(bypassedBy.getValue().isPresent() ? bypassedBy.getValueTagKey() : null));
+                            .damageReductions(damageReductions.asList());
+                    if (bypassedBy.getValue().isPresent()) {
+                        try {
+                            // New Paper API (1.21.5 recent builds+) uses RegistryKeySet
+                            builder.bypassedBy(bypassedBy.getValueRegistryKeySet());
+                        } catch (NoSuchMethodError | NoClassDefFoundError e2) {
+                            // Old Paper API uses TagKey - must use reflection since it won't compile against new API
+                            try {
+                                java.lang.reflect.Method m = builder.getClass().getMethod("bypassedBy", io.papermc.paper.registry.tag.TagKey.class);
+                                m.invoke(builder, bypassedBy.getValueTagKey());
+                            } catch (Exception e3) {
+                                SsomarDev.testMsg("Could not set bypassedBy via TagKey fallback: " + e3.getMessage(), true);
+                            }
+                        }
+                    }
+                    item.setData(DataComponentTypes.BLOCKS_ATTACKS, builder);
                 } catch (Exception e) {
                     Utils.sendConsoleMsg(SCore.plugin, "&cError while applying the block attacks features on an item");
                     e.printStackTrace();
@@ -177,7 +192,13 @@ public class BlocksAttacksFeatures extends FeatureWithHisOwnEditor<BlocksAttacks
                 disableSound.setValue(Optional.ofNullable(SoundUtils.getSound(blocksAttacks.disableSound().value())));
                 disableCooldownScale.setValue(Optional.of((double) blocksAttacks.disableCooldownScale()));
                 damageReductions.setValues(blocksAttacks.damageReductions());
-                bypassedBy.setValue(blocksAttacks.bypassedBy());
+                // bypassedBy() returns RegistryKeySet on new Paper, TagKey on old Paper
+                Object bypassedByValue = blocksAttacks.bypassedBy();
+                if (bypassedByValue instanceof io.papermc.paper.registry.set.RegistryKeySet) {
+                    bypassedBy.setValue((io.papermc.paper.registry.set.RegistryKeySet<DamageType>) bypassedByValue);
+                } else if (bypassedByValue instanceof io.papermc.paper.registry.tag.TagKey) {
+                    bypassedBy.setValue((io.papermc.paper.registry.tag.TagKey<DamageType>) bypassedByValue);
+                }
             }
         }
     }

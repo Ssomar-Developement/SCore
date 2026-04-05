@@ -28,6 +28,7 @@ public class MobAround extends BlockCommand {
         CommandSetting limit = new CommandSetting("limit", -1, Integer.class, -1);
         CommandSetting sort = new CommandSetting("sort", -1, String.class, "NEAREST");
         CommandSetting regionCheck = new CommandSetting("regionCheck", -1, Boolean.class, false);
+        CommandSetting nonliving = new CommandSetting("nonliving", -1, Boolean.class, false);
         List<CommandSetting> settings = getSettings();
         settings.add(distance);
         settings.add(displayMsgIfNoPlayer);
@@ -39,6 +40,7 @@ public class MobAround extends BlockCommand {
         settings.add(limit);
         settings.add(sort);
         settings.add(regionCheck);
+        settings.add(nonliving);
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
     }
