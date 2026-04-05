@@ -53,6 +53,6 @@ public class BooleanNBTTag extends NBTTag {
 
     @Override
     public String toString() {
-        return "BOOLEAN::" + getKey() + "::" + isValueBoolean();
+        return "BOOLEAN::" + getKey() + "::" + isValueBoolean() + (isSaveInPDC() ? "::true" : "");
     }
 }

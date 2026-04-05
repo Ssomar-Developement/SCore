@@ -50,6 +50,6 @@ public class IntNBTTag extends NBTTag {
 
     @Override
     public String toString() {
-        return "INTEGER::" + getKey() + "::" + getValueInt();
+        return "INTEGER::" + getKey() + "::" + getValueInt() + (isSaveInPDC() ? "::true" : "");
     }
 }

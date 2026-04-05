@@ -53,7 +53,7 @@ public class StringNBTTag extends NBTTag {
 
     @Override
     public String toString() {
-        return "STRING::" + getKey() + "::" + getValueString();
+        return "STRING::" + getKey() + "::" + getValueString() + (isSaveInPDC() ? "::true" : "");
     }
 
 }
