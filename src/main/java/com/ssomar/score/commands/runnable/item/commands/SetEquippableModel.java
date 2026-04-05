@@ -3,13 +3,11 @@ package com.ssomar.score.commands.runnable.item.commands;
 import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.item.ItemCommand;
-import com.ssomar.sevents.events.player.equip.armor.ArmorType;
 import io.papermc.paper.datacomponent.DataComponentTypes;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.components.EquippableComponent;
@@ -45,29 +43,9 @@ public class SetEquippableModel extends ItemCommand {
                 io.papermc.paper.datacomponent.item.Equippable defaultEquippable = defaultItem.getData(DataComponentTypes.EQUIPPABLE);
                 equippable.setDamageOnHurt(defaultEquippable.damageOnHurt());
                 equippable.setSlot(defaultEquippable.slot());
-            } else {
-                ArmorType armorType = ArmorType.matchType(item, false);
-                if (armorType != null) {
-                    EquipmentSlot equipSlot;
-                    switch (armorType) {
-                        case CHESTPLATE:
-                            equipSlot = EquipmentSlot.CHEST;
-                            break;
-                        case LEGGINGS:
-                            equipSlot = EquipmentSlot.LEGS;
-                            break;
-                        case BOOTS:
-                            equipSlot = EquipmentSlot.FEET;
-                            break;
-                        default:
-                            equipSlot = EquipmentSlot.HEAD;
-                            break;
-                    }
-                    equippable.setSlot(equipSlot);
-                }
+                equippable.setDispensable(defaultEquippable.dispensable());
             }
         }
-
         equippable.setModel(NamespacedKey.fromString(model));
         itemMeta.setEquippable(equippable);
         item.setItemMeta(itemMeta);

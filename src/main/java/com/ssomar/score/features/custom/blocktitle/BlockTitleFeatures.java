@@ -303,7 +303,13 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
      **/
     public Location update(@Nullable Location location, @NotNull Location objectLocation, StringPlaceholder sp) {
 
-        if(!objectLocation.isWorldLoaded() || !objectLocation.isChunkLoaded()) return location;
+        if(objectLocation.getWorld() == null) return location;
+        try {
+            if(!objectLocation.isWorldLoaded() || !objectLocation.isChunkLoaded()) return location;
+        } catch (NoSuchMethodError e) {
+            // isChunkLoaded() not available on older Spigot — check manually
+            if(!objectLocation.getWorld().isChunkLoaded(objectLocation.getBlockX() >> 4, objectLocation.getBlockZ() >> 4)) return location;
+        }
 
         String pluginToUse = GeneralConfig.getInstance().getHologramsPlugin().toUpperCase();
 

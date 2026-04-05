@@ -43,6 +43,14 @@ public abstract class SObjectsWithFileEditor<T extends SObject & SObjectEditable
         this.load();
     }
 
+    public SObjectsWithFileEditor(SPlugin sPlugin, String title, String path, SObjectManager manager, SObjectWithFileLoader loader) {
+        super(sPlugin, title, manager);
+        this.defaultPath = path;
+        this.path = path;
+        this.loader = loader;
+        this.load();
+    }
+
     public List<String> getFilesInFolder(String path){
         List<String> listFiles = new ArrayList<>(Arrays.asList(new File(path).list()));
         if(dontShowDirectory){

@@ -3,7 +3,9 @@ package com.ssomar.score.commands.runnable.entity.display;
 import com.ssomar.score.commands.runnable.CommandManager;
 import com.ssomar.score.commands.runnable.SCommand;
 import com.ssomar.score.commands.runnable.entity.commands.*;
+import com.ssomar.score.commands.runnable.entity.display.commands.RunAnimation;
 import com.ssomar.score.commands.runnable.entity.display.commands.SetFurniture;
+import com.ssomar.score.commands.runnable.entity.display.commands.StopAnimation;
 import com.ssomar.score.commands.runnable.mixed_player_entity.MixedCommandsManager;
 
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ public class DisplayCommandManager extends CommandManager<SCommand> {
     private DisplayCommandManager() {
         List<SCommand> commands = new ArrayList<>();
         commands.add(new SetFurniture());
+        commands.add(new RunAnimation());
+        commands.add(new StopAnimation());
 
         commands.add(new TeleportPlayerToEntity());
         commands.add(new DropItem());

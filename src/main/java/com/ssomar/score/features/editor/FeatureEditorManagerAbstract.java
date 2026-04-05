@@ -15,7 +15,16 @@ import java.util.Optional;
 public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterface<Y>, Y extends FeatureParentInterface> extends NewGUIManager<T> {
 
     public void startEditing(Player editor, Y feature) {
-        cache.put(editor, buildEditor(feature));
+        T editorGui = buildEditor(feature);
+        // If the feature has a custom GUI texture char, apply it to the editor
+        if (feature instanceof FeatureWithHisOwnEditor) {
+            char textureChar = ((FeatureWithHisOwnEditor<?,?,?,?>) feature).getEditorGuiTextureChar();
+            if (textureChar != '\0') {
+                editorGui.setGuiTextureChar(textureChar);
+                editorGui.load();
+            }
+        }
+        cache.put(editor, editorGui);
         cache.get(editor).openGUISync(editor);
         SaveSessionPathManager.getInstance().addPlayerSessionPath(editor, cache.get(editor));
     }
@@ -52,6 +61,13 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
                     i.gui.getParent().reload();
                     i.gui.getParent().save();
                     FeatureParentInterface parent = (FeatureParentInterface) feature;
+                    // Propagate GUI texture char to sub-feature if it doesn't have its own
+                    if (parent instanceof FeatureWithHisOwnEditor && i.gui.getGuiTextureChar() != '\0') {
+                        FeatureWithHisOwnEditor<?,?,?,?> subFeature = (FeatureWithHisOwnEditor<?,?,?,?>) parent;
+                        if (subFeature.getEditorGuiTextureChar() == '\0') {
+                            subFeature.setEditorGuiTextureChar(i.gui.getGuiTextureChar());
+                        }
+                    }
                     parent.openEditor(i.player);
                 }
                 return true;
