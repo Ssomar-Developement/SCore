@@ -40,7 +40,7 @@ public class ParticleFeature extends FeatureWithHisOwnEditor<ParticleFeature, Pa
     /* specific for the Particle.REDSTONE */
     private BukkitColorFeature redstoneColor;
 
-    /* specific for the Particle.BLOCK_CRACK, BLOCK_DUST, BLOCK_MARKER*/
+    /* specific for the Particle.BLOCK_CRACK, BLOCK_DUST, BLOCK_MARKER, FALLING_DUST*/
     private MaterialFeature blockType;
 
     public ParticleFeature(FeatureParentInterface parent, String id) {
@@ -211,6 +211,7 @@ public class ParticleFeature extends FeatureWithHisOwnEditor<ParticleFeature, Pa
         if (SCore.is1v18Plus()) {
             particles.add(Particle.BLOCK_MARKER);
         }
+        particles.add(Particle.FALLING_DUST);
         return particles;
     }
 
