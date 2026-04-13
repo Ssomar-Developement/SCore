@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.nbttags;
 
+import com.ssomar.score.utils.logging.Utils;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTType;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
@@ -34,17 +35,21 @@ public class CompoundNBTTag extends NBTTag {
 
             switch (type) {
                 case NBTTagInt:
+                    Utils.sendConsoleMsg("FLAG 1 TRIGGERED");
                     this.nbtTags.add(new IntNBTTag(s, nbtCompound.getInteger(s)));
                     break;
                 case NBTTagByte:
+                    Utils.sendConsoleMsg("FLAG 2 TRIGGERED");
                     this.nbtTags.add(new ByteNBTTag(s, nbtCompound.getByte(s)));
                     break;
                 case NBTTagByteArray:
                     break;
                 case NBTTagCompound:
+                    Utils.sendConsoleMsg("FLAG 3 TRIGGERED");
                     this.nbtTags.add(new CompoundNBTTag(s, nbtCompound.getCompound(s)));
                     break;
                 case NBTTagDouble:
+                    Utils.sendConsoleMsg("FLAG 4 TRIGGERED");
                     this.nbtTags.add(new DoubleNBTTag(s, nbtCompound.getDouble(s)));
                     break;
                 case NBTTagEnd:
@@ -60,6 +65,7 @@ public class CompoundNBTTag extends NBTTag {
                 case NBTTagShort:
                     break;
                 case NBTTagString:
+                    Utils.sendConsoleMsg("FLAG 5 TRIGGERED");
                     this.nbtTags.add(new StringNBTTag(s, nbtCompound.getString(s)));
                     break;
                 default:
@@ -83,7 +89,7 @@ public class CompoundNBTTag extends NBTTag {
     public boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent) {
         //SsomarDev.testMsg(">>> BULD CompoundNBTTag: " + getKey(), true);
         NBTCompound compound = nbtCompound.addCompound(getKey());
-
+        Utils.sendConsoleMsg("&cCompoundNBTTag FLAG 1");
         boolean different = false;
         for (NBTTag nbtTag : nbtTags) {
             //SsomarDev.testMsg(">>> chldren CompoundNBTTag: " + nbtTag.getKey(), true);
@@ -128,6 +134,7 @@ public class CompoundNBTTag extends NBTTag {
                         break;
                     case "STRING":
                     case "STR":
+                        Utils.sendConsoleMsg("&cCommence Reading : "+tagSection.getKeys(true));
                         tag = new StringNBTTag(tagSection);
                         break;
                     case "DOUBLE":

@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.nbttags;
 
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import lombok.Getter;
@@ -24,7 +25,7 @@ public class DoubleNBTTag extends NBTTag {
     @Override
     public boolean applyTo(ReadWriteNBT nbtItem, boolean onlyIfDifferent) {
         if (!onlyIfDifferent || nbtItem.getDouble(getKey()) != getValueDouble()) {
-            nbtItem.setDouble(getKey(), getValueDouble());
+            nbtItem.setString(getKey(), StringPlaceholder.replaceRandomPlaceholders(String.valueOf(getValueDouble())));
             return true;
         }
         return false;

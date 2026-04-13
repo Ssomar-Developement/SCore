@@ -1,8 +1,10 @@
 package com.ssomar.score.features.custom.nbttags;
 
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import lombok.Getter;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.ConfigurationSection;
 
 @Getter
@@ -21,10 +23,16 @@ public class StringNBTTag extends NBTTag {
         this.isValueString = true;
     }
 
+    /**
+     * This method is used to get the nbt key values from the EI config.
+     * @param nbtItem
+     * @param onlyIfDifferent
+     * @return
+     */
     @Override
     public boolean applyTo(ReadWriteNBT nbtItem, boolean onlyIfDifferent) {
         if (!onlyIfDifferent || !nbtItem.getString(getKey()).equals(getValueString())) {
-            nbtItem.setString(getKey(), getValueString());
+            nbtItem.setString(getKey(), StringPlaceholder.replaceRandomPlaceholders(getValueString()));
             return true;
         }
         return false;
