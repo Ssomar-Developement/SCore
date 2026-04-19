@@ -1247,6 +1247,52 @@ public final class XParticle {
         return circle(radius, density, time, drawMode, "disk", display);
     }
 
+    /**
+     * Animated circle with explicit plane selection.
+     * This is a convenience wrapper over {@link #circle} that lets you pick
+     * the orientation plane by name instead of via raw directionPitch/directionYaw.
+     *
+     * @param radius       radius of the circle.
+     * @param density      number of points along the circumference.
+     * @param timeToDisplay ticks over which the circle is progressively drawn; 0 = instant.
+     * @param drawMode     drawing order: "clockwise", "counterclockwise", or "random".
+     * @param plane        orientation plane: "xz" (horizontal), "xy" (vertical N/S), or "yz" (vertical E/W).
+     * @param offset       extra Y offset applied to the circle's spawn location.
+     * @param display      the particle display object.
+     * @return the animation handler, or null when time is 0.
+     */
+    public static ScheduledTask animatedCircle(double radius, double density, int timeToDisplay, String drawMode, String plane, double offset, ParticleDisplay display) {
+        switch (plane.toLowerCase()) {
+            case "xz": display.withDirection(90, 0); break;
+            case "xy": display.withDirection(0, 0);  break;
+            case "yz": display.withDirection(0, 90); break;
+            default: break;
+        }
+        Location loc = display.getLocation();
+        if (loc != null) loc.add(0, offset, 0);
+        return circle(radius, density, timeToDisplay, drawMode, "ring", display);
+    }
+
+    /**
+     * Spawns a flat 2D wall of particles oriented by pitch and yaw.
+     * This is a convenience wrapper over {@link #square} for single-plane walls
+     * where width is zero and the display is instant.
+     *
+     * @param height          height of the wall in blocks.
+     * @param length          length of the wall in blocks.
+     * @param density         particles per block.
+     * @param pitch           direction pitch of the wall normal (0 = horizontal wall).
+     * @param yaw             direction yaw of the wall normal (90 = facing East).
+     * @param verticalOrder   "up" or "down" — iteration order along the height axis.
+     * @param horizontalOrder "near" or "far" — iteration order along the length axis.
+     * @param display         the particle display object.
+     * @return the animation handler (null for instant display).
+     */
+    public static ScheduledTask wall(double height, double length, double density, double pitch, double yaw, String verticalOrder, String horizontalOrder, ParticleDisplay display) {
+        display.withDirection(pitch, yaw);
+        return square(height, length, 0.0, density, 0, "horizontal", verticalOrder, horizontalOrder, display);
+    }
+
 
 
 

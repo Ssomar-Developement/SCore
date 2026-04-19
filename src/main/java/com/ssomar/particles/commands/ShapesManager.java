@@ -76,10 +76,13 @@ public class ShapesManager {
         whitelistedShapes.add("ring"); // old , now based on circle
         whitelistedShapes.add("sphere");
         whitelistedShapes.add("spikeSphere");
+        whitelistedShapes.add("spiral"); // based on circle, fills inward
         whitelistedShapes.add("square"); // new
         whitelistedShapes.add("star");
         whitelistedShapes.add("tesseract");
         whitelistedShapes.add("vortex");
+        whitelistedShapes.add("wall"); // convenience wrapper over square for 2D walls
+        whitelistedShapes.add("animatedCircle"); // circle with plane selection
 
 
         whitelistedShapes.add("infinity");
