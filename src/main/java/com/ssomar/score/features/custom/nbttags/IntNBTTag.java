@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.nbttags;
 
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class IntNBTTag extends NBTTag {
     @Override
     public boolean applyTo(ReadWriteNBT nbtItem, boolean onlyIfDifferent) {
         if (!onlyIfDifferent || nbtItem.getInteger(getKey()) != getValueInt()) {
-            nbtItem.setInteger(getKey(), getValueInt());
+            nbtItem.setInteger(getKey(), Integer.valueOf(StringPlaceholder.replaceRandomPlaceholders(String.valueOf(getValueInt()))));
             return true;
         }
         return false;
@@ -45,7 +46,7 @@ public class IntNBTTag extends NBTTag {
 
     @Override
     public void loadValueFromConfig(ConfigurationSection configurationSection) {
-        this.valueInt = configurationSection.getInt("value", 0);
+        this.valueInt = Integer.parseInt(configurationSection.getString("value", "-1"));
     }
 
     @Override

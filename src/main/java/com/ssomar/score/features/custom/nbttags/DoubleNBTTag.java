@@ -9,14 +9,17 @@ import org.bukkit.configuration.ConfigurationSection;
 @Getter
 public class DoubleNBTTag extends NBTTag {
 
-    private double valueDouble;
+    /**
+     * Has to be saved as {@code String} first to support rand placeholder
+     */
+    private String valueDouble;
     private boolean isValueDouble;
 
     public DoubleNBTTag(ConfigurationSection configurationSection) {
         super(configurationSection);
     }
 
-    public DoubleNBTTag(String key, double valueDouble) {
+    public DoubleNBTTag(String key, String valueDouble) {
         super(key);
         this.valueDouble = valueDouble;
         this.isValueDouble = true;
@@ -24,8 +27,9 @@ public class DoubleNBTTag extends NBTTag {
 
     @Override
     public boolean applyTo(ReadWriteNBT nbtItem, boolean onlyIfDifferent) {
-        if (!onlyIfDifferent || nbtItem.getDouble(getKey()) != getValueDouble()) {
-            nbtItem.setString(getKey(), StringPlaceholder.replaceRandomPlaceholders(String.valueOf(getValueDouble())));
+        double doubleValue = Double.parseDouble(StringPlaceholder.replaceRandomPlaceholders(String.valueOf(getValueDouble())));
+        if (!onlyIfDifferent || nbtItem.getDouble(getKey()) != doubleValue) {
+            nbtItem.setDouble(getKey(), doubleValue);
             return true;
         }
         return false;
@@ -33,8 +37,9 @@ public class DoubleNBTTag extends NBTTag {
 
     @Override
     public boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent) {
-        if (!onlyIfDifferent || nbtCompound.getDouble(getKey()) != getValueDouble()) {
-            nbtCompound.setDouble(getKey(), getValueDouble());
+        double doubleValue = Double.parseDouble(StringPlaceholder.replaceRandomPlaceholders(String.valueOf(getValueDouble())));
+        if (!onlyIfDifferent || nbtCompound.getDouble(getKey()) != doubleValue) {
+            nbtCompound.setDouble(getKey(), doubleValue);
             return true;
         }
         return false;
@@ -48,7 +53,7 @@ public class DoubleNBTTag extends NBTTag {
 
     @Override
     public void loadValueFromConfig(ConfigurationSection configurationSection) {
-        this.valueDouble = configurationSection.getDouble("value", 0);
+        this.valueDouble = configurationSection.getString("value", "-1");
     }
 
     @Override

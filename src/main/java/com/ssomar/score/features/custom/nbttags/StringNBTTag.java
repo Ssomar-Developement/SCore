@@ -23,12 +23,6 @@ public class StringNBTTag extends NBTTag {
         this.isValueString = true;
     }
 
-    /**
-     * This method is used to get the nbt key values from the EI config.
-     * @param nbtItem
-     * @param onlyIfDifferent
-     * @return
-     */
     @Override
     public boolean applyTo(ReadWriteNBT nbtItem, boolean onlyIfDifferent) {
         if (!onlyIfDifferent || !nbtItem.getString(getKey()).equals(getValueString())) {

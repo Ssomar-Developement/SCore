@@ -35,22 +35,18 @@ public class CompoundNBTTag extends NBTTag {
 
             switch (type) {
                 case NBTTagInt:
-                    Utils.sendConsoleMsg("FLAG 1 TRIGGERED");
                     this.nbtTags.add(new IntNBTTag(s, nbtCompound.getInteger(s)));
                     break;
                 case NBTTagByte:
-                    Utils.sendConsoleMsg("FLAG 2 TRIGGERED");
                     this.nbtTags.add(new ByteNBTTag(s, nbtCompound.getByte(s)));
                     break;
                 case NBTTagByteArray:
                     break;
                 case NBTTagCompound:
-                    Utils.sendConsoleMsg("FLAG 3 TRIGGERED");
                     this.nbtTags.add(new CompoundNBTTag(s, nbtCompound.getCompound(s)));
                     break;
                 case NBTTagDouble:
-                    Utils.sendConsoleMsg("FLAG 4 TRIGGERED");
-                    this.nbtTags.add(new DoubleNBTTag(s, nbtCompound.getDouble(s)));
+                    this.nbtTags.add(new DoubleNBTTag(s, Double.toString(nbtCompound.getDouble(s))));
                     break;
                 case NBTTagEnd:
                     break;
@@ -59,13 +55,13 @@ public class CompoundNBTTag extends NBTTag {
                 case NBTTagIntArray:
                     break;
                 case NBTTagList:
+                    this.nbtTags.add(new ListCompoundNBTTag(s, nbtCompound.getCompoundList(s)));
                     break;
                 case NBTTagLong:
                     break;
                 case NBTTagShort:
                     break;
                 case NBTTagString:
-                    Utils.sendConsoleMsg("FLAG 5 TRIGGERED");
                     this.nbtTags.add(new StringNBTTag(s, nbtCompound.getString(s)));
                     break;
                 default:
@@ -89,7 +85,6 @@ public class CompoundNBTTag extends NBTTag {
     public boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent) {
         //SsomarDev.testMsg(">>> BULD CompoundNBTTag: " + getKey(), true);
         NBTCompound compound = nbtCompound.addCompound(getKey());
-        Utils.sendConsoleMsg("&cCompoundNBTTag FLAG 1");
         boolean different = false;
         for (NBTTag nbtTag : nbtTags) {
             //SsomarDev.testMsg(">>> chldren CompoundNBTTag: " + nbtTag.getKey(), true);
@@ -134,7 +129,6 @@ public class CompoundNBTTag extends NBTTag {
                         break;
                     case "STRING":
                     case "STR":
-                        Utils.sendConsoleMsg("&cCommence Reading : "+tagSection.getKeys(true));
                         tag = new StringNBTTag(tagSection);
                         break;
                     case "DOUBLE":
@@ -149,6 +143,11 @@ public class CompoundNBTTag extends NBTTag {
                         break;
                     case "COMPOUND":
                         tag = new CompoundNBTTag(tagSection);
+                        break;
+                    case "COMPOUND_LIST":
+                        tag = new ListCompoundNBTTag(tagSection);
+                        break;
+                    default:
                         break;
                 }
                 if (tag != null) this.nbtTags.add(tag);

@@ -26,16 +26,38 @@ public abstract class NBTTag {
         this.key = key;
     }
 
+    /**
+     * Saves the values from the source of changes towards the item config. <br/>
+     * @param configurationSection
+     */
     public NBTTag(ConfigurationSection configurationSection) {
         this.key = configurationSection.getString("key");
         this.saveInPDC = configurationSection.getBoolean("saveInPDC", false);
         loadValueFromConfig(configurationSection);
     }
 
+    /**
+     * This method is used to apply nbt details to items. Will be more likely to be executed in cases such as
+     * when you give yourself items via <code>/ei give</code>
+     * @param readWriteNbt
+     * @param onlyIfDifferent currently set to true in the main executor. If set to false, it will ignore conditions in the implementation done by child classes.
+     * @return
+     */
     public abstract boolean applyTo(ReadWriteNBT readWriteNbt, boolean onlyIfDifferent);
 
+    /**
+     * This method is used mainly by ListCompoundNBT to write child nbt tags to items
+     * @param nbtCompound
+     * @param onlyIfDifferent currently set to true in the main executor. If set to false, it will ignore conditions in the implementation done by child classes.
+     * @return
+     */
     public abstract boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent);
 
+    /**
+     * When the user makes changes to the nbt list in the ingame editor or other ways, this method is called to save the changes to the item config.
+     * @param configurationSection
+     * @param index
+     */
     public void saveInConfig(ConfigurationSection configurationSection, Integer index) {
         configurationSection.set("nbt." + index + ".key", getKey());
         if (saveInPDC) configurationSection.set("nbt." + index + ".saveInPDC", true);
@@ -44,5 +66,11 @@ public abstract class NBTTag {
 
     public abstract void saveValueInConfig(ConfigurationSection configurationSection, Integer index);
 
+    /**
+     * Gets executed during plugin load/reload. This is used when class inheritors try to read the nbt field of an item config
+     * and save it in their instance variable: {@code List<NBTTag> nbtTags} for later utilization in {@link NBTTag#applyTo(ReadWriteNBT, boolean)}
+     * and
+     * @param configurationSection
+     */
     public abstract void loadValueFromConfig(ConfigurationSection configurationSection);
 }
