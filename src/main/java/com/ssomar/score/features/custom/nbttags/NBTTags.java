@@ -15,6 +15,7 @@ import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
 import com.ssomar.score.utils.logging.Utils;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.strings.StringConverter;
 import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTType;
@@ -288,9 +289,9 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
                     if (tag instanceof StringNBTTag) {
                         pdc.set(nsKey, PersistentDataType.STRING, ((StringNBTTag) tag).getValueString());
                     } else if (tag instanceof IntNBTTag) {
-                        pdc.set(nsKey, PersistentDataType.INTEGER, Integer.parseInt(((IntNBTTag) tag).getValueInt()));
+                        pdc.set(nsKey, PersistentDataType.INTEGER, Integer.parseInt(StringPlaceholder.replaceRandomPlaceholders(((IntNBTTag) tag).getValueInt())));
                     } else if (tag instanceof DoubleNBTTag) {
-                        pdc.set(nsKey, PersistentDataType.DOUBLE, Double.parseDouble(((DoubleNBTTag) tag).getValueDouble()));
+                        pdc.set(nsKey, PersistentDataType.DOUBLE, Double.parseDouble(StringPlaceholder.replaceRandomPlaceholders(((DoubleNBTTag) tag).getValueDouble())));
                     } else if (tag instanceof BooleanNBTTag) {
                         // PDC has no dedicated boolean type; store as BYTE (0/1)
                         pdc.set(nsKey, PersistentDataType.BYTE,
