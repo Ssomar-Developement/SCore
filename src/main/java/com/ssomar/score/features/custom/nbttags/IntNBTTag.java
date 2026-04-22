@@ -9,6 +9,9 @@ import org.bukkit.configuration.ConfigurationSection;
 @Getter
 public class IntNBTTag extends NBTTag {
 
+    /**
+     * Has to be saved as {@code String} first to support rand placeholder
+     */
     private String valueInt;
 
     public IntNBTTag(ConfigurationSection configurationSection) {

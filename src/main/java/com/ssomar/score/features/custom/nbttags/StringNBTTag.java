@@ -4,7 +4,6 @@ import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import lombok.Getter;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.configuration.ConfigurationSection;
 
 @Getter
