@@ -48,7 +48,7 @@ public class DoubleNBTTag extends NBTTag {
     @Override
     public void saveValueInConfig(ConfigurationSection configurationSection, Integer index) {
         configurationSection.set("nbt." + index + ".type", "DOUBLE");
-        configurationSection.set("nbt." + index + ".value", getValueDouble());
+        configurationSection.set("nbt." + index + ".value", Double.valueOf(getValueDouble()));
     }
 
     @Override

@@ -35,7 +35,7 @@ public class CompoundNBTTag extends NBTTag {
 
             switch (type) {
                 case NBTTagInt:
-                    this.nbtTags.add(new IntNBTTag(s, nbtCompound.getInteger(s)));
+                    this.nbtTags.add(new IntNBTTag(s, Integer.toString(nbtCompound.getInteger(s))));
                     break;
                 case NBTTagByte:
                     this.nbtTags.add(new ByteNBTTag(s, nbtCompound.getByte(s)));

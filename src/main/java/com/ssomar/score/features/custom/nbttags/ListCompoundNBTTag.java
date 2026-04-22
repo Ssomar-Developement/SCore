@@ -44,7 +44,7 @@ ListCompoundNBTTag extends NBTTag {
         for (CompoundNBTTag s : values) {
             ReadWriteNBT nbtListCompound = list.addCompound();
             for (NBTTag t : s.getNbtTags()) {
-                different = t.applyTo(nbtListCompound, onlyIfDifferent);
+                different = t.applyTo(nbtListCompound, onlyIfDifferent) || different;
             }
         }
         return different;
@@ -59,7 +59,7 @@ ListCompoundNBTTag extends NBTTag {
         for (CompoundNBTTag s : values) {
             NBTListCompound nbtListCompound = list.addCompound();
             for (NBTTag t : s.getNbtTags()) {
-                different = t.applyTo(nbtListCompound, onlyIfDifferent);
+                different = t.applyTo(nbtListCompound, onlyIfDifferent) || different;
             }
         }
         return different;

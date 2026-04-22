@@ -81,7 +81,7 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
                 SsomarDev.testMsg(" >>>>>>> load tag: " + s+" type: "+type, true);
                 switch (type) {
                     case NBTTagInt:
-                        tags.add(new IntNBTTag(s, nbti.getInteger(s).intValue()));
+                        tags.add(new IntNBTTag(s, Integer.toString(nbti.getInteger(s).intValue())));
                         break;
                     case NBTTagByte:
                         tags.add(new ByteNBTTag(s, nbti.getByte(s).byteValue()));
@@ -288,9 +288,9 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
                     if (tag instanceof StringNBTTag) {
                         pdc.set(nsKey, PersistentDataType.STRING, ((StringNBTTag) tag).getValueString());
                     } else if (tag instanceof IntNBTTag) {
-                        pdc.set(nsKey, PersistentDataType.INTEGER, ((IntNBTTag) tag).getValueInt());
+                        pdc.set(nsKey, PersistentDataType.INTEGER, Integer.parseInt(((IntNBTTag) tag).getValueInt()));
                     } else if (tag instanceof DoubleNBTTag) {
-                        pdc.set(nsKey, PersistentDataType.DOUBLE, Double.valueOf(((DoubleNBTTag) tag).getValueDouble()));
+                        pdc.set(nsKey, PersistentDataType.DOUBLE, Double.parseDouble(((DoubleNBTTag) tag).getValueDouble()));
                     } else if (tag instanceof BooleanNBTTag) {
                         // PDC has no dedicated boolean type; store as BYTE (0/1)
                         pdc.set(nsKey, PersistentDataType.BYTE,

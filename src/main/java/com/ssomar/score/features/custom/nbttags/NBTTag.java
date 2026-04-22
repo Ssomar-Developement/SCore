@@ -40,7 +40,7 @@ public abstract class NBTTag {
      * This method is used to apply nbt details to items. Will be more likely to be executed in cases such as
      * when you give yourself items via <code>/ei give</code>
      * @param readWriteNbt
-     * @param onlyIfDifferent currently set to true in the main executor. If set to false, it will ignore conditions in the implementation done by child classes.
+     * @param onlyIfDifferent main executor's default value is {@code true}. It's to prevent accidental rewrite of nbt because previous reports complained about nbt getting shuffled around and having the wrong order
      * @return
      */
     public abstract boolean applyTo(ReadWriteNBT readWriteNbt, boolean onlyIfDifferent);
@@ -48,7 +48,7 @@ public abstract class NBTTag {
     /**
      * This method is used mainly by ListCompoundNBT to write child nbt tags to items
      * @param nbtCompound
-     * @param onlyIfDifferent currently set to true in the main executor. If set to false, it will ignore conditions in the implementation done by child classes.
+     * @param onlyIfDifferent main executor's default value is {@code true}. It's to prevent accidental rewrite of nbt because previous reports complained about nbt getting shuffled around and having the wrong order
      * @return
      */
     public abstract boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent);
@@ -64,6 +64,11 @@ public abstract class NBTTag {
         saveValueInConfig(configurationSection, index);
     }
 
+    /**
+     * This method is used to save custom nbt details to an ExecutableItem's yml config.
+     * @param configurationSection the config pointer in the yml file. May get longer if the plugin is trying to save a really long NBT Compound
+     * @param index usually starts at 0. Goes up if there are sibling NBTs in the nest level of a primary NBT's children
+     */
     public abstract void saveValueInConfig(ConfigurationSection configurationSection, Integer index);
 
     /**
