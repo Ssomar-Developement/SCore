@@ -14,6 +14,11 @@ import java.util.List;
  */
 public class NBTTagNBTAPIApplier {
 
+    /**
+     * Applys NBTs to items using NBT API plugin
+     * @param item the item that will receive the custom nbts
+     * @param tags the tags
+     */
     public static void applyTags(ItemStack item, List<NBTTag> tags) {
         NBT.modify(item, nbtItem -> {
             for (NBTTag nbtTag : tags) {

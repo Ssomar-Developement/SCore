@@ -34,7 +34,7 @@ public class CompoundNBTTag extends NBTTag {
 
             switch (type) {
                 case NBTTagInt:
-                    this.nbtTags.add(new IntNBTTag(s, nbtCompound.getInteger(s)));
+                    this.nbtTags.add(new IntNBTTag(s, Integer.toString(nbtCompound.getInteger(s))));
                     break;
                 case NBTTagByte:
                     this.nbtTags.add(new ByteNBTTag(s, nbtCompound.getByte(s)));
@@ -45,7 +45,7 @@ public class CompoundNBTTag extends NBTTag {
                     this.nbtTags.add(new CompoundNBTTag(s, nbtCompound.getCompound(s)));
                     break;
                 case NBTTagDouble:
-                    this.nbtTags.add(new DoubleNBTTag(s, nbtCompound.getDouble(s)));
+                    this.nbtTags.add(new DoubleNBTTag(s, Double.toString(nbtCompound.getDouble(s))));
                     break;
                 case NBTTagEnd:
                     break;
@@ -54,6 +54,7 @@ public class CompoundNBTTag extends NBTTag {
                 case NBTTagIntArray:
                     break;
                 case NBTTagList:
+                    this.nbtTags.add(new ListCompoundNBTTag(s, nbtCompound.getCompoundList(s)));
                     break;
                 case NBTTagLong:
                     break;
@@ -83,7 +84,6 @@ public class CompoundNBTTag extends NBTTag {
     public boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent) {
         //SsomarDev.testMsg(">>> BULD CompoundNBTTag: " + getKey(), true);
         NBTCompound compound = nbtCompound.addCompound(getKey());
-
         boolean different = false;
         for (NBTTag nbtTag : nbtTags) {
             //SsomarDev.testMsg(">>> chldren CompoundNBTTag: " + nbtTag.getKey(), true);
@@ -142,6 +142,11 @@ public class CompoundNBTTag extends NBTTag {
                         break;
                     case "COMPOUND":
                         tag = new CompoundNBTTag(tagSection);
+                        break;
+                    case "COMPOUND_LIST":
+                        tag = new ListCompoundNBTTag(tagSection);
+                        break;
+                    default:
                         break;
                 }
                 if (tag != null) this.nbtTags.add(tag);
