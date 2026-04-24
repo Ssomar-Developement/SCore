@@ -45,10 +45,22 @@ public class DoubleNBTTag extends NBTTag {
         return false;
     }
 
+    /**
+     * Extra work is required for int and double to support random placeholders
+     * @param configurationSection the config pointer in the yml file. May get longer if the plugin is trying to save a really long NBT Compound
+     * @param index usually starts at 0. Goes up if there are sibling NBTs in the nest level of a primary NBT's children
+     */
     @Override
     public void saveValueInConfig(ConfigurationSection configurationSection, Integer index) {
-        configurationSection.set("nbt." + index + ".type", "DOUBLE");
-        configurationSection.set("nbt." + index + ".value", Double.valueOf(getValueDouble()));
+        try {
+            configurationSection.set("nbt." + index + ".type", "DOUBLE");
+            configurationSection.set("nbt." + index + ".value", Double.valueOf(getValueDouble()));
+        } catch (NumberFormatException e) {
+            configurationSection.set("nbt." + index + ".type", "DOUBLE");
+            configurationSection.set("nbt." + index + ".value", getValueDouble());
+        }
+
+
     }
 
     @Override
