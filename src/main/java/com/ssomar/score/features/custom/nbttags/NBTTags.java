@@ -14,6 +14,8 @@ import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.logging.Utils;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.strings.StringConverter;
 import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTType;
@@ -63,6 +65,10 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
         return blackListedTags;
     }
 
+    /**
+     * This method is used for importing custom nbt values from the held reference ItemStack when running <code>/ei create</code>
+     * @param item
+     */
     public void load(ItemStack item) {
         if (SCore.hasNBTAPI) {
             NBTItem nbti = new NBTItem(item);
@@ -76,7 +82,7 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
                 SsomarDev.testMsg(" >>>>>>> load tag: " + s+" type: "+type, true);
                 switch (type) {
                     case NBTTagInt:
-                        tags.add(new IntNBTTag(s, nbti.getInteger(s).intValue()));
+                        tags.add(new IntNBTTag(s, Integer.toString(nbti.getInteger(s).intValue())));
                         break;
                     case NBTTagByte:
                         tags.add(new ByteNBTTag(s, nbti.getByte(s).byteValue()));
@@ -85,7 +91,7 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
                         tags.add(new CompoundNBTTag(s, nbti.getCompound(s)));
                         break;
                     case NBTTagDouble:
-                        tags.add(new DoubleNBTTag(s, nbti.getDouble(s).doubleValue()));
+                        tags.add(new DoubleNBTTag(s, Double.toString(nbti.getDouble(s).doubleValue())));
                         break;
                     case NBTTagList:
                         /* Important for attributes in 1.12 */
@@ -107,6 +113,13 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
         }
     }
 
+    /**
+     * This method is typically executed during plugin load and reloads
+     * @param sPlugin
+     * @param configurationSection
+     * @param isPremiumLoading
+     * @return
+     */
     @Override
     public List<String> load(SPlugin sPlugin, ConfigurationSection configurationSection, boolean isPremiumLoading) {
         tags.clear();
@@ -276,9 +289,9 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
                     if (tag instanceof StringNBTTag) {
                         pdc.set(nsKey, PersistentDataType.STRING, ((StringNBTTag) tag).getValueString());
                     } else if (tag instanceof IntNBTTag) {
-                        pdc.set(nsKey, PersistentDataType.INTEGER, ((IntNBTTag) tag).getValueInt());
+                        pdc.set(nsKey, PersistentDataType.INTEGER, Integer.parseInt(StringPlaceholder.replaceRandomPlaceholders(((IntNBTTag) tag).getValueInt())));
                     } else if (tag instanceof DoubleNBTTag) {
-                        pdc.set(nsKey, PersistentDataType.DOUBLE, ((DoubleNBTTag) tag).getValueDouble());
+                        pdc.set(nsKey, PersistentDataType.DOUBLE, Double.parseDouble(StringPlaceholder.replaceRandomPlaceholders(((DoubleNBTTag) tag).getValueDouble())));
                     } else if (tag instanceof BooleanNBTTag) {
                         // PDC has no dedicated boolean type; store as BYTE (0/1)
                         pdc.set(nsKey, PersistentDataType.BYTE,
