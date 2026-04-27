@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.nbttags;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
@@ -26,7 +27,12 @@ public class DoubleNBTTag extends NBTTag {
     }
 
     @Override
-    public boolean applyTo(ReadWriteNBT nbtItem, boolean onlyIfDifferent) {
+    public boolean applyTo(Object nbtItemOpt, boolean onlyIfDifferent) {
+        ReadWriteNBT nbtItem = null;
+        if (SCore.hasNBTAPI) {
+            nbtItem = (ReadWriteNBT) nbtItemOpt;
+        } else return false;
+
         double doubleValue = Double.parseDouble(StringPlaceholder.replaceRandomPlaceholders(String.valueOf(getValueDouble())));
         if (!onlyIfDifferent || nbtItem.getDouble(getKey()) != doubleValue) {
             nbtItem.setDouble(getKey(), doubleValue);
@@ -36,7 +42,12 @@ public class DoubleNBTTag extends NBTTag {
     }
 
     @Override
-    public boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent) {
+    public boolean applyToComp(Object nbtCompoundOpt, boolean onlyIfDifferent) {
+        NBTCompound nbtCompound = null;
+        if (SCore.hasNBTAPI) {
+            nbtCompound = (NBTCompound) nbtCompoundOpt;
+        } else return false;
+
         double doubleValue = Double.parseDouble(StringPlaceholder.replaceRandomPlaceholders(String.valueOf(getValueDouble())));
         if (!onlyIfDifferent || nbtCompound.getDouble(getKey()) != doubleValue) {
             nbtCompound.setDouble(getKey(), doubleValue);

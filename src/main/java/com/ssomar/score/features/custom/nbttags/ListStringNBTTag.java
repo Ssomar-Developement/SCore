@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.nbttags;
 
+import com.ssomar.score.SCore;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTList;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
@@ -24,7 +25,12 @@ public class ListStringNBTTag extends NBTTag {
     }
 
     @Override
-    public boolean applyTo(ReadWriteNBT nbtItem, boolean onlyIfDifferent) {
+    public boolean applyTo(Object nbtItemOpt, boolean onlyIfDifferent) {
+        ReadWriteNBT nbtItem = null;
+        if (SCore.hasNBTAPI) {
+            nbtItem = (ReadWriteNBT) nbtItemOpt;
+        } else return false;
+
         ReadWriteNBTList<String> list = nbtItem.getStringList(getKey());
         //list.clear();
         boolean different = false;
@@ -37,7 +43,12 @@ public class ListStringNBTTag extends NBTTag {
     }
 
     @Override
-    public boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent) {
+    public boolean applyToComp(Object nbtCompoundOpt, boolean onlyIfDifferent) {
+        NBTCompound nbtCompound = null;
+        if (SCore.hasNBTAPI) {
+            nbtCompound = (NBTCompound) nbtCompoundOpt;
+        } else return false;
+
         NBTList<String> list = nbtCompound.getStringList(getKey());
         //list.clear();
         boolean different = false;

@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.nbttags;
 
+import com.ssomar.score.SCore;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTCompoundList;
 import de.tr7zw.nbtapi.NBTListCompound;
@@ -36,7 +37,12 @@ ListCompoundNBTTag extends NBTTag {
     }
 
     @Override
-    public boolean applyTo(ReadWriteNBT nbtItem, boolean onlyIfDifferent) {
+    public boolean applyTo(Object nbtItemOpt, boolean onlyIfDifferent) {
+        ReadWriteNBT nbtItem = null;
+        if (SCore.hasNBTAPI) {
+            nbtItem = (ReadWriteNBT) nbtItemOpt;
+        } else return false;
+
         ReadWriteNBTCompoundList list = nbtItem.getCompoundList(getKey());
         //list.clear();
 
@@ -44,14 +50,19 @@ ListCompoundNBTTag extends NBTTag {
         for (CompoundNBTTag s : values) {
             ReadWriteNBT nbtListCompound = list.addCompound();
             for (NBTTag t : s.getNbtTags()) {
-                different = t.applyTo(nbtListCompound, onlyIfDifferent) || different;
+                different = t.applyToComp(nbtListCompound, onlyIfDifferent) || different;
             }
         }
         return different;
     }
 
     @Override
-    public boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent) {
+    public boolean applyToComp(Object nbtCompoundOpt, boolean onlyIfDifferent) {
+        NBTCompound nbtCompound = null;
+        if (SCore.hasNBTAPI) {
+            nbtCompound = (NBTCompound) nbtCompoundOpt;
+        } else return false;
+
         NBTCompoundList list = nbtCompound.getCompoundList(getKey());
         //list.clear();
 
