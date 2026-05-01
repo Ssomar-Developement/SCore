@@ -3,17 +3,21 @@ package com.ssomar.score.usedapi;
 import com.ssomar.score.SCore;
 import com.ssomar.score.utils.logging.Utils;
 import io.lumine.mythic.lib.MythicLib;
+import io.lumine.mythic.lib.api.player.MMOPlayerData;
+import io.lumine.mythic.lib.api.stat.StatInstance;
+import io.lumine.mythic.lib.api.stat.StatMap;
 import io.lumine.mythic.lib.api.stat.provider.EntityStatProvider;
 import io.lumine.mythic.lib.damage.AttackMetadata;
 import io.lumine.mythic.lib.damage.DamageMetadata;
 import io.lumine.mythic.lib.damage.DamageType;
 import io.lumine.mythic.lib.element.Element;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 public class MyhticLibAPI {
 
-    public static void mlib_damage(@Nullable LivingEntity attacker, LivingEntity entity, double damage, String damageType, @Nullable String element, boolean knockback) {
+    public static void mlib_damage(@Nullable LivingEntity attacker, LivingEntity entity, double damageInput, String damageType, @Nullable String element, boolean knockback) {
 
         Element elementEnum = null;
         if (element != null){
@@ -24,6 +28,14 @@ public class MyhticLibAPI {
                 Utils.sendConsoleMsg(SCore.plugin, "&cAvailable elements are : &7"+Element.values());
             }
         }
+
+        // to get critical stats
+        MMOPlayerData playerData = MMOPlayerData.get((Player) attacker);
+        StatMap statMap = playerData.getStatMap();
+        double critStrikePower = statMap.getInstance("CRITICAL_STRIKE_POWER").getTotal();
+
+        double damage = damageInput + (damageInput * critStrikePower);
+
         DamageMetadata damageMetadata;
         if (elementEnum == null) damageMetadata = new DamageMetadata(damage, DamageType.valueOf(damageType));
         else damageMetadata = new DamageMetadata(damage, elementEnum, DamageType.valueOf(damageType));
