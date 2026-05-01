@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.nbttags;
 
+import com.ssomar.score.SCore;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
@@ -24,7 +25,12 @@ public class IntNBTTag extends NBTTag {
     }
 
     @Override
-    public boolean applyTo(ReadWriteNBT nbtItem, boolean onlyIfDifferent) {
+    public boolean applyTo(Object nbtItemOpt, boolean onlyIfDifferent) {
+        ReadWriteNBT nbtItem = null;
+        if (SCore.hasNBTAPI) {
+            nbtItem = (ReadWriteNBT) nbtItemOpt;
+        } else return false;
+
         int integerValue = Integer.parseInt(StringPlaceholder.replaceRandomPlaceholders(String.valueOf(getValueInt())));
         if (!onlyIfDifferent || nbtItem.getInteger(getKey()) != integerValue) {
             nbtItem.setInteger(getKey(), integerValue);
@@ -34,7 +40,12 @@ public class IntNBTTag extends NBTTag {
     }
 
     @Override
-    public boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent) {
+    public boolean applyToComp(Object nbtCompoundOpt, boolean onlyIfDifferent) {
+        NBTCompound nbtCompound = null;
+        if (SCore.hasNBTAPI) {
+            nbtCompound = (NBTCompound) nbtCompoundOpt;
+        } else return false;
+
         int integerValue = Integer.parseInt(StringPlaceholder.replaceRandomPlaceholders(String.valueOf(getValueInt())));
         if (!onlyIfDifferent || nbtCompound.getInteger(getKey()) != integerValue) {
             nbtCompound.setInteger(getKey(), integerValue);

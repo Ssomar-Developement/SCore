@@ -1,10 +1,14 @@
 package com.ssomar.score.features.custom.nbttags;
 
-import de.tr7zw.nbtapi.NBTCompound;
-import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
 
+/**
+ * Base class for different types of nbt. <br/>
+ * <br/>
+ * The reason why the applyTo() and applyToComp() requires an {@code Object} class is because
+ * the original code directly utilizes classes from NBT API
+ */
 @Getter
 public abstract class NBTTag {
 
@@ -39,19 +43,19 @@ public abstract class NBTTag {
     /**
      * This method is used to apply nbt details to items. Will be more likely to be executed in cases such as
      * when you give yourself items via <code>/ei give</code>
-     * @param readWriteNbt
+     * @param readWriteNbt {@code de.tr7zw.nbtapi.iface.ReadWriteNBT}
      * @param onlyIfDifferent main executor's default value is {@code true}. It's to prevent accidental rewrite of nbt because previous reports complained about nbt getting shuffled around and having the wrong order
      * @return
      */
-    public abstract boolean applyTo(ReadWriteNBT readWriteNbt, boolean onlyIfDifferent);
+    public abstract boolean applyTo(Object readWriteNbt, boolean onlyIfDifferent);
 
     /**
      * This method is used mainly by ListCompoundNBT to write child nbt tags to items
-     * @param nbtCompound
+     * @param nbtCompound {@code de.tr7zw.nbtapi.NBTCompound}
      * @param onlyIfDifferent main executor's default value is {@code true}. It's to prevent accidental rewrite of nbt because previous reports complained about nbt getting shuffled around and having the wrong order
      * @return
      */
-    public abstract boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent);
+    public abstract boolean applyToComp(Object nbtCompound, boolean onlyIfDifferent);
 
     /**
      * When the user makes changes to the nbt list in the ingame editor or other ways, this method is called to save the changes to the item config.
