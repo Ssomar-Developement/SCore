@@ -17,7 +17,17 @@ import org.jetbrains.annotations.Nullable;
 
 public class MyhticLibAPI {
 
-    public static void mlib_damage(@Nullable LivingEntity attacker, LivingEntity entity, double damageInput, String damageType, @Nullable String element, boolean knockback) {
+    /**
+     * Utilizes MythicLib API to perform MMO-type damage
+     * @param attacker source of the damage
+     * @param entity receiver of the damage
+     * @param damageInput amount of damage
+     * @param damageType type of damage
+     * @param element damage element
+     * @param knockback if damage should knockback receiver
+     * @param crit if damage source's CRITICAL_STRIKE_POWER should be added into the equation
+     */
+    public static void mlib_damage(@Nullable LivingEntity attacker, LivingEntity entity, double damageInput, String damageType, @Nullable String element, boolean knockback, boolean crit) {
 
         Element elementEnum = null;
         if (element != null){
@@ -30,11 +40,15 @@ public class MyhticLibAPI {
         }
 
         // to get critical stats
-        MMOPlayerData playerData = MMOPlayerData.get((Player) attacker);
-        StatMap statMap = playerData.getStatMap();
-        double critStrikePower = statMap.getInstance("CRITICAL_STRIKE_POWER").getTotal();
+        double damage = 0;
 
-        double damage = damageInput + (damageInput * critStrikePower);
+        if (crit) {
+            MMOPlayerData playerData = MMOPlayerData.get((Player) attacker);
+            StatMap statMap = playerData.getStatMap();
+            double critStrikePower = statMap.getInstance("CRITICAL_STRIKE_POWER").getTotal() / 100;
+
+            damage = damageInput + (damageInput * critStrikePower);
+        } else damage = damageInput;
 
         DamageMetadata damageMetadata;
         if (elementEnum == null) damageMetadata = new DamageMetadata(damage, DamageType.valueOf(damageType));
