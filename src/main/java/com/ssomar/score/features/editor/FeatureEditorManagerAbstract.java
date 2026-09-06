@@ -26,7 +26,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
         }
         cache.put(editor, editorGui);
         cache.get(editor).openGUISync(editor);
-        SaveSessionPathManager.getInstance().addPlayerSessionPath(editor, cache.get(editor));
+        SaveSessionPathManager.getInstance().addPlayerSessionPath(editor, cache.get(editor), this);
     }
 
     public abstract T buildEditor(Y parent);
@@ -98,7 +98,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
         //Y parent = interact.gui.getParent();
         //parent.openBackEditor(interact.player);
         Player player = interact.player;
-        GUI gui = SaveSessionPathManager.getInstance().getLastBeforePlayerSessionPath(player);
+        GUI gui = SaveSessionPathManager.getInstance().restoreLastBeforePlayerSessionPath(player);
         if (gui != null){
             gui.update();
             gui.openGUISync(player);
