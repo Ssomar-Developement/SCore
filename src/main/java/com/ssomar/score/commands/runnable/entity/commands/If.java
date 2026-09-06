@@ -12,6 +12,7 @@ import com.ssomar.score.features.types.PlaceholderConditionTypeFeature;
 import com.ssomar.score.utils.emums.Comparator;
 import com.ssomar.score.utils.emums.PlaceholdersCdtType;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.strings.PlaceholderWhitespace;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -29,7 +30,7 @@ public class If extends EntityCommand {
     @Override
     public void run(Player p, Entity entity, SCommandToExec sCommandToExec) {
         ActionInfo aInfo = sCommandToExec.getActionInfo();
-        List<String> args = sCommandToExec.getOtherArgs();
+        List<String> args = PlaceholderWhitespace.mergeFirstArgPlaceholders(sCommandToExec.getOtherArgs());
 
         //SsomarDev.testMsg("IF CMD", true);
         PlaceholderConditionFeature conditionFeature = PlaceholderConditionFeature.buildNull();

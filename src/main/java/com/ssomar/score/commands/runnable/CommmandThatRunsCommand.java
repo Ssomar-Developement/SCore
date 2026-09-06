@@ -45,6 +45,53 @@ public interface CommmandThatRunsCommand {
         return "<\\+>";
     }
 
+
+    /** Name of the explicit step separators ({@code <+::step1>}, {@code <+::step2>}, ...) */
+    String STEP_PARTICLE_PREFIX = "<+::step";
+
+    /**
+     * True if the line starts with a command that itself runs commands (IF, AROUND, MOB_AROUND, ...).
+     * The match is case-insensitive and requires the name to be followed by a space or the end of the line,
+     * so that e.g. "IFX" is not mistaken for "IF".
+     */
+    static boolean startsWithCommandThatRunsCommands(String line, Collection<String> commandNames) {
+        if (line == null) return false;
+        String s = line.trim();
+        if (s.startsWith("/")) s = s.substring(1).trim();
+        for (String name : commandNames) {
+            int len = name.length();
+            if (len == 0 || s.length() < len) continue;
+            if (s.regionMatches(true, 0, name, 0, len) && (s.length() == len || s.charAt(len) == ' ')) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Splits the remainder of a command-running command into the commands it must execute.
+     * <ul>
+     *   <li>Legacy explicit steps ({@code <+::stepN>}): each level only splits on its own particle, unchanged.</li>
+     *   <li>Otherwise, if the remainder starts with another command that runs commands (nested IF, AROUND, ...),
+     *       it is NOT split: the whole remainder is handed to that nested command, so that
+     *       {@code IF a IF b cmd1 <+> cmd2} skips cmd2 too when the inner IF fails.
+     *       https://discord.com/channels/701066025516531753 (report by hugo10098, 2026-09-06)</li>
+     *   <li>Otherwise it is split on the plain {@code <+>} separator (whatever the depth).</li>
+     * </ul>
+     */
+    static String[] splitCommands(String buildCommands, int step, Collection<String> nestingCommandNames) {
+        if (buildCommands.contains(STEP_PARTICLE_PREFIX)) {
+            String particle = step > 0 ? STEP_PARTICLE_PREFIX + step + ">" : "<+>";
+            if (buildCommands.contains(particle)) return buildCommands.split(step > 0 ? "<\\+::step" + step + ">" : "<\\+>");
+            return new String[]{buildCommands};
+        }
+        if (startsWithCommandThatRunsCommands(buildCommands, nestingCommandNames)) return new String[]{buildCommands};
+        if (buildCommands.contains("<+>")) return buildCommands.split("<\\+>");
+        return new String[]{buildCommands};
+    }
+
+    static String[] splitCommands(String buildCommands, ActionInfo aInfo) {
+        return splitCommands(buildCommands, aInfo.getStep(), AllCommandsManager.getInstance().getCommandsThatRunCommandsNames());
+    }
+
     /**
      * Used by commands such as {@link If}, {@link com.ssomar.score.commands.runnable.mixed_player_entity.commands.Around}, {@link com.ssomar.score.commands.runnable.mixed_player_entity.commands.Nearest} and etc.
      * @param players
@@ -76,14 +123,7 @@ public interface CommmandThatRunsCommand {
             prepareCommands.deleteCharAt(prepareCommands.length() - 1);
 
             String buildCommands = prepareCommands.toString();
-            String[] tab;
-            //SsomarDev.testMsg(">>>>>>>>> GETOR PARTICLE: " + CommmandThatRunsCommand.getOrCommandsParticle(aInfo), true);
-            if (buildCommands.contains(CommmandThatRunsCommand.getOrCommandsParticle(aInfo)))
-                tab = buildCommands.split(CommmandThatRunsCommand.getOrCommandsParticleRegex(aInfo));
-            else {
-                tab = new String[1];
-                tab[0] = buildCommands;
-            }
+            String[] tab = CommmandThatRunsCommand.splitCommands(buildCommands, aInfo);
             List<String> commands = new ArrayList<>();
             boolean passToNextPlayer = false;
             for (int m = 0; m < tab.length; m++) {
@@ -335,14 +375,7 @@ public interface CommmandThatRunsCommand {
             prepareCommands.deleteCharAt(prepareCommands.length() - 1);
 
             String buildCommands = prepareCommands.toString();
-            String[] tab;
-            //SsomarDev.testMsg(">>>>>>>>> GETOR PARTICLE: " + CommmandThatRunsCommand.getOrCommandsParticle(aInfo), true);
-            if (buildCommands.contains(CommmandThatRunsCommand.getOrCommandsParticle(aInfo)))
-                tab = buildCommands.split(CommmandThatRunsCommand.getOrCommandsParticleRegex(aInfo));
-            else {
-                tab = new String[1];
-                tab[0] = buildCommands;
-            }
+            String[] tab = CommmandThatRunsCommand.splitCommands(buildCommands, aInfo);
             List<String> commands = new ArrayList<>();
             for (int m = 0; m < tab.length; m++) {
                 String s = tab[m];
