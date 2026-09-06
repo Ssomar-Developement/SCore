@@ -132,6 +132,7 @@ public abstract class SObjectManager<T extends SObject> {
             this.allObjects.remove(o);
             this.loadedObjects.remove(o);
             this.objectIndex.remove(id);
+            SObjectIconCache.invalidate(o);
         }
 
         Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &7reloading of &e" + id);
@@ -152,6 +153,7 @@ public abstract class SObjectManager<T extends SObject> {
             this.allObjects.remove(o);
             this.loadedObjects.remove(o);
             this.objectIndex.remove(replacement.getId());
+            SObjectIconCache.invalidate(o);
         }
 
         Utils.sendConsoleMsg(sPlugin.getNameDesign() + " &7reloading of &e" + replacement.getId());
@@ -167,6 +169,7 @@ public abstract class SObjectManager<T extends SObject> {
             this.allObjects.remove(o);
             this.loadedObjects.remove(o);
             this.objectIndex.remove(id);
+            SObjectIconCache.invalidate(o);
             o.delete();
         }
     }
