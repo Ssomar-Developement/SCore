@@ -49,10 +49,13 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
 
     // Touched from several region threads on Folia, hence the concurrent map.
     private static final Map<Location, UUID> textDisplayCache = new ConcurrentHashMap<>();
-    // Placeholder stored while the TextDisplay spawn is still queued on its region thread,
-    // so a remove() arriving in between knows there is nothing to delete yet and the
-    // spawn task knows it has been cancelled.
-    private static final UUID PENDING_SPAWN = new UUID(0L, 0L);
+    // While a TextDisplay spawn is queued on its region thread the cache holds a marker
+    // (most significant bits = 0, unique per spawn request) so a remove() arriving in
+    // between knows there is nothing to delete yet, and a spawn task can tell whether it
+    // was cancelled or superseded by another spawn for the same location.
+    private static boolean isPendingSpawn(UUID uuid) {
+        return uuid != null && uuid.getMostSignificantBits() == 0L;
+    }
 
     private ListColoredStringFeature title;
     private DoubleFeature titleAjustement;
@@ -244,12 +247,13 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
                 loc.setYaw(0);
                 String text = joinLines(lines);
                 Location key = loc.clone();
-                textDisplayCache.put(key, PENDING_SPAWN);
+                UUID pending = new UUID(0L, System.nanoTime());
+                textDisplayCache.put(key, pending);
                 // Spawning an entity must happen on the region thread owning the location (Folia);
                 // the holo location is derived from the block, so we can return it right away.
                 SCore.schedulerHook.runLocationTaskAsap(() -> {
-                    // remove() ran before us: the title is gone, don't spawn an orphan.
-                    if (textDisplayCache.get(key) != PENDING_SPAWN) return;
+                    // remove() (or a newer spawn) ran before us: don't spawn an orphan.
+                    if (textDisplayCache.get(key) != pending) return;
                     TextDisplay textDisplay = loc.getWorld().spawn(loc, TextDisplay.class);
                     textDisplay.setSeeThrough(true);
                     textDisplay.setBillboard(Display.Billboard.CENTER);
@@ -290,7 +294,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
         } else if (SCore.is1v20v4Plus()) {
             UUID cachedUuid = textDisplayCache.remove(location);
             // Spawn still queued: dropping the marker is enough, the spawn task will bail out.
-            if (cachedUuid == PENDING_SPAWN) return;
+            if (isPendingSpawn(cachedUuid)) return;
             // Entity manipulation (remove()) must happen on the region thread that owns this
             // location on Folia — this is a void call so we can just dispatch it there, running
             // synchronously already if we're on the right thread (no behavior change on non-Folia).
@@ -371,7 +375,7 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
             if (cachedUuid != null) {
                 String text = joinLines(lines);
                 // Entity lookup + setText must run on the owning region thread (Folia). If the
-                // entity is missing (despawned, or its spawn is still queued -> PENDING_SPAWN
+                // entity is missing (despawned, or its spawn is still queued -> pending marker
                 // resolves to null) we remove+respawn from inside the task: same holo location,
                 // so the caller needs nothing new.
                 SCore.schedulerHook.runLocationTaskAsap(() -> {
