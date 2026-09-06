@@ -6,6 +6,8 @@ import com.ssomar.score.editor.NewInteractionClickedGUIManager;
 import com.ssomar.score.editor.SaveSessionPathManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.sobject.SObject;
+import com.ssomar.score.sobject.SObjectIconCache;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.entity.Player;
 
@@ -60,6 +62,7 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
                     /* Save the parent if there is one */
                     i.gui.getParent().reload();
                     i.gui.getParent().save();
+                    if (i.gui.getParent() instanceof SObject) SObjectIconCache.invalidate((SObject) i.gui.getParent());
                     FeatureParentInterface parent = (FeatureParentInterface) feature;
                     // Propagate GUI texture char to sub-feature if it doesn't have its own
                     if (parent instanceof FeatureWithHisOwnEditor && i.gui.getGuiTextureChar() != '\0') {
@@ -434,5 +437,6 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
             parent = ((FeatureAbstract) parent).getParent();
             parent.reload();
         }
+        if (parent instanceof SObject) SObjectIconCache.invalidate((SObject) parent);
     }
 }
