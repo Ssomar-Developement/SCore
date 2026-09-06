@@ -107,20 +107,24 @@ public abstract class SObjectsWithFileEditor<T extends SObject & SObjectEditable
                     if (sObjectOpt.isPresent()) {
                         T sObject = sObjectOpt.get();
                         ItemStack itemS = sObject.getIconItem();
+                        // An object whose icon is AIR (e.g. an ExecutableCrafting recipe with an AIR
+                        // result) has no ItemMeta: without this guard the NPE kills the whole editor.
+                        if (itemS == null || itemS.getType() == Material.AIR) itemS = new ItemStack(Material.BARRIER);
 
                         /* Remove useless tags */
                         ItemMeta meta = itemS.getItemMeta();
-                        ItemFlag additionnalFlag = SCore.is1v20v5Plus() ? ItemFlag.HIDE_ADDITIONAL_TOOLTIP : ItemFlag.valueOf("HIDE_POTION_EFFECTS");
-                        meta.addItemFlags(additionnalFlag);
-                        meta.addItemFlags(new ItemFlag[]{additionnalFlag});
-                        meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ATTRIBUTES});
-                        meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ENCHANTS});
-                        meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_UNBREAKABLE});
-                        if (SCore.is1v17Plus())
-                            meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_DYE});
-                        if(SCore.is1v20Plus())
-                            meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ARMOR_TRIM});
-                        itemS.setItemMeta(meta);
+                        if (meta != null) {
+                            ItemFlag additionnalFlag = SCore.is1v20v5Plus() ? ItemFlag.HIDE_ADDITIONAL_TOOLTIP : ItemFlag.valueOf("HIDE_POTION_EFFECTS");
+                            meta.addItemFlags(additionnalFlag);
+                            meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ATTRIBUTES});
+                            meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ENCHANTS});
+                            meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_UNBREAKABLE});
+                            if (SCore.is1v17Plus())
+                                meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_DYE});
+                            if(SCore.is1v20Plus())
+                                meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ARMOR_TRIM});
+                            itemS.setItemMeta(meta);
+                        }
 
                         List<String> desc = new ArrayList<>();
                         desc.add("");
