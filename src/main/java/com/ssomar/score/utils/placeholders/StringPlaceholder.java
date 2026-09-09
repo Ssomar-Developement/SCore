@@ -175,6 +175,12 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
         return this;
     }
 
+    /* playerPlch has no generated getter, but the player it holds is needed to pass the player
+     * context on to a placeholder holder built for a sub-command. */
+    public UUID getPlayerUUIDPlcHldr() {
+        return playerPlch.getPlayerUUID();
+    }
+
     public StringPlaceholder setProjectilePlcHldr(Projectile proj, String blockFace) {
         projectilePlch.setProjectilePlcHldr(proj, blockFace);
         return this;

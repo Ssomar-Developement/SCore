@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 public interface CommmandThatRunsCommand {
 
@@ -360,6 +361,17 @@ public interface CommmandThatRunsCommand {
 
             StringPlaceholder sp = new StringPlaceholder();
             sp.setAroundTargetEntityPlcHldr(entity.getUniqueId());
+
+            /* The placeholders of the sub-commands are replaced here, before the commands are
+             * handed to the builder, so this holder must know the player of the parent action.
+             * Without it %score_variables_<id>% and the PAPI placeholders were resolved with no
+             * player at all and always gave the default value of the variable. */
+            UUID playerUUID = aInfo.getSp() == null ? null : aInfo.getSp().getPlayerUUIDPlcHldr();
+            if (playerUUID == null) playerUUID = aInfo.getLauncherUUID();
+            if (playerUUID != null && !aInfo.isNoPlayerTriggeredTheAction()) {
+                if (aInfo.getSlot() == null) sp.setPlayerPlcHldr(playerUUID);
+                else sp.setPlayerPlcHldr(playerUUID, aInfo.getSlot());
+            }
 
             ActionInfo aInfo2 = aInfo.clone();
             aInfo2.setEntityUUID(entity.getUniqueId());
