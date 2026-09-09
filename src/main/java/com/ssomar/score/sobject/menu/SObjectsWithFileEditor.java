@@ -9,6 +9,7 @@ import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.sobject.SObjectEditable;
+import com.ssomar.score.sobject.SObjectIconCache;
 import com.ssomar.score.sobject.SObjectManager;
 import com.ssomar.score.sobject.SObjectWithFileLoader;
 import com.ssomar.score.splugin.SPlugin;
@@ -34,6 +35,8 @@ public abstract class SObjectsWithFileEditor<T extends SObject & SObjectEditable
     private String path;
     private SObjectWithFileLoader loader;
     private boolean dontShowDirectory = false;
+    private List<String> cachedFiles;
+    private String cachedFilesKey;
 
     public SObjectsWithFileEditor(SPlugin sPlugin, FeatureSettingsInterface settings, String path, SObjectManager manager, SObjectWithFileLoader loader) {
         super(sPlugin, settings, manager);
@@ -72,7 +75,14 @@ public abstract class SObjectsWithFileEditor<T extends SObject & SObjectEditable
         int total = 0;
         Plugin plugin = getSPlugin().getPlugin();
         SsomarDev.testMsg(">>>>>>>>>>>>"+plugin.getDataFolder() + path, true);
-        List<String> listFiles = getFilesInFolder(plugin.getDataFolder() + path);
+        // The recursive directory walk is only redone when the folder (or the flatten option) changes,
+        // not on every page flip.
+        String filesKey = plugin.getDataFolder() + path + "|" + dontShowDirectory;
+        if (cachedFiles == null || !filesKey.equals(cachedFilesKey)) {
+            cachedFiles = getFilesInFolder(plugin.getDataFolder() + path);
+            cachedFilesKey = filesKey;
+        }
+        List<String> listFiles = cachedFiles;
 
         for (String str : listFiles) {
             if ((index - 1) * SOBJECT_PER_PAGE <= total && total < index * SOBJECT_PER_PAGE) {
@@ -106,21 +116,25 @@ public abstract class SObjectsWithFileEditor<T extends SObject & SObjectEditable
                     Optional<T> sObjectOpt = getManager().getLoadedObjectWithID(id);
                     if (sObjectOpt.isPresent()) {
                         T sObject = sObjectOpt.get();
-                        ItemStack itemS = sObject.getIconItem();
+                        ItemStack itemS = SObjectIconCache.getIcon(sObject);
+                        // An object whose icon is AIR (e.g. an ExecutableCrafting recipe with an AIR
+                        // result) has no ItemMeta: without this guard the NPE kills the whole editor.
+                        if (itemS == null || itemS.getType() == Material.AIR) itemS = new ItemStack(Material.BARRIER);
 
                         /* Remove useless tags */
                         ItemMeta meta = itemS.getItemMeta();
-                        ItemFlag additionnalFlag = SCore.is1v20v5Plus() ? ItemFlag.HIDE_ADDITIONAL_TOOLTIP : ItemFlag.valueOf("HIDE_POTION_EFFECTS");
-                        meta.addItemFlags(additionnalFlag);
-                        meta.addItemFlags(new ItemFlag[]{additionnalFlag});
-                        meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ATTRIBUTES});
-                        meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ENCHANTS});
-                        meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_UNBREAKABLE});
-                        if (SCore.is1v17Plus())
-                            meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_DYE});
-                        if(SCore.is1v20Plus())
-                            meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ARMOR_TRIM});
-                        itemS.setItemMeta(meta);
+                        if (meta != null) {
+                            ItemFlag additionnalFlag = SCore.is1v20v5Plus() ? ItemFlag.HIDE_ADDITIONAL_TOOLTIP : ItemFlag.valueOf("HIDE_POTION_EFFECTS");
+                            meta.addItemFlags(additionnalFlag);
+                            meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ATTRIBUTES});
+                            meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ENCHANTS});
+                            meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_UNBREAKABLE});
+                            if (SCore.is1v17Plus())
+                                meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_DYE});
+                            if(SCore.is1v20Plus())
+                                meta.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ARMOR_TRIM});
+                            itemS.setItemMeta(meta);
+                        }
 
                         List<String> desc = new ArrayList<>();
                         desc.add("");

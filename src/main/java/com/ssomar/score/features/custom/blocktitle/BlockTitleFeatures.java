@@ -34,11 +34,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -47,7 +47,15 @@ import org.bukkit.entity.Entity;
 @Setter
 public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatures, BlockTitleFeatures, GenericFeatureParentEditor, GenericFeatureParentEditorManager> {
 
-    private static final Map<Location, UUID> textDisplayCache = new HashMap<>();
+    // Touched from several region threads on Folia, hence the concurrent map.
+    private static final Map<Location, UUID> textDisplayCache = new ConcurrentHashMap<>();
+    // While a TextDisplay spawn is queued on its region thread the cache holds a marker
+    // (most significant bits = 0, unique per spawn request) so a remove() arriving in
+    // between knows there is nothing to delete yet, and a spawn task can tell whether it
+    // was cancelled or superseded by another spawn for the same location.
+    private static boolean isPendingSpawn(UUID uuid) {
+        return uuid != null && uuid.getMostSignificantBits() == 0L;
+    }
 
     private ListColoredStringFeature title;
     private DoubleFeature titleAjustement;
@@ -237,17 +245,22 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
                 Location loc = location.clone().add(0, 0.5 + getTitleAjustement().getValue().get(), 0);
                 // Because Textdisplay doesnt have yaw, and it causes problem for remove if we let it.
                 loc.setYaw(0);
-                TextDisplay textDisplay = loc.getWorld().spawn(loc, TextDisplay.class);
-                textDisplay.setSeeThrough(true);
-                textDisplay.setBillboard(Display.Billboard.CENTER);
-                textDisplay.setViewRange(25);
-                StringBuilder sb = new StringBuilder();
-                for (String s : lines) {
-                    sb.append(s).append("\n");
-                }
-                if (sb.length() > 0) sb.deleteCharAt(sb.length() - 1);
-                textDisplay.setText(sb.toString());
-                textDisplayCache.put(loc.clone(), textDisplay.getUniqueId());
+                String text = joinLines(lines);
+                Location key = loc.clone();
+                UUID pending = new UUID(0L, System.nanoTime());
+                textDisplayCache.put(key, pending);
+                // Spawning an entity must happen on the region thread owning the location (Folia);
+                // the holo location is derived from the block, so we can return it right away.
+                SCore.schedulerHook.runLocationTaskAsap(() -> {
+                    // remove() (or a newer spawn) ran before us: don't spawn an orphan.
+                    if (textDisplayCache.get(key) != pending) return;
+                    TextDisplay textDisplay = loc.getWorld().spawn(loc, TextDisplay.class);
+                    textDisplay.setSeeThrough(true);
+                    textDisplay.setBillboard(Display.Billboard.CENTER);
+                    textDisplay.setViewRange(25);
+                    textDisplay.setText(text);
+                    textDisplayCache.put(key, textDisplay.getUniqueId());
+                }, loc);
                 return loc;
             } else return null;
         }
@@ -280,6 +293,8 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
             }
         } else if (SCore.is1v20v4Plus()) {
             UUID cachedUuid = textDisplayCache.remove(location);
+            // Spawn still queued: dropping the marker is enough, the spawn task will bail out.
+            if (isPendingSpawn(cachedUuid)) return;
             // Entity manipulation (remove()) must happen on the region thread that owns this
             // location on Folia — this is a void call so we can just dispatch it there, running
             // synchronously already if we're on the right thread (no behavior change on non-Folia).
@@ -358,21 +373,34 @@ public class BlockTitleFeatures extends FeatureWithHisOwnEditor<BlockTitleFeatur
         } else if (SCore.is1v20v4Plus()) {
             UUID cachedUuid = textDisplayCache.get(location);
             if (cachedUuid != null) {
-                Entity entity = Bukkit.getEntity(cachedUuid);
-                if (entity instanceof TextDisplay) {
-                    TextDisplay textDisplay = (TextDisplay) entity;
-                    StringBuilder sb = new StringBuilder();
-                    for (String s : lines) {
-                        sb.append(s).append("\n");
+                String text = joinLines(lines);
+                // Entity lookup + setText must run on the owning region thread (Folia). If the
+                // entity is missing (despawned, or its spawn is still queued -> pending marker
+                // resolves to null) we remove+respawn from inside the task: same holo location,
+                // so the caller needs nothing new.
+                SCore.schedulerHook.runLocationTaskAsap(() -> {
+                    Entity entity = Bukkit.getEntity(cachedUuid);
+                    if (entity instanceof TextDisplay) {
+                        ((TextDisplay) entity).setText(text);
+                    } else {
+                        remove(location);
+                        spawn(objectLocation, sp);
                     }
-                    if (sb.length() > 0) sb.deleteCharAt(sb.length() - 1);
-                    SCore.schedulerHook.runEntityTask(()->{textDisplay.setText(sb.toString());}, ()->{}, textDisplay, 0);
-                    return location;
-                }
+                }, location);
+                return location;
             }
             remove(location);
             return spawn(objectLocation, sp);
         }
         return location;
+    }
+
+    private static String joinLines(List<String> lines) {
+        StringBuilder sb = new StringBuilder();
+        for (String s : lines) {
+            sb.append(s).append("\n");
+        }
+        if (sb.length() > 0) sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
     }
 }

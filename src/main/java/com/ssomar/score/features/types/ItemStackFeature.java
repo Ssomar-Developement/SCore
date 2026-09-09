@@ -200,6 +200,13 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
         item = value.orElseGet(() -> new ItemStack(Material.BARRIER));
 
         ItemMeta meta = item.getItemMeta();
+        // AIR carries no ItemMeta, and a feature can legitimately hold it (an ExecutableCrafting
+        // recipe used to disable a vanilla one). Show the same placeholder as an unset value
+        // instead of throwing and killing the whole editor. The stored value is untouched.
+        if (meta == null) {
+            item = new ItemStack(Material.BARRIER);
+            meta = item.getItemMeta();
+        }
         List<String> lore = meta.hasLore()? meta.getLore() : new ArrayList<>();
 
         assert lore != null;
