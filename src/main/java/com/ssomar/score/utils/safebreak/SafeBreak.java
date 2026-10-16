@@ -75,10 +75,18 @@ public class SafeBreak {
 
             if (generateBreakEvent) {
                 SsomarDev.testMsg("> > > [#s0024] generateBreakEvent is true", DEBUG);
+                /* The activators run by this event can break other blocks by commands, that run them again... */
+                BreakChain chain = BreakChain.next();
+                if (!chain.allow(block)) return false;
                 BlockBreakEvent bbE = new BlockBreakEventExtension(block, player, true, breakCause);
                 bbE.setCancelled(false);
                 /* */
-                Bukkit.getPluginManager().callEvent(bbE);
+                BreakChain previous = BreakChain.enter(chain);
+                try {
+                    Bukkit.getPluginManager().callEvent(bbE);
+                } finally {
+                    BreakChain.exit(previous);
+                }
                 canceled = bbE.isCancelled();
                 if(!SCore.is1v11Less()) drop = bbE.isDropItems() && drop;
             }
