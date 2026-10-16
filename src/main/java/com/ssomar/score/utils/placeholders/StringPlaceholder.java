@@ -97,7 +97,8 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
     private String blockface = "";
     /* placeholders of the cooldown */
     private String cooldown = "";
-    private List<VariableReal> variables = new ArrayList<>();
+    /* transient: not serializable, a delayed command saved at the shutdown keeps their value through getBrutCommandToSave() */
+    private transient List<VariableReal> variables = new ArrayList<>();
     private Map<String, String> extraPlaceholders = new HashMap<>();
 
     /* OLD */
@@ -445,6 +446,12 @@ public class StringPlaceholder extends PlaceholdersInterface implements Serializ
 
     /** Upper bound of the variable passes: a variable whose value contains its own placeholder must not loop. */
     static final int MAX_VARIABLE_PASSES = 5;
+
+    /** Replaces only the variable placeholders (current values). */
+    public String replaceVariablePlaceholders(String s) {
+        if (variables == null || variables.isEmpty() || s == null) return s;
+        return replaceVariablesUntilStable(s);
+    }
 
     /**
      * Replaces the variable placeholders until nothing changes (bounded by {@link #MAX_VARIABLE_PASSES}).

@@ -20,7 +20,8 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
 
     private final String particle;
 
-    private Entity entity;
+    /* transient: an entity is not serializable (delayed commands saved at the shutdown), it is found again by its UUID */
+    private transient Entity entity;
 
     /* placeholders of the target entity */
     private UUID entityUUID;
