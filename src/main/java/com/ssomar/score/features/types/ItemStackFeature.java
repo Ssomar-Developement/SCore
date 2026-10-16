@@ -265,7 +265,7 @@ public class ItemStackFeature extends FeatureAbstract<Optional<ItemStack>, ItemS
     @Override
     public boolean noShiftLeftclicked(Player editor, NewGUIManager manager) {
         ItemStack stack = editor.getItemOnCursor().clone();
-        if(stack.getType().isAir()) editor.sendMessage(StringConverter.coloredString("&cYou must have an item in your hand to set it as the value"));
+        if(stack.getType().isAir()) editor.sendMessage(StringConverter.coloredString("&cPick up the item with your mouse (it must be on your cursor), then left click this button to set it as the value"));
         else {
             ((GUI)manager.getCache().get(editor)).updateCurrently(getEditorName(), itemStackToString(stack));
             value = Optional.of(stack);
