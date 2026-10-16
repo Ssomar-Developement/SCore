@@ -83,6 +83,9 @@ public class SafeBreak {
                 if(!SCore.is1v11Less()) drop = bbE.isDropItems() && drop;
             }
 
+            /* The block stays: callers must not give its drops (VEIN_BREAKER / MINEINCUBE smelt gave the smelted item anyway, a dupe) */
+            if (canceled) return false;
+
             if (!canceled) {
                 if (breakEB(player, block, drop)) return true;
 
