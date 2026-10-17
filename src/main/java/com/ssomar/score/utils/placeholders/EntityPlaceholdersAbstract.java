@@ -140,7 +140,8 @@ public class EntityPlaceholdersAbstract extends PlaceholdersInterface implements
 
     public String replacePlaceholder(String s) {
         String toReplace = s;
-        if (entityUUID != null || entity != null) {
+        /* All the placeholders of the group start with %<particle>: no regex replacements nor entity snapshot for a string without them */
+        if ((entityUUID != null || entity != null) && toReplace.contains("%" + particle)) {
             //SsomarDev.testMsg("toReplace: "+toReplace+ " entity "+ entity.getType()+ "particle "+particle, true);
             toReplace = toReplace.replaceAll(StringPlaceholder.start + particle + StringPlaceholder.end, entityType);
             toReplace = toReplace.replaceAll(StringPlaceholder.start + particle + "_lower_case"+StringPlaceholder.end, entityType.toLowerCase());

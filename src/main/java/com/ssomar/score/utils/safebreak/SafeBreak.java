@@ -38,6 +38,9 @@ public class SafeBreak {
     /* return false its verifSafeBreak is false */
     public static boolean breakBlockWithEvent(final Block block, @Nullable final UUID playerUUID, int slot, boolean drop, boolean generateBreakEvent, boolean verifSafeBreak, BlockBreakEventExtension.BreakCause breakCause) {
 
+        /* An air block can't be broken: no break event, so no activator runs on it (a BREAK chain spread through the air, ethpick.yml). An EB placed there still breaks. */
+        if (isAir(block.getType()) && !hasExecutableBlock(block)) return false;
+
         SsomarDev.testMsg(ChatColor.GOLD+"[#s0010] breakBlockWithEvent() triggered : "+drop, DEBUG);
         if (playerUUID == null) {
             SsomarDev.testMsg("> [#s0013] Player is null", DEBUG);
@@ -214,6 +217,17 @@ public class SafeBreak {
             }
         }
         return false;
+    }
+
+    private static boolean isAir(Material type) {
+        if (type == Material.AIR) return true;
+        if (SCore.is1v13Less()) return false;
+        String name = type.name();
+        return name.equals("CAVE_AIR") || name.equals("VOID_AIR");
+    }
+
+    private static boolean hasExecutableBlock(Block block) {
+        return SCore.hasExecutableBlocks && ExecutableBlocksAPI.getExecutableBlocksPlacedManager().getExecutableBlockPlaced(block).isPresent();
     }
 
     public static boolean breakEB(@Nullable Player player, Block block, boolean drop) {
