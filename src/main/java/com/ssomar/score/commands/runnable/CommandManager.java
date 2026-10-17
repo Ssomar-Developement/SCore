@@ -19,16 +19,57 @@ public abstract class CommandManager<T extends SCommand> {
      * depends on registration order (SETBLOCK vs SETBLOCKPOS, TELEPORT vs TELEPORT POSITION) and another
      * plugin's command that merely starts with an SCore name (launchprojectile, breakinradius) is left alone. **/
     public Optional<T> getCommand(String entry) {
+        if (entry == null) return Optional.empty();
+        NameIndex<T> index = nameIndex;
+        if (index == null || index.commands != commands || index.size != commands.size()) nameIndex = index = new NameIndex<>(commands);
         T best = null;
         int bestLen = -1;
-        for (T command : this.commands) {
-            int len = command.matchedNameLength(entry);
-            if (len > bestLen) {
-                bestLen = len;
-                best = command;
+        List<Map.Entry<String, T>> candidates = index.byFirstWord.get(firstWord(entry));
+        if (candidates != null) {
+            /* Same order as the commands list: the first command with the longest name wins, as before */
+            for (Map.Entry<String, T> candidate : candidates) {
+                String name = candidate.getKey();
+                if (name.length() > bestLen && SCommand.startsWithName(entry, name)) {
+                    bestLen = name.length();
+                    best = candidate.getValue();
+                }
             }
         }
         return Optional.ofNullable(best);
+    }
+
+    /* getCommand runs for each command line: it asked every command (several hundreds) to match the entry, and each getNames()
+     * builds a new list. A name can only match an entry that starts with the same first word, so the names are indexed by it. */
+    private volatile NameIndex<T> nameIndex;
+
+    private static final class NameIndex<T extends SCommand> {
+        private final List<T> commands;
+        private final int size;
+        private final Map<String, List<Map.Entry<String, T>>> byFirstWord = new HashMap<>();
+
+        private NameIndex(List<T> commands) {
+            this.commands = commands;
+            this.size = commands.size();
+            for (T command : commands) {
+                for (String name : command.getNames()) {
+                    if (name == null || name.isEmpty()) continue;
+                    byFirstWord.computeIfAbsent(firstWord(name), k -> new ArrayList<>()).add(new AbstractMap.SimpleImmutableEntry<>(name, command));
+                }
+            }
+        }
+    }
+
+    /** The leading letters, digits and '_' (the boundary of SCommand.startsWithName), each char folded the way
+     * String.regionMatches(true, ...) compares them: there 'İ' matches 'i' and the Kelvin sign 'k' (MİNEİNCUBE typed with a
+     * Turkish caps lock), which String.toUpperCase keeps apart. */
+    static String firstWord(String s) {
+        StringBuilder word = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (!Character.isLetterOrDigit(c) && c != '_') break;
+            word.append(Character.toLowerCase(Character.toUpperCase(c)));
+        }
+        return word.toString();
     }
 
     /** Extract the arguments of the entry for a specific custom command **/

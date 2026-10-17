@@ -51,6 +51,9 @@ public class GeneralConfig extends Config {
 
     private boolean editorIconPreview;
 
+    /* false: a block broken by a command no longer lets the activators it runs break other blocks by command (like BREAK) */
+    private boolean breakChains;
+
     private boolean selfHostPackDebug;
 
     private String selfHostPackIp;
@@ -105,6 +108,7 @@ public class GeneralConfig extends Config {
         disableCustomMetadataOnEntities = config.getBoolean("disableCustomMetadataOnEntities", false);
         enableCommentsInConfig = config.getBoolean("enableCommentsInConfig", true) && SCore.is1v19Plus();
         editorIconPreview = config.getBoolean("editorIconPreview", true);
+        breakChains = config.getBoolean("breakChains", true);
         selfHostPackDebug = config.getBoolean("selfHostPackDebug", false);
         selfHostPackIp = config.getString("selfHostPackIp", "");
         hologramsPlugin = config.getString("hologramsPlugin", "NONE").toUpperCase();

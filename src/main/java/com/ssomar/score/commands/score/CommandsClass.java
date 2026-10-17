@@ -40,6 +40,7 @@ import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.utils.messages.CenteredMessage;
 import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.safebreak.BreakChain;
 import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.strings.StringJoiner;
 import com.ssomar.score.variables.Variable;
@@ -1037,7 +1038,8 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                 double finalY = y;
                 double finalZ = z;
                 Optional<Player> finalPlayerOpt = playerOpt2;
-                SCore.schedulerHook.runLocationTask(()->{run_rest_of_blockCmd(sender, finalWorld, finalX, finalY, finalZ, blockCmd, finalPlayerOpt);}, new Location(world.get(),x,y,z),0);
+                /* Run from an activator triggered by a block broken by a command: its ActionInfo stays in that chain (BreakChain) */
+                SCore.schedulerHook.runLocationTask(BreakChain.wrap(BreakChain.current(), ()->{run_rest_of_blockCmd(sender, finalWorld, finalX, finalY, finalZ, blockCmd, finalPlayerOpt);}), new Location(world.get(),x,y,z),0);
 
                 break;
             default:
