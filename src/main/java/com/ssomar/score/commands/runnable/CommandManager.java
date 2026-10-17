@@ -59,15 +59,17 @@ public abstract class CommandManager<T extends SCommand> {
         }
     }
 
-    /** The leading letters, digits and '_' (the boundary of SCommand.startsWithName), upper case */
+    /** The leading letters, digits and '_' (the boundary of SCommand.startsWithName), each char folded the way
+     * String.regionMatches(true, ...) compares them: there 'İ' matches 'i' and the Kelvin sign 'k' (MİNEİNCUBE typed with a
+     * Turkish caps lock), which String.toUpperCase keeps apart. */
     static String firstWord(String s) {
-        int end = 0;
-        while (end < s.length()) {
-            char c = s.charAt(end);
+        StringBuilder word = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
             if (!Character.isLetterOrDigit(c) && c != '_') break;
-            end++;
+            word.append(Character.toLowerCase(Character.toUpperCase(c)));
         }
-        return s.substring(0, end).toUpperCase(Locale.ROOT);
+        return word.toString();
     }
 
     /** Extract the arguments of the entry for a specific custom command **/

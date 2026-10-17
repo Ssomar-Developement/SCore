@@ -47,12 +47,48 @@ class CommandManagerIndexTest {
                 "TELEPORT_POSITION 1", "TELEPORT POSITIONS", "SETBLOCK stone", "SETBLOCKPOS 1 2 3", "SETBLOCK_X", "IF %a%=1 SENDMESSAGE hi", "IF",
                 "SET-ITEM x", "SET x", "SET-ITEMS", "MOB_AROUND 3", "AROUND 3", "SENDMESSAGE&ahello", "DELAY 5", "DELAYTICK 5", "2X go",
                 "[OFFLINE] SENDMESSAGE", "score run-block-command block:world,1,2,3 BREAK", "SCORE RUN-BLOCK-COMMAND x", "score run",
-                "ıF %a%=1", "ſETBLOCK stone", "ßREAK", "éBREAK", "", " BREAK", "%player% BREAK", "minecraft:tp @s", "tp @s ~ ~ ~"};
+                "ıF %a%=1", "ſETBLOCK stone", "ßREAK", "éBREAK", "", " BREAK", "%player% BREAK", "minecraft:tp @s", "tp @s ~ ~ ~",
+                "İF %a%=1", "DELAYTİCK 5", "TELEPORT POSİTİON 1 2 3", "KILL @e", "kill @e"};
+        commands.add(named("KILL"));
         for (String entry : entries) {
             assertSame(linearScan(commands, entry), m.getCommand(entry).orElse(null), entry);
         }
+        assertSame(commands.get(6), m.getCommand("İF %a%=1").orElse(null), "İ of a Turkish caps lock: IF, as with the linear scan");
+        assertSame(commands.get(commands.size() - 1), m.getCommand("KILL @e").orElse(null), "Kelvin sign: KILL, as with the linear scan");
         assertSame(commands.get(0), m.getCommand("BREAK").get(), "a tie keeps the first registered command");
         assertEquals(Optional.empty(), m.getCommand(null));
+    }
+
+    /** Every name, written with every case variant regionMatches(true) accepts, gives the command of the linear scan */
+    @Test
+    void sameCommandForEveryCaseVariant() {
+        List<SCommand> commands = new ArrayList<>(Arrays.asList(
+                named("MINEINCUBE"), named("MINE"), named("KILL"), named("SETBLOCK"), named("SETBLOCKPOS"), named("IF"),
+                named("TELEPORT"), named("TELEPORT POSITION"), named("DELAY"), named("DELAYTICK"), named("SENDMESSAGE")));
+        CommandManager<SCommand> m = manager(commands);
+        java.util.Random random = new java.util.Random(1016);
+        String[] suffixes = {"", " 2", ":1", "_X", "X", "&a", " POSITION 1", "TICK 3"};
+        for (SCommand command : commands) {
+            String name = command.getNames().get(0);
+            for (int n = 0; n < 200; n++) {
+                StringBuilder entry = new StringBuilder();
+                for (char c : name.toCharArray()) entry.append(variant(c, random));
+                entry.append(suffixes[random.nextInt(suffixes.length)]);
+                String e = entry.toString();
+                assertSame(linearScan(commands, e), m.getCommand(e).orElse(null), e);
+            }
+        }
+    }
+
+    private static char variant(char c, java.util.Random random) {
+        String options;
+        switch (Character.toUpperCase(c)) {
+            case 'I': options = "Iiİı"; break;
+            case 'K': options = "KkK"; break;
+            case 'S': options = "Ssſ"; break;
+            default: options = "" + Character.toUpperCase(c) + Character.toLowerCase(c);
+        }
+        return options.charAt(random.nextInt(options.length()));
     }
 
     @Test
