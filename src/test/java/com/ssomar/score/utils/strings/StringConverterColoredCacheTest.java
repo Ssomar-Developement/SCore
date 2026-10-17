@@ -42,6 +42,15 @@ class StringConverterColoredCacheTest {
     }
 
     @Test
+    void longStringsAreConvertedWithoutTheCache() throws Exception {
+        StringBuilder page = new StringBuilder();
+        while (page.length() <= 1024) page.append("&aA long book page with <red>mini message ");
+        String s = page.toString();
+        assertEquals(uncached(s, false), StringConverter.coloredString(s));
+        assertEquals(uncached(s, true), StringConverter.coloredString(s, true));
+    }
+
+    @Test
     void manyDistinctStringsStayCorrect() throws Exception {
         for (int i = 0; i < 5000; i++) {
             String s = "&" + "0123456789abcdef".charAt(i % 16) + "line " + i;
