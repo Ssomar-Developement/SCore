@@ -1,6 +1,7 @@
 package com.ssomar.score.utils.safebreak;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.config.GeneralConfig;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.Nullable;
 
@@ -71,6 +72,7 @@ public class BreakChain {
         boolean first = shared.firstBreak(key);
         /* The blocks broken by the commands of the action itself: as before */
         if (depth < 2) return true;
+        if (!GeneralConfig.getInstance().isBreakChains()) return false;
         if (!first) return false;
         if (depth > MAX_DEPTH || shared.blocks.incrementAndGet() > MAX_BLOCKS) {
             if (!shared.warned.getAndSet(true)) {
