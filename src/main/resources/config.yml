@@ -11,6 +11,7 @@ silenceOutputs: # You can blacklist sentences that are sent to the console by Th
 globalSilenceOutputs: # You can blacklist sentences that are sent to the console by any plugin
   - "blacklist the sentence here"
 disableCustomMetadataOnEntities: false # to disable the metadata fromSpawner and bowForce to be added to entities
+beforeDeathIgnoreCancelledDamage: false # true: PLAYER_BEFORE_DEATH and ENTITY_BEFORE_DEATH are checked after the other plugins and don't run when one of them cancelled the damage (a damage cap, a protected region...)
 
 #MIN : it will save only the modified settings
 #NORMAL : it will save modified settings + frequently used settings

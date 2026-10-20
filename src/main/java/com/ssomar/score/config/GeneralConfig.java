@@ -5,6 +5,7 @@ import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.features.FeatureSettingsSCore;
 import com.ssomar.score.languages.messages.TM;
 import com.ssomar.score.utils.logging.Utils;
+import com.ssomar.sevents.events.BeforeDeathSettings;
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -46,6 +47,8 @@ public class GeneralConfig extends Config {
     private boolean enableDetectionEntitiesFromSpawner;
 
     private boolean disableCustomMetadataOnEntities;
+
+    private boolean beforeDeathIgnoreCancelledDamage;
 
     private boolean enableCommentsInConfig;
 
@@ -106,6 +109,9 @@ public class GeneralConfig extends Config {
         enableDetectionEntitiesFromSpawner = config.getBoolean("enableDetectionEntitiesFromSpawner", true);
         loopKillMode = config.getBoolean("loopKillMode", false);
         disableCustomMetadataOnEntities = config.getBoolean("disableCustomMetadataOnEntities", false);
+        /* PLAYER_BEFORE_DEATH / ENTITY_BEFORE_DEATH checked after the other plugins, never for a damage they cancelled (SEvents) */
+        beforeDeathIgnoreCancelledDamage = config.getBoolean("beforeDeathIgnoreCancelledDamage", false);
+        BeforeDeathSettings.setIgnoreCancelledDamage(beforeDeathIgnoreCancelledDamage);
         enableCommentsInConfig = config.getBoolean("enableCommentsInConfig", true) && SCore.is1v19Plus();
         editorIconPreview = config.getBoolean("editorIconPreview", true);
         breakChains = config.getBoolean("breakChains", true);
