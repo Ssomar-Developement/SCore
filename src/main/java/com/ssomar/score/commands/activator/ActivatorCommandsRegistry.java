@@ -115,7 +115,7 @@ public class ActivatorCommandsRegistry {
             synchronized (this) {
                 if (!commandMapWarned && hasWantedCommands()) {
                     commandMapWarned = true;
-                    LOGGER.warning("[SCore] registerCommand: the command map of the server is not reachable, the commands of the activators are not registered.");
+                    LOGGER.warning("registerCommand: the command map of the server is not reachable, the commands of the activators are not registered.");
                 }
             }
             return;
@@ -169,7 +169,7 @@ public class ActivatorCommandsRegistry {
             Command existing = known.get(label);
             if (existing != null) {
                 if (conflictWarned.add(label)) {
-                    LOGGER.warning("[SCore] registerCommand: the command /" + label + " already exists on the server ("
+                    LOGGER.warning("registerCommand: the command /" + label + " already exists on the server ("
                             + describe(existing) + "), it is not replaced. The activators still run when it is written.");
                 }
                 continue;
@@ -187,7 +187,7 @@ public class ActivatorCommandsRegistry {
                 /* the label was taken in between: keep nothing of ours */
                 unregister(commandMap, known, label, command);
                 if (conflictWarned.add(label))
-                    LOGGER.warning("[SCore] registerCommand: the command /" + label + " already exists on the server, it is not replaced.");
+                    LOGGER.warning("registerCommand: the command /" + label + " already exists on the server, it is not replaced.");
                 continue;
             }
             registered.put(label, command);
