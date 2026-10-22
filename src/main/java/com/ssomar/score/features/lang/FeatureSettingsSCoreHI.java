@@ -430,6 +430,7 @@ public enum FeatureSettingsSCoreHI implements FeatureSettingsInterface {
     cancelEvent("cancelEvent", "ईवेंट रद्द करें", new String[]{"&7&oवैनिला ईवेंट रद्द करें"}, null),
     noActivatorRunIfTheEventIsCancelled("noActivatorRunIfTheEventIsCancelled", "यदि ईवेंट रद्द हो तो सक्रियकर्ता न चलें", new String[]{"&7&oयदि कोई अन्य प्लगइन ईवेंट को रद्द करता है,", "&7&oऔर आपने यह विकल्प सक्षम किया है,", "&7&oतो सक्रियकर्ता सक्रिय नहीं होगा"}, null),
     silenceOutput("silenceOutput", "आउटपुट शांत करें", new String[]{"&7&oकंसोल में कमांड आउटपुट को छुपाएँ"}, null),
+    registerCommand("registerCommand", "Register Command", new String[]{"&7&oRegister the commands of", "&7&odetailedCommands on the server:", "&7&ono more Unknown command,", "&7&otab completion"}, null),
     mustBeAProjectileLaunchWithTheSameEI("mustBeAProjectileLaunchWithTheSameEI", "समान EI के साथ प्रोजेक्टाइल लॉन्च होना चाहिए", new String[]{"&7&oयह आवश्यक है कि यह प्रोजेक्टाइल", "&7&oसमान ExecutableItem के साथ लॉन्च हो"}, Material.ARROW),
     desactiveDrops("desactiveDrops", "ड्रॉप्स हटाएँ", new String[]{"&7&oड्रॉप्स हटाएँ"}, null),
     option("option", "विकल्प", new String[]{"&7&oविकल्प"}, Material.COMPASS),

@@ -561,6 +561,7 @@ public enum FeatureSettingsSCorePL implements FeatureSettingsInterface {
     scale("scale", "Skala", new String[]{""}, Material.HOPPER),
     scheduleFeatures("scheduleFeatures", "Funkcje harmonogramu", new String[]{"&7&oFunkcje harmonogramu"}, GUI.CLOCK),
     silenceOutput("silenceOutput", "Wycisz wyjście", new String[]{"&7&oWycisz wyjście komendy", "&7&o(Tylko w konsoli)"}, null),
+    registerCommand("registerCommand", "Register Command", new String[]{"&7&oRegister the commands of", "&7&odetailedCommands on the server:", "&7&ono more Unknown command,", "&7&otab completion"}, null),
     silent("silent", "Cichy", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("BELL", "JUKEBOW"))),
     sitFeatures("sitFeatures", "Funkcje siedzenia", new String[]{"&7&oFunkcje siedzenia"}, FixedMaterial.getMaterial(Arrays.asList("STONE_STAIRS"))),
     skyLight("skyLight", "Światło nieba", new String[]{""}, FixedMaterial.getMaterial(Arrays.asList("LIGHT"))),

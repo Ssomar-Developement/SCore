@@ -557,6 +557,7 @@ public enum FeatureSettingsSCoreVI implements FeatureSettingsInterface {
     scale("scale", "Tỷ lệ", new String[]{""}, Material.HOPPER),
     scheduleFeatures("scheduleFeatures", "Tính năng lịch trình", new String[]{"&7&oTính năng lịch trình"}, GUI.CLOCK),
     silenceOutput("silenceOutput", "Tắt đầu ra", new String[]{"&7&oTắt đầu ra của lệnh", "&7&o(Chỉ trong console)"}, null),
+    registerCommand("registerCommand", "Register Command", new String[]{"&7&oRegister the commands of", "&7&odetailedCommands on the server:", "&7&ono more Unknown command,", "&7&otab completion"}, null),
     silent("silent", "Im lặng", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("BELL", "JUKEBOW"))),
     sitFeatures("sitFeatures", "Tính năng ngồi", new String[]{"&7&oTính năng ngồi"}, FixedMaterial.getMaterial(Arrays.asList("STONE_STAIRS"))),
     skyLight("skyLight", "Ánh sáng bầu trời", new String[]{""}, FixedMaterial.getMaterial(Arrays.asList("LIGHT"))),

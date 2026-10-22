@@ -500,6 +500,7 @@ public enum FeatureSettingsSCoreRU implements FeatureSettingsInterface {
     cancelEvent("cancelEvent", "Отмена События", new String[]{"&7&oОтмена ванильного события"}, null),
     noActivatorRunIfTheEventIsCancelled("noActivatorRunIfTheEventIsCancelled", "Не Запускать Активатор При Отмене События", new String[]{"&7&oЕсли другой плагин отменяет событие, которое", "&7&oзапускает активатор, и вы включили эту функцию", "&7&oактиватор не будет активирован"}, null),
     silenceOutput("silenceOutput", "Отключить Вывод", new String[]{"&7&oОтключить вывод команды", "&7&o(Только в консоли)"}, null),
+    registerCommand("registerCommand", "Register Command", new String[]{"&7&oRegister the commands of", "&7&odetailedCommands on the server:", "&7&ono more Unknown command,", "&7&otab completion"}, null),
     mustBeAProjectileLaunchWithTheSameEI("mustBeAProjectileLaunchWithTheSameEI", "Должен Быть Запуск Снаряда с Тем же EI", new String[]{"&7&oДолжен быть запуск снаряда", "&7&oс тем же EI"}, Material.ARROW),
     desactiveDrops("desactiveDrops", "Удалить Выпадения", new String[]{"&7&oУдалить выпадения"}, null),
     option("option", "Опция", new String[]{"&7&oОпция"}, Material.COMPASS),

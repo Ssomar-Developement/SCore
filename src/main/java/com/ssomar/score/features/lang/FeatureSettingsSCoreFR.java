@@ -445,6 +445,7 @@ public enum FeatureSettingsSCoreFR implements FeatureSettingsInterface {
 
     noActivatorRunIfTheEventIsCancelled("noActivatorRunIfTheEventIsCancelled", "Pas d'Activateur si l'Événement est Annulé", new String[]{"&7&oSi un autre plugin annule l'événement qui", "&7&odéclenche l'activateur et que vous activez cette fonction", "&7&ol'activateur ne sera pas activé"}, null),
     silenceOutput("silenceOutput", "Silence Sortie", new String[]{"&7&oSilence la sortie de la commande", "&7&o(Uniquement dans la console)"}, null),
+    registerCommand("registerCommand", "Enregistrer la Commande", new String[]{"&7&oEnregistre les commandes de", "&7&odetailedCommands sur le serveur :", "&7&oplus de Unknown command,", "&7&ocomplétion Tab"}, null),
     mustBeAProjectileLaunchWithTheSameEI("mustBeAProjectileLaunchWithTheSameEI", "Doit Être un Lancement de Projectile avec le Même EI", new String[]{"&7&oDoit être un projectile", "&7&olancé avec le même EI"}, Material.ARROW),
     desactiveDrops("desactiveDrops", "Supprimer les Drops", new String[]{"&7&oSupprimer les drops"}, null),
     option("option", "Option", new String[]{"&7&oOption"}, Material.COMPASS),
