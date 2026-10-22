@@ -604,6 +604,7 @@ public enum FeatureSettingsSCoreDE implements FeatureSettingsInterface {
     scale("scale", "Größe", new String[]{""}, Material.HOPPER),
     scheduleFeatures("scheduleFeatures", "Zeitplan-Funktionen", new String[]{"&7&oZeitplan-Funktionen"}, GUI.CLOCK),
     silenceOutput("silenceOutput", "Ausgabe stumm schalten", new String[]{"&7&oDie Ausgabe des Befehls stumm schalten", "&7&o(Nur in der Konsole)"}, null),
+    registerCommand("registerCommand", "Register Command", new String[]{"&7&oRegister the commands of", "&7&odetailedCommands on the server:", "&7&ono more Unknown command,", "&7&otab completion"}, null),
     silent("silent", "Lautlos", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("BELL", "JUKEBOW"))),
     sitFeatures("sitFeatures", "Sitz-Funktionen", new String[]{"&7&oSitz-Funktionen"}, FixedMaterial.getMaterial(Arrays.asList("STONE_STAIRS"))),
     skyLight("skyLight", "Himmelslicht", new String[]{""}, FixedMaterial.getMaterial(Arrays.asList("LIGHT"))),

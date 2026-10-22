@@ -490,6 +490,7 @@ public enum FeatureSettingsSCoreZH implements FeatureSettingsInterface {
     noActivatorRunIfTheEventIsCancelled("noActivatorRunIfTheEventIsCancelled", "事件取消则不触发激活器", new String[]{"&7&o若其他插件取消事件", "&7&o且此功能启用", "&7&o则激活器不执行"}, null),
     silenceOutput("silenceOutput", "静默输出", new String[]{"&7&o禁用命令输出信息", "&7&o(仅对控制台)"},
             null),
+    registerCommand("registerCommand", "Register Command", new String[]{"&7&oRegister the commands of", "&7&odetailedCommands on the server:", "&7&ono more Unknown command,", "&7&otab completion"}, null),
     mustBeAProjectileLaunchWithTheSameEI("mustBeAProjectileLaunchWithTheSameEI", "必须由相同EI发射的弹射物", new String[]{"&7&o必须是用同一EI发射的弹射物"}, Material.ARROW),
     desactiveDrops("desactiveDrops", "移除掉落物", new String[]{"&7&o移除方块/实体掉落"}, null),
     option("option", "选项", new String[]{"&7&o一个选项"}, Material.COMPASS),

@@ -591,6 +591,7 @@ public enum FeatureSettingsSCoreES implements FeatureSettingsInterface {
     scale("scale", "Escala", new String[]{""}, Material.HOPPER),
     scheduleFeatures("scheduleFeatures", "Características de Programación", new String[]{"&7&oCaracterísticas de Programación"}, GUI.CLOCK),
     silenceOutput("silenceOutput", "Silenciar Salida", new String[]{"&7&oSilenciar la salida del comando", "&7&o(Solo en la consola)"}, null),
+    registerCommand("registerCommand", "Register Command", new String[]{"&7&oRegister the commands of", "&7&odetailedCommands on the server:", "&7&ono more Unknown command,", "&7&otab completion"}, null),
     silent("silent", "Silencioso", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("BELL", "JUKEBOW"))),
     sitFeatures("sitFeatures", "Características de Sentarse", new String[]{"&7&oCaracterísticas de Sentarse"}, FixedMaterial.getMaterial(Arrays.asList("STONE_STAIRS"))),
     skyLight("skyLight", "Luz del Cielo", new String[]{""}, FixedMaterial.getMaterial(Arrays.asList("LIGHT"))),

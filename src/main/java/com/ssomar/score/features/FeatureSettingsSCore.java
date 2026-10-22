@@ -484,6 +484,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     cancelEvent(getFeatureSettings("cancelEvent")),
     noActivatorRunIfTheEventIsCancelled(getFeatureSettings("noActivatorRunIfTheEventIsCancelled")),
     silenceOutput(getFeatureSettings("silenceOutput", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    registerCommand(getFeatureSettings("registerCommand", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     mustBeAProjectileLaunchWithTheSameEI(getFeatureSettings("mustBeAProjectileLaunchWithTheSameEI", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     desactiveDrops(getFeatureSettings("desactiveDrops", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     option(getFeatureSettings("option")),

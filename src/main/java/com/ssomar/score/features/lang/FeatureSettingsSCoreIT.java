@@ -459,6 +459,7 @@ public enum FeatureSettingsSCoreIT implements FeatureSettingsInterface {
     cancelEvent("cancelEvent", "Annulla Evento", new String[]{"&7&oAnnulla l'evento vanilla"}, null),
     noActivatorRunIfTheEventIsCancelled("noActivatorRunIfTheEventIsCancelled", "Nessun Attivatore se Evento Annullato", new String[]{"&7&oSe un altro plugin annulla l'evento che", "&7&oattiva l'attivatore e hai abilitato questa funzione", "&7&ol'attivatore non verrà attivato"}, null),
     silenceOutput("silenceOutput", "Silenzia Output", new String[]{"&7&oSilenzia l'output del comando", "&7&o(Solo in console)"}, null),
+    registerCommand("registerCommand", "Register Command", new String[]{"&7&oRegister the commands of", "&7&odetailedCommands on the server:", "&7&ono more Unknown command,", "&7&otab completion"}, null),
     mustBeAProjectileLaunchWithTheSameEI("mustBeAProjectileLaunchWithTheSameEI", "Deve Essere un Lancio con lo Stesso EI", new String[]{"&7&oDeve essere un lancio", "&7&ocon lo stesso EI"}, Material.ARROW),
     desactiveDrops("desactiveDrops", "Rimuovi Drop", new String[]{"&7&oRimuovi i drop"}, null),
     option("option", "Opzione", new String[]{"&7&oOpzione"}, Material.COMPASS),

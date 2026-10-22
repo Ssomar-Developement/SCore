@@ -558,6 +558,7 @@ public enum FeatureSettingsSCoreAR implements FeatureSettingsInterface {
     scale("scale", "المقياس", new String[]{""}, Material.HOPPER),
     scheduleFeatures("scheduleFeatures", "ميزات_الجدولة", new String[]{"&7&oميزات_الجدولة"}, GUI.CLOCK),
     silenceOutput("silenceOutput", "كتم_الإخراج", new String[]{"&7&oكتم_إخراج_الأمر", "&7&o(فقط_في_الكونسول)"}, null),
+    registerCommand("registerCommand", "Register Command", new String[]{"&7&oRegister the commands of", "&7&odetailedCommands on the server:", "&7&ono more Unknown command,", "&7&otab completion"}, null),
     silent("silent", "صامت", new String[]{}, FixedMaterial.getMaterial(Arrays.asList("BELL", "JUKEBOW"))),
     sitFeatures("sitFeatures", "ميزات_الجلوس", new String[]{"&7&oميزات_الجلوس"}, FixedMaterial.getMaterial(Arrays.asList("STONE_STAIRS"))),
     skyLight("skyLight", "إضاءة_السماء", new String[]{""}, FixedMaterial.getMaterial(Arrays.asList("LIGHT"))),

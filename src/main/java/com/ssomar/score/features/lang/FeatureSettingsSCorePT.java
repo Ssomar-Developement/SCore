@@ -440,6 +440,7 @@ public enum FeatureSettingsSCorePT implements FeatureSettingsInterface {
     cancelEvent("cancelEvent", "Cancelar Evento", new String[]{"&7&oCancelar o evento vanilla"}, null),
     noActivatorRunIfTheEventIsCancelled("noActivatorRunIfTheEventIsCancelled", "Não Executar Ativador se Evento for Cancelado", new String[]{"&7&oSe outro plugin cancelar o evento que", "&7&odispara o ativador e essa opção estiver ativada,", "&7&oo ativador não será executado"}, null),
     silenceOutput("silenceOutput", "Silenciar Saída", new String[]{"&7&oSilenciar a saída do comando", "&7&o(Apenas no console)"}, null),
+    registerCommand("registerCommand", "Register Command", new String[]{"&7&oRegister the commands of", "&7&odetailedCommands on the server:", "&7&ono more Unknown command,", "&7&otab completion"}, null),
     mustBeAProjectileLaunchWithTheSameEI("mustBeAProjectileLaunchWithTheSameEI", "Deve Ser um Lançamento com Mesmo EI", new String[]{"&7&oDeve ser um projétil", "&7&olançado com o mesmo ExecutableItem"}, Material.ARROW),
     desactiveDrops("desactiveDrops", "Remover Drops", new String[]{"&7&oRemover os drops"}, null),
     option("option", "Opção", new String[]{"&7&oOpção"}, Material.COMPASS),
