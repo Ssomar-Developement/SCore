@@ -308,6 +308,7 @@ public enum FeatureSettingsSCoreIT implements FeatureSettingsInterface {
     lifeTime("lifeTime", "Durata Vita", new String[]{"&7&oDurata del volo del razzo pirotecnico", "&7&oes. il numero di polveri da sparo usate per crearlo,", "&7&odeve essere un intero tra -128 e 127. Predefinito: 1"}, GUI.CLOCK),
     lockedInventory("locked-in-inventory", "Inventario Bloccato", new String[]{"&7&oL'oggetto non può essere", "&7&ospostato dall'inventario"}, Material.BARRIER),
     loop("loop", "Funzionalità Ciclo", new String[]{"&7&oImpostazioni specifiche", "&7&oper l'attivatore a ciclo"}, Material.ANVIL),
+    loopTimerPerBlock("loopTimerPerBlock", "Loop timer per block", new String[]{"&7&oEach placed block has its own", "&7&ocountdown, started when it is placed"}, null),
     magicID("magicID", "ID Magico", new String[]{"&7&oL'ID magico"}, Material.STONE),
     material("material", "Materiale", new String[]{"&7&oIl materiale"}, Material.STONE),
     materialAndTags("materialAndTags", "Materiale e Tag", new String[]{"&7&oIl materiale e i tag"}, Material.STONE),

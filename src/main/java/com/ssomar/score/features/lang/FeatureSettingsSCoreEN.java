@@ -491,6 +491,7 @@ public enum FeatureSettingsSCoreEN implements FeatureSettingsInterface {
     lockedInventory("locked-in-inventory", "Locked Inventory", new String[]{"&7&oThe item can't be", "&7&omoved of the inventory"}, Material.BARRIER),
     lockedName("lockedName", "Locked name", new String[]{"&7&oThe name of the item", "&7&othat can unlock the container"}, Material.NAME_TAG),
     loop("loop", "Loop features", new String[]{"&7&oSpecific settings", "&7&ofor the loop activator"}, Material.ANVIL),
+    loopTimerPerBlock("loopTimerPerBlock", "Loop timer per block", new String[]{"&7&oEach placed block has its own", "&7&ocountdown, started when it is placed"}, null),
     lore("lore", "Lore", new String[]{"&7&oThe lore of the item"}, Material.PAPER),
     magicID("magicID", "Magic ID", new String[]{"&7&oThe Magic ID"}, Material.STONE),
     material("material", "Material", new String[]{"&7&oThe material"}, Material.STONE),

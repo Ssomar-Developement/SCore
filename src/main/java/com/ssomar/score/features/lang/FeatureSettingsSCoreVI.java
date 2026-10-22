@@ -456,6 +456,7 @@ public enum FeatureSettingsSCoreVI implements FeatureSettingsInterface {
     lockedInventory("locked-in-inventory", "Kho đồ khóa", new String[]{"&7&oVật phẩm không thể", "&7&odi chuyển trong kho đồ"}, Material.BARRIER),
     lockedName("lockedName", "Tên khóa", new String[]{"&7&oTên vật phẩm", "&7&osẽ mở khóa container"}, Material.NAME_TAG),
     loop("loop", "Tính năng lặp", new String[]{"&7&oCài đặt cụ thể", "&7&ocho bộ lặp"}, Material.ANVIL),
+    loopTimerPerBlock("loopTimerPerBlock", "Loop timer per block", new String[]{"&7&oEach placed block has its own", "&7&ocountdown, started when it is placed"}, null),
     lore("lore", "Lore", new String[]{"&7&oLore của vật phẩm"}, Material.PAPER),
     magicID("magicID", "Magic ID", new String[]{"&7&oMagic ID"}, Material.STONE),
     material("material", "Chất liệu", new String[]{"&7&oChất liệu"}, Material.STONE),

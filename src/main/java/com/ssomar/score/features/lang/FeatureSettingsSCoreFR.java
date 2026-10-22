@@ -307,6 +307,7 @@ public enum FeatureSettingsSCoreFR implements FeatureSettingsInterface {
 
     lockedInventory("locked-in-inventory", "Inventaire Verrouillé", new String[]{"&7&oL'item ne peut pas être", "&7&odéplacé de l'inventaire"}, Material.BARRIER),
     loop("loop", "Fonctionnalités de boucle", new String[]{"&7&oParamètres spécifiques", "&7&opour l'activateur en boucle"}, Material.ANVIL),
+    loopTimerPerBlock("loopTimerPerBlock", "Compte à rebours par bloc", new String[]{"&7&oChaque bloc posé a son propre", "&7&ocompte à rebours, lancé à la pose"}, null),
     magicID("magicID", "ID Magique", new String[]{"&7&oL'ID magique"}, Material.STONE),
     material("material", "Matériau", new String[]{"&7&oLe matériau"}, Material.STONE),
     materialAndTags("materialAndTags", "Matériau et Tags", new String[]{"&7&oLe matériau et les tags"}, Material.STONE),
