@@ -506,6 +506,7 @@ public enum FeatureSettingsSCoreDE implements FeatureSettingsInterface {
     lockedInventory("locked-in-inventory", "Inventar gesperrt", new String[]{"&7&oDer Gegenstand kann nicht",  "&7&oaus dem Inventar entfernt werden"},  Material.BARRIER),
     lockedName("lockedName", "Gesperrter Name", new String[]{"&7&oDer Name des Gegenstands", "&7&oder den Behälter entsperren kann"}, Material.NAME_TAG),
     loop("loop", "Schleifenfunktionen", new String[]{"&7&oSpezifische Einstellungen", "&7&ofür den Schleifenaktivator"}, Material.ANVIL),
+    loopTimerPerBlock("loopTimerPerBlock", "Loop timer per block", new String[]{"&7&oEach placed block has its own", "&7&ocountdown, started when it is placed"}, null),
     lore("lore", "Beschreibung", new String[]{"&7&oDie Beschreibung des Gegenstands"}, Material.PAPER),
     magicID("magicID", "Magische ID", new String[]{"&7&oDie magische ID"},  Material.STONE),
     material("material", "Material", new String[]{"&7&oDas Material"},  Material.STONE),

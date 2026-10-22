@@ -299,6 +299,7 @@ public enum FeatureSettingsSCorePT implements FeatureSettingsInterface {
     lifeTime("lifeTime", "Tempo de Vida", new String[]{"&7&oA duração de voo do foguete", "&7&oOu seja, a quantidade de pólvoras usadas na fabricação", "&7&oDeve ser um inteiro entre -128 e 127. Padrão: 1"}, GUI.CLOCK),
     lockedInventory("locked-in-inventory", "Inventário Travado", new String[]{"&7&oO item não pode ser", "&7&oremovido do inventário"}, Material.BARRIER),
     loop("loop", "Recorrência", new String[]{"&7&oConfigurações específicas", "&7&opara o ativador de loop"}, Material.ANVIL),
+    loopTimerPerBlock("loopTimerPerBlock", "Loop timer per block", new String[]{"&7&oEach placed block has its own", "&7&ocountdown, started when it is placed"}, null),
     magicID("magicID", "ID Mágico", new String[]{"&7&oO ID mágico"}, Material.STONE),
     material("material", "Material", new String[]{"&7&oO material"}, Material.STONE),
     materialAndTags("materialAndTags", "Material e Tags", new String[]{"&7&oO material e as tags"}, Material.STONE),

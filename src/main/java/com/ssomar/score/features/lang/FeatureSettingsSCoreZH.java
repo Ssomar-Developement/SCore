@@ -363,6 +363,7 @@ public enum FeatureSettingsSCoreZH implements FeatureSettingsInterface {
     lifeTime("lifeTime", "烟花飞行时间", new String[]{"&7&o烟花的飞行持续时间", "＆7&o(制作中使用的火药数量)", "&7&o必须为-128至127之间的整数，默认为1"}, GUI.CLOCK),
     lockedInventory("locked-in-inventory", "锁定在背包中", new String[]{"&7&o此物品不能", "&7&o从背包中移除"}, Material.BARRIER),
     loop("loop", "循环特性", new String[]{"&7&o循环激活器的特定设置"}, Material.ANVIL),
+    loopTimerPerBlock("loopTimerPerBlock", "Loop timer per block", new String[]{"&7&oEach placed block has its own", "&7&ocountdown, started when it is placed"}, null),
     magicID("magicID", "魔法ID", new String[]{"&7&o魔法ID"}, Material.STONE),
     material("material", "材料", new String[]{"&7&o物品材质"}, Material.STONE),
     materialAndTags("materialAndTags", "材料和标签", new String[]{"&7&o物品材料和标签"}, Material.STONE),

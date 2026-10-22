@@ -506,6 +506,7 @@ public enum FeatureSettingsSCoreID implements FeatureSettingsInterface {
     lockedInventory("locked-in-inventory", "Inventaris Terkunci", new String[]{"&7&oItem tidak dapat", "&7&odipindahkan dari inventaris"}, Material.BARRIER),
     lockedName("lockedName", "Nama Terkunci", new String[]{"&7&oNama dari item", "&7&oyang dapat membuka wadah"}, Material.NAME_TAG),
     loop("loop", "Fitur Pengulangan", new String[]{"&7&oPengaturan spesifik", "&7&ountuk pengaktif pengulangan"}, Material.ANVIL),
+    loopTimerPerBlock("loopTimerPerBlock", "Loop timer per block", new String[]{"&7&oEach placed block has its own", "&7&ocountdown, started when it is placed"}, null),
     lore("lore", "Lore", new String[]{"&7&oLore dari item"}, Material.PAPER),
     magicID("magicID", "ID Magic", new String[]{"&7&oID Magic"}, Material.STONE),
     material("material", "Material", new String[]{"&7&oMaterial"}, Material.STONE),

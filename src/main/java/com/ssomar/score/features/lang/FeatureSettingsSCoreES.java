@@ -493,6 +493,7 @@ public enum FeatureSettingsSCoreES implements FeatureSettingsInterface {
     lockedInventory("locked-in-inventory", "Inventario Bloqueado", new String[]{"&7&oEl objeto no puede ser", "&7&omovido del inventario"}, Material.BARRIER),
     lockedName("lockedName", "Nombre Bloqueado", new String[]{"&7&oEl nombre del objeto", "&7&oque puede desbloquear el contenedor"}, Material.NAME_TAG),
     loop("loop", "Características de bucle", new String[]{"&7&oAjustes específicos", "&7&opara el activador de bucle"}, Material.ANVIL),
+    loopTimerPerBlock("loopTimerPerBlock", "Loop timer per block", new String[]{"&7&oEach placed block has its own", "&7&ocountdown, started when it is placed"}, null),
     lore("lore", "Descripción", new String[]{"&7&oLa descripción del objeto"}, Material.PAPER),
     magicID("magicID", "ID Mágico", new String[]{"&7&oEl ID Mágico"}, Material.STONE),
     material("material", "Material", new String[]{"&7&oEl material"}, Material.STONE),

@@ -373,6 +373,7 @@ public enum FeatureSettingsSCoreRU implements FeatureSettingsInterface {
     lifeTime("lifeTime", "Время Жизни", new String[]{"&7&oПродолжительность полета фейерверка", "&7&oт.е. количество пороха, использованного для крафта", "&7&oДолжно быть числом от -128 до 127. По умолчанию 1"}, GUI.CLOCK),
     lockedInventory("locked-in-inventory", "Заблокированный Инвентарь", new String[]{"&7&oПредмет нельзя", "&7&oпереместить из инвентаря"}, Material.BARRIER),
     loop("loop", "Настройки Цикла", new String[]{"&7&oСпециальные настройки", "&7&oдля циклического активатора"}, Material.ANVIL),
+    loopTimerPerBlock("loopTimerPerBlock", "Loop timer per block", new String[]{"&7&oEach placed block has its own", "&7&ocountdown, started when it is placed"}, null),
     magicID("magicID", "Магический ID", new String[]{"&7&oМагический ID"}, Material.STONE),
     material("material", "Материал", new String[]{"&7&oМатериал"}, Material.STONE),
     materialAndTags("materialAndTags", "Материал и Теги", new String[]{"&7&oМатериал и теги"}, Material.STONE),

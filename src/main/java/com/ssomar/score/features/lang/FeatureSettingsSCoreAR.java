@@ -465,6 +465,7 @@ public enum FeatureSettingsSCoreAR implements FeatureSettingsInterface {
     lockedInventory("locked-in-inventory", "مخزون_مقفل", new String[]{"&7&oلا_يمكن", "&7&oنقل_العنصر_من_المخزون"}, Material.BARRIER),
     lockedName("lockedName", "الاسم_المقفل", new String[]{"&7&oاسم_العنصر", "&7&oالذي_يمكنه_فتح_الحاوية"}, Material.NAME_TAG),
     loop("loop", "ميزات_التكرار", new String[]{"&7&oإعدادات_محددة", "&7&oلمنشط_التكرار"}, Material.ANVIL),
+    loopTimerPerBlock("loopTimerPerBlock", "Loop timer per block", new String[]{"&7&oEach placed block has its own", "&7&ocountdown, started when it is placed"}, null),
     lore("lore", "الوصف", new String[]{"&7&oوصف_العنصر"}, Material.PAPER),
     magicID("magicID", "معرف_السحر", new String[]{"&7&oمعرف_السحر"}, Material.STONE),
     material("material", "المادة", new String[]{"&7&oالمادة"}, Material.STONE),

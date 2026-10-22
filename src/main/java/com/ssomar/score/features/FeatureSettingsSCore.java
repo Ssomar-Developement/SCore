@@ -338,6 +338,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     lifeTime(getFeatureSettings("lifeTime")),
     lockedInventory(getFeatureSettings("lockedInventory", "locked-in-inventory")),
     loop(getFeatureSettings("loop")),
+    loopTimerPerBlock(getFeatureSettings("loopTimerPerBlock", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     magicID(getFeatureSettings("magicID")),
     material(getFeatureSettings("material")),
     materialAndTags(getFeatureSettings("materialAndTags")),

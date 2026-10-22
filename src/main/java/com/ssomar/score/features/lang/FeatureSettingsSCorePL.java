@@ -460,6 +460,7 @@ public enum FeatureSettingsSCorePL implements FeatureSettingsInterface {
     lockedInventory("locked-in-inventory", "Zablokowany ekwipunek", new String[]{"&7&oPrzedmiot nie może być", "&7&oprzeniesiony z ekwipunku"}, Material.BARRIER),
     lockedName("lockedName", "Zablokowana nazwa", new String[]{"&7&oNazwa przedmiotu", "&7&októry może odblokować pojemnik"}, Material.NAME_TAG),
     loop("loop", "Funkcje pętli", new String[]{"&7&oSpecyficzne ustawienia", "&7&odla aktywatora pętli"}, Material.ANVIL),
+    loopTimerPerBlock("loopTimerPerBlock", "Loop timer per block", new String[]{"&7&oEach placed block has its own", "&7&ocountdown, started when it is placed"}, null),
     lore("lore", "Opis", new String[]{"&7&oOpis przedmiotu"}, Material.PAPER),
     magicID("magicID", "ID magii", new String[]{"&7&oID magii"}, Material.STONE),
     material("material", "Materiał", new String[]{"&7&oMateriał"}, Material.STONE),

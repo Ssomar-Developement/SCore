@@ -290,6 +290,7 @@ public enum FeatureSettingsSCoreHI implements FeatureSettingsInterface {
     lifeTime("lifeTime", "जीवनकाल", new String[]{"&7&oइस फायरवर्क रॉकेट की उड़ान अवधि", "&7&oयानी कि बनाने में प्रयुक्त गनपाउडर की संख्या", "&7&o-128 से 127 तक एक पूर्णांक होना चाहिए। डिफ़ॉल्ट 1 है"}, GUI.CLOCK),
     lockedInventory("locked-in-inventory", "इन्वेंट्री लॉक", new String[]{"&7&oआइटम को", "&7&oइन्वेंट्री से हटाया नहीं जा सकता"}, Material.BARRIER),
     loop("loop", "लूप विशेषताएँ", new String[]{"&7&oलूप सक्रियकर्ता के लिए", "&7&oविशेष सेटिंग्स"}, Material.ANVIL),
+    loopTimerPerBlock("loopTimerPerBlock", "Loop timer per block", new String[]{"&7&oEach placed block has its own", "&7&ocountdown, started when it is placed"}, null),
     magicID("magicID", "मैजिक ID", new String[]{"&7&oमैजिक ID"}, Material.STONE),
     material("material", "सामग्री", new String[]{"&7&oसामग्री"}, Material.STONE),
     materialAndTags("materialAndTags", "सामग्री और टैग्स", new String[]{"&7&oसामग्री और टैग्स"}, Material.STONE),
