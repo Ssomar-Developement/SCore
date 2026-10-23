@@ -23,6 +23,7 @@ public class ItemCommandManager extends CommandManager<SCommand> {
         if(SCore.is1v20v5Plus()) commands.add(new SetItemTooltipStyle());
         if(SCore.is1v20v5Plus()) commands.add(new SetItemPotionColor());
         if(SCore.is1v20v5Plus()) commands.add(new SetItemModel());
+        if(SCore.is1v21v2Plus() && SCore.isPaperOrFork()) commands.add(new SetEquippableModel());
         commands.add(new SetItemCustomModelData());
 
         if (!SCore.is1v12Less()) {
@@ -38,6 +39,7 @@ public class ItemCommandManager extends CommandManager<SCommand> {
             commands.add(new AddItemAttribute());
             commands.add(new SetItemAttribute());
         }
+        commands.add(new AddItemNBT());
 
         /* Sort by priority */
         commands.sort((c1, c2) -> {

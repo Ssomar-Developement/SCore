@@ -1,5 +1,6 @@
 package com.ssomar.score.utils.placeholders;
 
+import com.ssomar.score.SCore;
 import lombok.Getter;
 import org.bukkit.potion.PotionEffect;
 
@@ -18,8 +19,9 @@ public class EffectPlaceholders extends PlaceholdersInterface implements Seriali
     private Map<String, String> placeholders;
 
     /* placeholders of the player */
+    /* transient: not serializable (delayed commands saved at the shutdown), its placeholders are already in the map */
     @Getter
-    private PotionEffect effect;
+    private transient PotionEffect effect;
 
     public EffectPlaceholders() {
         this.placeholders = new HashMap<>();
@@ -39,8 +41,11 @@ public class EffectPlaceholders extends PlaceholdersInterface implements Seriali
         if (this.effect != null) {
             /* Pre save placeholders without calcul */
 
-            placeholders.put("%effect_received%", effect.getType().getKey().getKey());
-            placeholders.put("%effect_received_lower%", effect.getType().getKey().getKey().toLowerCase());
+            // get key is not available in 1.17
+            if(SCore.is1v18Plus()) {
+                placeholders.put("%effect_received%", effect.getType().getKey().getKey());
+                placeholders.put("%effect_received_lower%", effect.getType().getKey().getKey().toLowerCase());
+            }
             placeholders.put("%effect_received_level%", effect.getAmplifier()+"");
             placeholders.put("%effect_received_duration%", effect.getDuration()+"");
         }

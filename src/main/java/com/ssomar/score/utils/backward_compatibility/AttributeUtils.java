@@ -57,7 +57,19 @@ public class AttributeUtils {
      * @param string
      * @return
      */
+    /* name -> attribute: the attribute registry is frozen once the server has started, and rebuilding + sorting it on every lookup
+     * (as getAttribute did) cost 5 % of the server thread on requeim's server (max health of each block title owner, 2026-10-01) */
+    private static final Map<String, Attribute> ATTRIBUTE_CACHE = new java.util.concurrent.ConcurrentHashMap<>();
+
     public static Attribute getAttribute(String string) {
+        Attribute cached = ATTRIBUTE_CACHE.get(string);
+        if (cached != null) return cached;
+        Attribute found = findAttribute(string);
+        if (found != null) ATTRIBUTE_CACHE.put(string, found);
+        return found;
+    }
+
+    private static Attribute findAttribute(String string) {
         string = string.replace("minecraft:", "");
         SsomarDev.testMsg(ChatColor.GOLD+"[#s0019] getAttribute() is triggered: "+string, true);
         for (Map.Entry<Object, String> entry : getAttributes().entrySet()) {
@@ -315,24 +327,40 @@ public class AttributeUtils {
      * Used to properly remove a LivingEntity entity's attribute modifier
      * @param entity_arg the LivingEntity that will have its specific attribute removed
      * @param attribute_type the attribute type
-     * @param key the attribute modifier's key string (plugin/header key included)
+     * @param key the attribute modifier's key string (NamespacedKey string for 1.21+, UUID string for older versions)
      */
     public static void removeSpecificAttribute(LivingEntity entity_arg, String attribute_type, String key) {
         LivingEntity entity = entity_arg;
-        if (entity_arg instanceof Player) {
-            // using this method was required because relogging players produce complications.
+
+        if (entity == null) return;
+
+        if (entity instanceof Player) {
             entity = Bukkit.getPlayer(entity.getUniqueId());
+            if (entity == null) return; // player logged out
         }
 
         Attribute attribute = AttributeUtils.getAttribute(attribute_type);
-        assert attribute != null;
-        assert entity != null;
-        AttributeInstance attrInstance = entity.getAttribute(attribute);
+        if (attribute == null) return;
 
-        assert attrInstance != null;
-        Collection<AttributeModifier> attributeModifiers = attrInstance.getModifiers();
-        for (AttributeModifier modifier : attributeModifiers) {
-            if (modifier.getKey().toString().equals(key)) {
+        AttributeInstance attrInstance = entity.getAttribute(attribute);
+        if (attrInstance == null) return;
+
+        Collection<AttributeModifier> modifiers = attrInstance.getModifiers();
+        if (modifiers == null || modifiers.isEmpty()) return;
+
+        for (AttributeModifier modifier : new ArrayList<>(modifiers)) {
+            if (modifier == null) continue;
+
+            String modifierKey;
+
+            if (SCore.is1v21Plus()) {
+                if (modifier.getKey() == null) continue;
+                modifierKey = modifier.getKey().toString();
+            } else {
+                // For versions below 1.21, use getName() which contains the UUID string
+                modifierKey = modifier.getName();
+            }
+            if (modifierKey != null && modifierKey.equals(key)) {
                 attrInstance.removeModifier(modifier);
                 return;
             }

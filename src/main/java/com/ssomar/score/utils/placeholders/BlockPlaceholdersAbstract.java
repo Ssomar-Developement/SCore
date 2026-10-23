@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
@@ -40,7 +41,8 @@ public class BlockPlaceholdersAbstract extends PlaceholdersInterface implements 
     private String blockWorldName;
     private String EB_ID;
 
-    private Biome biome;
+    /* transient: since 1.21.3 a Biome is not serializable anymore (delayed commands saved at the shutdown), read again from the block */
+    private transient Biome biome;
     private String blockDimension;
     private Material fixType;
 
@@ -98,6 +100,7 @@ public class BlockPlaceholdersAbstract extends PlaceholdersInterface implements 
             Location loc = new Location(world, blockX, blockY, blockZ);
 
             Block block = loc.getBlock();
+            if (biome == null) biome = block.getBiome();
 
             blockWorldName = world.getName();
             Material type = block.getType();
@@ -123,7 +126,10 @@ public class BlockPlaceholdersAbstract extends PlaceholdersInterface implements 
             if (!SCore.is1v12Less()) placeholders.put("%" + particle + "_data%", block.getBlockData().getAsString());
 
             try {
-                BlockData data = block.getState().getBlockData();
+                /* Don't use block.getState() here: on a block entity (chest, barrel, ...) it builds a
+                 * full snapshot and serializes the whole inventory NBT. getBlockData() is equivalent
+                 * for this check and free (same call as the %_data% placeholder above). */
+                BlockData data = block.getBlockData();
                 if (data instanceof Ageable)
                     placeholders.put("%" + particle + "_is_ageable%", "true");
                 else placeholders.put("%" + particle + "_is_ageable%", "false");
@@ -132,11 +138,16 @@ public class BlockPlaceholdersAbstract extends PlaceholdersInterface implements 
             }
 
             boolean notValidSpawner = true;
-            if (block.getState() instanceof CreatureSpawner) {
-                CreatureSpawner spawner = (CreatureSpawner) block.getState();
-                if (spawner.getSpawnedType() != null) {
-                    notValidSpawner = false;
-                    placeholders.put("%" + particle + "_spawnertype%", spawner.getSpawnedType().toString());
+            /* Cheap material guard before getState(), which is expensive on block entities.
+             * Matches MOB_SPAWNER (1v12 less), SPAWNER and TRIAL_SPAWNER without a version check. */
+            if (type.name().endsWith("SPAWNER")) {
+                BlockState state = block.getState();
+                if (state instanceof CreatureSpawner) {
+                    CreatureSpawner spawner = (CreatureSpawner) state;
+                    if (spawner.getSpawnedType() != null) {
+                        notValidSpawner = false;
+                        placeholders.put("%" + particle + "_spawnertype%", spawner.getSpawnedType().toString());
+                    }
                 }
             }
             if (notValidSpawner) placeholders.put("%" + particle + "_spawnertype%", "null");

@@ -26,6 +26,7 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         if(SCore.is1v20v5Plus()) commands.add(new SetItemTooltipStyle());
         if(SCore.is1v20v5Plus()) commands.add(new SetItemPotionColor());
         if(SCore.is1v20v5Plus()) commands.add(new SetItemModel());
+        if(SCore.is1v21v2Plus() && SCore.isPaperOrFork()) commands.add(new SetEquippableModel());
         commands.add(new SetItemCustomModelData());
         commands.add(new SendBlankMessage());
         commands.add(new SendMessage());
@@ -71,7 +72,10 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         commands.add(new GiveMoney());
         commands.add(new GravityEnable());
         commands.add(new GravityDisable());
+        commands.add(new SetPlayerWeather());
+        commands.add(new SetPlayerTime());
         commands.add(new OpenWorkbench());
+        commands.add(new OpenAnvil());
         commands.add(new MinecartBoost());
         commands.add(new Steal());
         commands.add(new PickupMagnet());
@@ -81,7 +85,7 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         commands.add(new Oxygen());
         commands.add(new RemoveEnchantment());
         commands.add(new Chat());
-        commands.add(new ForceDrop());
+        // ForceDrop is handled by MixedCommandsManager (supports both slot and ei_id modes)
         commands.add(OpenChest.getInstance());
         commands.add(new EICooldown());
         commands.add(new EBCooldown());
@@ -103,6 +107,10 @@ public class PlayerCommandManager extends CommandManager<SCommand> {
         commands.add(new If());
 
         commands.addAll(MixedCommandsManager.getInstance().getCommands());
+        if (!SCore.is1v8())
+            commands.add(new FireworkBoost());
+        commands.add(new MoveItem());
+        commands.add(new AddItemNBT());
 
         /* Sort by priority */
         commands.sort((c1, c2) -> {

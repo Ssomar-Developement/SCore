@@ -9,7 +9,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public class AbsorptionManager {
@@ -57,7 +56,8 @@ public class AbsorptionManager {
 
         // Save to database immediately so it persists across logouts (but only if not rescheduling)
         if (!isReschedule) {
-            AbsorptionQuery.insertToRecords(Database.getInstance().connect(), absorptionUUID, receiver.getUniqueId(), absorption.getAbsorption(), absorption.getExpiryTime());
+            SCore.schedulerHook.runAsyncTask(() -> AbsorptionQuery.insertToRecords(Database.getInstance().connect(), absorptionUUID, receiver.getUniqueId(), absorption.getAbsorption(), absorption.getExpiryTime()),0);
+
         }
 
         Runnable runnable3 = new Runnable() {
@@ -69,7 +69,7 @@ public class AbsorptionManager {
                         //receiver.setAbsorptionAmount(receiver.getAbsorptionAmount()-absorption.getAbsorption());
                         AbsorptionManager.modifyAbsorption(receiver.getUniqueId().toString(), receiver.getAbsorptionAmount()-absorption.getAbsorption());
                         // Remove from database since the task completed successfully
-                        AbsorptionQuery.deleteAbsorption(Database.getInstance().connect(), absorptionUUID.toString());
+                        SCore.schedulerHook.runAsyncTask(()->AbsorptionQuery.deleteAbsorption(Database.getInstance().connect(), absorptionUUID.toString()),0);
                     }catch(IllegalArgumentException e){
                         //I don't know how to add a debug message, but this happens if the player tries to remove ABSORPTION
                         //like ABSORPTION -5, if the player has ABSORPTION 5, it will work, but once it worked now the player
@@ -88,18 +88,48 @@ public class AbsorptionManager {
     public void onConnect(Player player) {
         SsomarDev.testMsg(ChatColor.GOLD+"[#s0015] AbsorptionManager.onConnect() is triggered", true);
 
-        // Handle expired absorptions - remove them from player
-        List<AbsorptionObject> toRemove = AbsorptionQuery.getAbsorptionsToRemove(Database.getInstance().connect(), player.getUniqueId().toString());
-        SsomarDev.testMsg("[#s0016] Amount of expired absorptions: "+toRemove.size(), true);
-        for(AbsorptionObject absorption : toRemove) {
-            if (player.getAbsorptionAmount() > absorption.getAbsorption())
-                player.setAbsorptionAmount(player.getAbsorptionAmount() - absorption.getAbsorption());
-            else if (player.getAbsorptionAmount() == 0) {
-                break;
-            } else {
-                player.setAbsorptionAmount(0);
+        UUID playerUUID = player.getUniqueId();
+
+        // Run database query async
+        Runnable runnableAsync = new Runnable() {
+            @Override
+            public void run() {
+                // Handle expired absorptions - remove them from player
+                List<AbsorptionObject> toRemove = AbsorptionQuery.getAbsorptionsToRemove(Database.getInstance().connect(), player.getUniqueId().toString());
+
+                SsomarDev.testMsg("[#s0016] Amount of expired absorptions: "+toRemove.size(), true);
+
+                // Sync back to main thread to modify player
+                Runnable runnableSync = new Runnable() {
+                    @Override
+                    public void run() {
+
+                        // Re-fetch player in case they disconnected
+                        Player getBackPlayer = Bukkit.getPlayer(playerUUID);
+                        if (getBackPlayer == null || !getBackPlayer.isOnline()) return;
+
+                        for(AbsorptionObject absorption : toRemove) {
+                            if (getBackPlayer.getAbsorptionAmount() > absorption.getAbsorption())
+                                getBackPlayer.setAbsorptionAmount(getBackPlayer.getAbsorptionAmount() - absorption.getAbsorption());
+                            else if (getBackPlayer.getAbsorptionAmount() == 0) {
+                                break;
+                            } else {
+                                getBackPlayer.setAbsorptionAmount(0);
+                            }
+                        }
+
+                        // Delete AFTER successful removal from player - run async to not block main thread
+                        SCore.schedulerHook.runAsyncTask(() -> {
+                            for (AbsorptionObject absorption : toRemove) {
+                                AbsorptionQuery.deleteAbsorption(Database.getInstance().connect(), absorption.getAbsorptionUUID().toString());
+                            }
+                        }, 0);
+                    }
+                };
+                SCore.schedulerHook.runTask(runnableSync, 0);
             }
-        }
+        };
+        SCore.schedulerHook.runAsyncTask(runnableAsync, 0);
     }
 
     public static AbsorptionManager getInstance() {

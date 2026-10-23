@@ -10,6 +10,10 @@ public class DamageResistanceEvent implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamageEvent(EntityDamageEvent e) {
-        e.setDamage(DamageResistance.getInstance().getNewDamage(e.getEntity().getUniqueId(), e.getDamage()));
+        // Try catch was added due to WeaponMechanics plugin conflict.
+        // An exception happens if a player damages a mob using a gun from WeaponMechanics
+        try {
+            e.setDamage(DamageResistance.getInstance().getNewDamage(e.getEntity().getUniqueId(), e.getDamage()));
+        } catch (Exception ex) {}
     }
 }

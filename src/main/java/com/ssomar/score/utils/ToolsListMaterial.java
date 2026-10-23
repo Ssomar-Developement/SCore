@@ -8,11 +8,23 @@ import org.bukkit.Material;
 import javax.annotation.Nullable;
 import java.util.*;
 
+/**
+ * The purpose of this class is to help developers attempt to get the material id of a specific item. Because sometimes
+ * when Minecraft updates, the material id of an item changes, which breaks logic when used in various versions.<br/><br/>
+ * With the help of the flexibility of this logic, fetching the material id of an item would be less of a hassle.
+ *
+ */
 @Getter @Setter
 public class ToolsListMaterial {
 
     private static ToolsListMaterial instance;
+    /**
+     * Key = Block Material Enum value <br/>
+     * Value = ItemStack Material Enum value
+     */
     private static Map<Material, Material> blockAndItemMaterial;
+    /* block-only materials -> their item, learned by getRealMaterialOfBlock (never read by getBlockMaterialOfItem) */
+    private static Map<Material, Material> derivedItemOfBlock;
     private List<Material> plantWithGrowth;
 
     private List<Material> plantWithGrowthOnlyFarmland;
@@ -40,6 +52,8 @@ public class ToolsListMaterial {
         plantWithGrowthOnlyJungleWood = new ArrayList<>();
         oneUsageMaterial = new ArrayList<>();
         validJungleBlockMaterials = new ArrayList<>();
+
+        // Associate each crop towards their place of growth
 
         addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("WHEAT", "CROPS")));
         addWithoutProblem(plantWithGrowth, FixedMaterial.getMaterial(Arrays.asList("CARROTS", "CARROT")));
@@ -76,6 +90,10 @@ public class ToolsListMaterial {
         addWithoutProblem(validJungleBlockMaterials, FixedMaterial.getMaterial(Collections.singletonList("STRIPPED_JUNGLE_LOG")));
 
         blockAndItemMaterial = new HashMap<>();
+        derivedItemOfBlock = new java.util.concurrent.ConcurrentHashMap<>();
+
+        // Link a crop block towards their seed material
+
         if (SCore.is1v12Less()) {
             blockAndItemMaterial.put(Material.valueOf("CROPS"), Material.valueOf("SEEDS"));
             blockAndItemMaterial.put(Material.valueOf("POTATO"), Material.valueOf("POTATO_ITEM"));
@@ -96,6 +114,7 @@ public class ToolsListMaterial {
         blockAndItemMaterial.put(FixedMaterial.getMaterial(Arrays.asList("TORCHFLOWER_CROP")), FixedMaterial.getMaterial(Arrays.asList("TORCHFLOWER_SEEDS")));
         blockAndItemMaterial.put(FixedMaterial.getMaterial(Arrays.asList("TORCHFLOWER")), FixedMaterial.getMaterial(Arrays.asList("TORCHFLOWER_SEEDS")));
         blockAndItemMaterial.put(FixedMaterial.getMaterial(Arrays.asList("COCOA")), FixedMaterial.getMaterial(Arrays.asList("COCOA_BEANS")));
+        blockAndItemMaterial.put(FixedMaterial.getMaterial(Arrays.asList("SWEET_BERRY_BUSH")), FixedMaterial.getMaterial(Arrays.asList("SWEET_BERRIES")));
         blockAndItemMaterial.put(Material.TRIPWIRE, Material.STRING);
         blockAndItemMaterial.put(Material.REDSTONE_WIRE, Material.REDSTONE);
 
@@ -113,6 +132,12 @@ public class ToolsListMaterial {
 
     }
 
+    /**
+     * To safely add materials to a {@code List<Material>} variable.
+     * @param list the list where the material will be stored at
+     * @param material in the context of {@link FixedMaterial#getMaterial(List)}, if an invalid entry is written in {@link ToolsListMaterial#ToolsListMaterial()}, it will default
+     *                 into {@code Material.BARRIER} which means, "ignore this entry". Otherwise, just add it normally.
+     */
     public void addWithoutProblem(List<Material> list, Material material) {
         if (material == Material.BARRIER) return;
 
@@ -124,13 +149,73 @@ public class ToolsListMaterial {
         return instance;
     }
 
+    /**
+     * Used to fetch the {@link Material} seed of a crop block. <br/><br/>
+     * Essential for checking if you have enough crops for
+     * if {@code takeFromInv} is enabled in the context of {@code PLANT_IN_SQUARE}
+     * @param material
+     * @return
+     */
     @Nullable
     public Material getRealMaterialOfBlock(Material material) {
         if (blockAndItemMaterial.containsKey(material)) {
             return blockAndItemMaterial.get(material);
-        } else return material;
+        }
+        Material derived = derivedItemOfBlock.get(material);
+        if (derived != null) return derived;
+        // Block states that are not items (WALL_TORCH, OAK_WALL_SIGN, HORN_CORAL_WALL_FAN, POTTED_*…):
+        // derive the item the same way the game does, so %block_item_material% gives something usable.
+        try {
+            if (!SCore.is1v13Less() && !material.isItem()) {
+                for (String candidate : itemCandidatesOfBlock(material.name())) {
+                    Material item = Material.matchMaterial(candidate);
+                    if (item != null && item.isItem()) {
+                        /* own cache: blockAndItemMaterial is also read backwards by getBlockMaterialOfItem, and
+                           PLAYER_WALL_HEAD -> PLAYER_HEAD there made EB place wall heads (and wall torches) */
+                        derivedItemOfBlock.put(material, item);
+                        return item;
+                    }
+                }
+            }
+        } catch (NoSuchMethodError ignored) {
+            // Material#isItem missing on an old server: keep the block material as before
+        }
+        return material;
     }
 
+    /**
+     * Item material names to try, in order, for a block-only material name (1.13+ names). Pure helper, unit-tested.
+     * Unknown shapes give an empty list: the caller then keeps the block material.
+     */
+    public static List<String> itemCandidatesOfBlock(String blockName) {
+        List<String> candidates = new ArrayList<>();
+        if (blockName == null) return candidates;
+        String n = blockName.toUpperCase();
+        if (n.startsWith("POTTED_")) candidates.add(n.substring("POTTED_".length()));
+        if (n.contains("WALL_")) candidates.add(n.replace("WALL_", ""));
+        if (n.startsWith("ATTACHED_")) n = n.substring("ATTACHED_".length());
+        if (n.endsWith("_STEM") && (n.startsWith("MELON") || n.startsWith("PUMPKIN"))) candidates.add(n.replace("_STEM", "_SEEDS"));
+        if (n.endsWith("_PLANT")) candidates.add(n.substring(0, n.length() - "_PLANT".length()));
+        if (n.equals("CAVE_VINES") || n.equals("CAVE_VINES_PLANT")) candidates.add("GLOW_BERRIES");
+        if (n.equals("TALL_SEAGRASS")) candidates.add("SEAGRASS");
+        if (n.equals("BAMBOO_SAPLING")) candidates.add("BAMBOO");
+        if (n.equals("BIG_DRIPLEAF_STEM")) candidates.add("BIG_DRIPLEAF");
+        if (n.equals("PISTON_HEAD") || n.equals("MOVING_PISTON")) candidates.add("PISTON");
+        if (n.equals("FROSTED_ICE")) candidates.add("ICE");
+        if (n.equals("POWDER_SNOW")) candidates.add("POWDER_SNOW_BUCKET");
+        if (n.equals("WATER") || n.equals("BUBBLE_COLUMN")) candidates.add("WATER_BUCKET");
+        if (n.equals("LAVA")) candidates.add("LAVA_BUCKET");
+        if (n.equals("PITCHER_CROP")) candidates.add("PITCHER_POD");
+        if (n.equals("CANDLE_CAKE")) candidates.add("CAKE");
+        if (n.endsWith("_CANDLE_CAKE")) candidates.add("CAKE");
+        return candidates;
+    }
+
+    /**
+     * Used to fetch the {@link Material} id of a crop block
+     * @param material
+     * @return
+     */
     @Nullable
     public Material getBlockMaterialOfItem(Material material) {
         for (Material key : blockAndItemMaterial.keySet()) {

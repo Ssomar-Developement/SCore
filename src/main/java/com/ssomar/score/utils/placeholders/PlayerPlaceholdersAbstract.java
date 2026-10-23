@@ -2,11 +2,13 @@ package com.ssomar.score.utils.placeholders;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.events.PlaceholderLastDamageDealtEvent;
+import com.ssomar.score.utils.backward_compatibility.AttributeUtils;
 import com.ssomar.score.utils.numbers.NTools;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
 
@@ -58,6 +60,11 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
     private double xVelocity;
     private double yVelocity;
     private double zVelocity;
+    private double horizontalVelocity;
+    private double velocity;
+
+    private double health;
+    private double max_health;
 
     @Getter
     private Map<String, String> placeholders;
@@ -100,6 +107,8 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
             this.xVelocity = player.getVelocity().getX();
             this.yVelocity = player.getVelocity().getY();
             this.zVelocity = player.getVelocity().getZ();
+            this.horizontalVelocity = player.getVelocity().setY(0).length();
+            this.velocity = player.getVelocity().length();
             if (pitch < 0) pitchPositive = pitch * -1;
             else pitchPositive = pitch;
             this.yaw = pLoc.getYaw();
@@ -146,6 +155,16 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
             } else {
                 attackCharge = 0;
             }
+
+            this.health = player.getHealth();
+
+            if (SCore.is1v10Less())
+                this.max_health = player.getMaxHealth(); // is deprecated since 1.11
+            else {
+                Attribute maxHealthAttr = SCore.is1v21Plus() ? AttributeUtils.getAttribute("MAX_HEALTH") : AttributeUtils.getAttribute("GENERIC_MAX_HEALTH");
+                this.max_health =player.getAttribute(maxHealthAttr).getValue();
+            }
+
 
             /* Pre save placeholders without calcul */
             /* I need to let that because old versions doesnt have particle */
@@ -210,7 +229,7 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
 
 
             /* I need to let that because old versions doesnt have particle */
-            if (acceptWithoutParticle) {
+            if (acceptWithoutParticle && containsLegacyPlaceholder(toReplace)) {
                 toReplace = replaceCalculPlaceholder(toReplace, "%x%", x + "", false);
                 toReplace = replaceCalculPlaceholder(toReplace, "%y%", y + "", false);
                 toReplace = replaceCalculPlaceholder(toReplace, "%z%", z + "", false);
@@ -228,66 +247,85 @@ public class PlayerPlaceholdersAbstract extends PlaceholdersInterface implements
                 toReplace = replaceCalculPlaceholder(toReplace, "%x_velocity_int%", String.valueOf((int) xVelocity), true);
                 toReplace = replaceCalculPlaceholder(toReplace, "%y_velocity_int%", String.valueOf((int) yVelocity), true);
                 toReplace = replaceCalculPlaceholder(toReplace, "%z_velocity_int%", String.valueOf((int) zVelocity), true);
+                toReplace = replaceCalculPlaceholder(toReplace, "%horizontal_velocity%", String.valueOf(horizontalVelocity), false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%horizontal_velocity_int%", String.valueOf((int) horizontalVelocity), true);
+                toReplace = replaceCalculPlaceholder(toReplace, "%velocity%", String.valueOf(velocity), false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%velocity_int%", String.valueOf((int) velocity), true);
                 toReplace = replaceCalculPlaceholder(toReplace, "%pitch%", pitch + "", false);
                 toReplace = replaceCalculPlaceholder(toReplace, "%pitch_int%", ((int) pitch) + "", true);
                 toReplace = replaceCalculPlaceholder(toReplace, "%pitch_positive%", pitchPositive + "", false);
                 toReplace = replaceCalculPlaceholder(toReplace, "%pitch_positive_int%", ((int) pitchPositive) + "", false);
             }
 
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x%", x + "", false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y%", y + "", false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z%", z + "", false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x_int%", ((int) x) + "", true);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y_int%", ((int) y) + "", true);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z_int%", ((int) z) + "", true);
+            /* Each line below builds its placeholder and its value: only when the string has one of them */
+            if (toReplace.contains("%" + particle + "_")) {
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x%", x + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y%", y + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z%", z + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x_int%", ((int) x) + "", true);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y_int%", ((int) y) + "", true);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z_int%", ((int) z) + "", true);
 
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x_initial%", xInitial + "", false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y_initial%", yInitial + "", false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z_initial%", zInitial + "", false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x_initial_int%", ((int) xInitial) + "", true);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y_initial_int%", ((int) yInitial) + "", true);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z_initial_int%", ((int) zInitial) + "", true);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x_initial%", xInitial + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y_initial%", yInitial + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z_initial%", zInitial + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x_initial_int%", ((int) xInitial) + "", true);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y_initial_int%", ((int) yInitial) + "", true);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z_initial_int%", ((int) zInitial) + "", true);
 
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x_velocity%", String.valueOf(xVelocity), false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y_velocity%", String.valueOf(yVelocity), false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z_velocity%", String.valueOf(zVelocity), false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x_velocity_int%", String.valueOf((int) xVelocity), true);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y_velocity_int%", String.valueOf((int) yVelocity), true);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z_velocity_int%", String.valueOf((int) zVelocity), true);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x_velocity%", String.valueOf(xVelocity), false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y_velocity%", String.valueOf(yVelocity), false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z_velocity%", String.valueOf(zVelocity), false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_x_velocity_int%", String.valueOf((int) xVelocity), true);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_y_velocity_int%", String.valueOf((int) yVelocity), true);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_z_velocity_int%", String.valueOf((int) zVelocity), true);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_horizontal_velocity%", String.valueOf(horizontalVelocity), false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_horizontal_velocity_int%", String.valueOf((int) horizontalVelocity), true);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_velocity%", String.valueOf(velocity), false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_velocity_int%", String.valueOf((int) velocity), true);
 
-            // It means new placeholder %player_x_initial% %player_y_initial% %player_z_initial% %player_x_initial_int% %player_y_initial_int% %player_z_initial_int%
+                // It means new placeholder %player_x_initial% %player_y_initial% %player_z_initial% %player_x_initial_int% %player_y_initial_int% %player_z_initial_int%
 
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_last_damage_taken%", lastDamageTaken + "", false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_last_damage_taken_int%", ((int) lastDamageTaken) + "", true);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_last_damage_dealt%", lastDamageTaken + "", false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_last_damage_dealt_int%", ((int) lastDamageTaken) + "", true);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_last_damage_taken%", lastDamageTaken + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_last_damage_taken_int%", ((int) lastDamageTaken) + "", true);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_last_damage_dealt%", lastDamageTaken + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_last_damage_dealt_int%", ((int) lastDamageTaken) + "", true);
 
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch%", pitch + "", false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch_int%", ((int) pitch) + "", true);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch_positive%", pitchPositive + "", false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch_positive_int%", ((int) pitchPositive) + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch%", pitch + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch_int%", ((int) pitch) + "", true);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch_positive%", pitchPositive + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch_positive_int%", ((int) pitchPositive) + "", false);
 
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch_initial%", pitchInitial + "", false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch_initial_int%", ((int) pitchInitial) + "", true);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch_positive_initial%", pitchPositiveInitial + "", false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch_positive_initial_int%", ((int) pitchPositiveInitial) + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch_initial%", pitchInitial + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch_initial_int%", ((int) pitchInitial) + "", true);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch_positive_initial%", pitchPositiveInitial + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_pitch_positive_initial_int%", ((int) pitchPositiveInitial) + "", false);
 
-            // It means new placeholder %player_pitch_initial% %player_pitch_positive_initial% %player_pitch_initial_int% %player_pitch_positive_initial_int%
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw%", yaw + "", false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_int%", ((int) yaw) + "", true);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_positive%", yawPositive + "", false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_positive_int%", ((int) yawPositive) + "", false);
+                // It means new placeholder %player_pitch_initial% %player_pitch_positive_initial% %player_pitch_initial_int% %player_pitch_positive_initial_int%
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw%", yaw + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_int%", ((int) yaw) + "", true);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_positive%", yawPositive + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_positive_int%", ((int) yawPositive) + "", false);
 
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_initial%", yawInitial + "", false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_initial_int%", ((int) yawInitial) + "", true);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_positive_initial%", yawPositiveInitial + "", false);
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_positive_initial_int%", ((int) yawPositiveInitial) + "", false);
+                // It means new placeholder %player_yaw_initial% %player_yaw_positive_initial% %player_yaw_initial_int% %player_yaw_positive_initial_int%
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_initial%", yawInitial + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_initial_int%", ((int) yawInitial) + "", true);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_positive_initial%", yawPositiveInitial + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_yaw_positive_initial_int%", ((int) yawPositiveInitial) + "", false);
 
-            // It means new placeholder %player_yaw_initial% %player_yaw_positive_initial% %player_yaw_initial_int% %player_yaw_positive_initial_int%
-            toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_attack_charge%", attackCharge + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_attack_charge%", attackCharge + "", false);
+
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_health%", health + "", false);
+                toReplace = replaceCalculPlaceholder(toReplace, "%" + particle + "_max_health%", max_health + "", false);
+            }
         }
 
         return toReplace;
+    }
+
+    /** The placeholders without particle (%x%, %pitch%...) all start with one of these */
+    private static boolean containsLegacyPlaceholder(String s) {
+        return s.contains("%x") || s.contains("%y") || s.contains("%z") || s.contains("%last_damage_") || s.contains("%horizontal_velocity") || s.contains("%velocity") || s.contains("%pitch");
     }
 
     public static String convertedUUID (UUID uuid) {

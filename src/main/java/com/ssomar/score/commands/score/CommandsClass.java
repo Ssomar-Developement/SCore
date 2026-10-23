@@ -8,7 +8,6 @@ import com.ssomar.particles.commands.Shape;
 import com.ssomar.particles.commands.ShapesExamples;
 import com.ssomar.particles.commands.ShapesManager;
 import com.ssomar.score.SCore;
-import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandsExecutor;
 import com.ssomar.score.commands.runnable.block.BlockCommandManager;
@@ -33,12 +32,15 @@ import com.ssomar.score.projectiles.SProjectile;
 import com.ssomar.score.projectiles.SProjectilesEditor;
 import com.ssomar.score.projectiles.manager.SProjectilesManager;
 import com.ssomar.score.sobject.menu.NewSObjectsManagerEditor;
+import com.ssomar.score.sparticles.ParticleToggleManager;
 import com.ssomar.score.usedapi.AllWorldManager;
+import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.utils.emums.VariableType;
 import com.ssomar.score.utils.logging.Utils;
 import com.ssomar.score.utils.messages.CenteredMessage;
 import com.ssomar.score.utils.messages.SendMessage;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.safebreak.BreakChain;
 import com.ssomar.score.utils.strings.StringConverter;
 import com.ssomar.score.utils.strings.StringJoiner;
 import com.ssomar.score.variables.Variable;
@@ -61,7 +63,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.ServerSocket;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -85,7 +86,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
     @NotNull
     private final SCore main;
 
-    private final String[] commands = new String[]{"clear", "cooldowns", "hardnesses", "hardnesses-create", "hardnesses-delete", "inspect-loop", "particles", "particles-info", "projectiles", "projectiles-create", "projectiles-delete", "reload", "run-entity-command", "run-block-command", "run-player-command", "variables", "variables-create", "variables-define", "variables-delete", "webhook", "no-translated"};
+    private final String[] commands = new String[]{"clear", "cooldowns", "hardnesses", "hardnesses-create", "hardnesses-delete", "inspect-loop", "particles", "particles-info", "particles-toggle", "projectiles", "projectiles-create", "projectiles-delete", "reload", "run-entity-command", "run-block-command", "run-player-command", "variables", "variables-create", "variables-define", "variables-delete", "webhook", "no-translated"};
 
     /**
      * Called when a {@link CommandSender} types /score.
@@ -355,6 +356,8 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                         if (variableOpt.isPresent()) {
                             if (modifType.equalsIgnoreCase("set-default")) {
                                 variableOpt.get().getDefaultValue().setValue(value);
+                                /* write it in the variable file too, it was only changed in memory and came back after a reload (Discord 1445405117246476300) */
+                                variableOpt.get().save();
 
                                 SendMessage.sendMessageNoPlch(sender, MessageMain.getInstance().getMessage(SCore.plugin, Message.VARIABLE_DEFAULT_VALUE_SET));
                             }
@@ -489,6 +492,49 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                     SendMessage.sendMessageNoPlch(sender, "&4[SCore] &cExample: &6/score particles-info &eshape:blackhole&c.");
                 }
                 break;
+            case "particles-toggle":
+                // /score particles-toggle [player]
+                // Without argument: toggles for the command sender (must be a player)
+                // With a player argument: admin override for another player
+                // it requires packetevents or Protocolib to hide them
+                if(!(SCore.hasProtocolLib || Dependency.PACKET_EVENTS.isEnabled())){
+                    sender.sendMessage(StringConverter.coloredString("&4[SCore] &cThis command can only be used when Protocolib or Packevents is installed on the server."));
+                    return;
+                }
+                if (args.length == 0) {
+                    if (player == null) {
+                        sender.sendMessage(StringConverter.coloredString("&4[SCore] &cThis command can only be used by players."));
+                        return;
+                    }
+                    boolean nowHidden = ParticleToggleManager.getInstance().toggle(player.getUniqueId());
+                    if (nowHidden) {
+                        SendMessage.sendMessageNoPlch(player, "&2[SCore] &aParticles are now &chidden&a.");
+                    } else {
+                        SendMessage.sendMessageNoPlch(player, "&2[SCore] &aParticles are now &avisible&a.");
+                    }
+                } else {
+                    // Admin toggling for another player
+                    Player target = Bukkit.getPlayer(args[0]);
+                    if (target == null) {
+                        try {
+                            target = Bukkit.getPlayer(UUID.fromString(args[0]));
+                        } catch (Exception ignored) {}
+                    }
+                    if (target == null) {
+                        sender.sendMessage(StringConverter.coloredString("&4[SCore] &cPlayer not found: &6" + args[0]));
+                        return;
+                    }
+                    boolean nowHidden = ParticleToggleManager.getInstance().toggle(target.getUniqueId());
+                    if (nowHidden) {
+                        SendMessage.sendMessageNoPlch(sender, "&2[SCore] &aParticles are now &chidden &afor &e" + target.getName() + "&a.");
+                        SendMessage.sendMessageNoPlch(target, "&2[SCore] &aParticles are now &chidden &a(toggled by an admin).");
+                    } else {
+                        SendMessage.sendMessageNoPlch(sender, "&2[SCore] &aParticles are now &avisible &afor &e" + target.getName() + "&a.");
+                        SendMessage.sendMessageNoPlch(target, "&2[SCore] &aParticles are now &avisible &a(toggled by an admin).");
+                    }
+                }
+                break;
+
             case "reload":
                 this.main.onReload();
 
@@ -737,7 +783,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                                     conn.setConnectTimeout(10000);
                                     conn.setReadTimeout(15000);
             
-                                    byte[] body = jsonPayload.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+                                    byte[] body = jsonPayload.getBytes(StandardCharsets.UTF_8);
                                     conn.setFixedLengthStreamingMode(body.length);
             
                                     try (OutputStream os = conn.getOutputStream()) {
@@ -959,6 +1005,10 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                 Optional<Player> playerOpt2 = Optional.empty();
                 Optional<Block> blockOpt = Optional.empty();
                 StringBuilder blockCmd = new StringBuilder();
+                Optional<World> world = Optional.empty();
+                double x = 0;
+                double y = 0;
+                double z = 0;
 
                 for (final String arg : args)
                     if (arg.startsWith("player:")) {
@@ -974,43 +1024,69 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                         try {
                             final String[] loc = blockLoc.split(",");
 
-                            final Optional<World> world = AllWorldManager.getWorld(loc[0]);
-                            final double x = Double.parseDouble(loc[1]);
-                            final double y = Double.parseDouble(loc[2]);
-                            final double z = Double.parseDouble(loc[3]);
+                            world = AllWorldManager.getWorld(loc[0]);
+                            x = Double.parseDouble(loc[1]);
+                            y = Double.parseDouble(loc[2]);
+                            z = Double.parseDouble(loc[3]);
 
-                            blockOpt = Optional.of(world.get().getBlockAt(new Location(world.get(), x, y, z)));
-                        } catch (final Exception ignored) {
-                        }
+                        } catch (final Exception ignored) {}
                     } else
                         blockCmd.append(arg).append(" ");
 
-                if (!blockOpt.isPresent()) {
-                    SendMessage.sendMessageNoPlch(sender, "&4[SCore] &cError: &7&oYou must specify a block with &6block:WORLD,X,Y,Z&c.");
-
-                    return;
-                }
-
-                blockCmd = new StringBuilder(blockCmd.toString().trim());
-
-                final ActionInfo infoBlock = new ActionInfo("run-block-command", new StringPlaceholder());
-                final Location blockLocation = blockOpt.get().getLocation();
-
-                infoBlock.setBlockLocationX(blockLocation.getBlockX());
-                infoBlock.setBlockLocationY(blockLocation.getBlockY());
-                infoBlock.setBlockLocationZ(blockLocation.getBlockZ());
-                infoBlock.setBlockLocationWorld(blockLocation.getWorld().getUID());
-                infoBlock.setOldBlockMaterialName(blockOpt.get().getType().name());
-
-                playerOpt2.ifPresent(value -> infoBlock.setLauncherUUID(value.getUniqueId()));
-
-                final BlockRunCommandsBuilder blockRunCommandsBuilder = new BlockRunCommandsBuilder(Collections.singletonList(blockCmd.toString()), infoBlock);
-                CommandsExecutor.runCommands(blockRunCommandsBuilder);
+                Optional<World> finalWorld = world;
+                double finalX = x;
+                double finalY = y;
+                double finalZ = z;
+                Optional<Player> finalPlayerOpt = playerOpt2;
+                /* Run from an activator triggered by a block broken by a command: its ActionInfo stays in that chain (BreakChain) */
+                SCore.schedulerHook.runLocationTask(BreakChain.wrap(BreakChain.current(), ()->{run_rest_of_blockCmd(sender, finalWorld, finalX, finalY, finalZ, blockCmd, finalPlayerOpt);}), new Location(world.get(),x,y,z),0);
 
                 break;
             default:
                 break;
         }
+    }
+
+    /**
+     * Runs the rest of the code for run-block-command command. The entire logic could not be wrapped inside of this function
+     * because the Location object is required to execute LocationTask
+     * @param sender
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @param blockCmd
+     * @param playerOpt2
+     */
+    private static void run_rest_of_blockCmd(CommandSender sender, Optional<World> world, double x, double y, double z, StringBuilder blockCmd, Optional<Player> playerOpt2) {
+        Optional<Block> blockOpt;
+        blockOpt = Optional.of(world.get().getBlockAt(new Location(world.get(), x, y, z)));
+        if (!blockOpt.isPresent()) {
+            SendMessage.sendMessageNoPlch(sender, "&4[SCore] &cError: &7&oYou must specify a block with &6block:WORLD,X,Y,Z&c.");
+
+            return;
+        }
+
+        blockCmd = new StringBuilder(blockCmd.toString().trim());
+
+        final ActionInfo infoBlock = new ActionInfo("run-block-command", new StringPlaceholder());
+        final Location blockLocation = blockOpt.get().getLocation();
+
+        infoBlock.setBlockLocationX(blockLocation.getBlockX());
+        infoBlock.setBlockLocationY(blockLocation.getBlockY());
+        infoBlock.setBlockLocationZ(blockLocation.getBlockZ());
+        infoBlock.setBlockLocationWorld(blockLocation.getWorld().getUID());
+        infoBlock.setOldBlockMaterialName(blockOpt.get().getType().name());
+        /* Same block placeholders as a block activator (%block%, %target_block%, %block_x%...): the
+         * location alone was set, so `SENDMESSAGE %block%` printed the literal placeholder
+         * (report of 2026-02-15). */
+        infoBlock.setBlock(blockOpt.get());
+        infoBlock.getSp().setBlockPlcHldr(blockOpt.get());
+
+        playerOpt2.ifPresent(value -> infoBlock.setLauncherUUID(value.getUniqueId()));
+
+        final BlockRunCommandsBuilder blockRunCommandsBuilder = new BlockRunCommandsBuilder(Collections.singletonList(blockCmd.toString()), infoBlock);
+        CommandsExecutor.runCommands(blockRunCommandsBuilder);
     }
 
     @Override
@@ -1032,6 +1108,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                 arguments.add("hardnesses-delete");
                 arguments.add("particles");
                 arguments.add("particles-info");
+                arguments.add("particles-toggle");
                 arguments.add("variables");
                 arguments.add("variables-create");
                 arguments.add("variables-define NAME TYPE SCOPE ICON default arguments...");
@@ -1148,6 +1225,12 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
                         }
 
                         break;
+                    case "particles-toggle":
+                        if (args.length == 2) {
+                            for (final Player p : Bukkit.getOnlinePlayers())
+                                arguments.add(p.getName());
+                        }
+                        break;
                     case "hardnesses-delete":
                         if (args.length == 2)
                             arguments.addAll(HardnessesManager.getInstance().getExecutableBlockIdsList());
@@ -1190,7 +1273,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
 
     private static boolean looksLikeAllowedMentions(String token) {
         if (token == null) return false;
-        String lower = token.toLowerCase(java.util.Locale.ROOT);
+        String lower = token.toLowerCase(Locale.ROOT);
         return lower.startsWith("users:") || lower.startsWith("roles:") || lower.startsWith("parse:");
     }
 
@@ -1203,7 +1286,7 @@ public final class CommandsClass implements CommandExecutor, TabExecutor {
         int idx = token.indexOf(':');
         if (idx <= 0 || idx == token.length() - 1) return NONE;
     
-        String prefixLower = token.substring(0, idx).toLowerCase(java.util.Locale.ROOT);
+        String prefixLower = token.substring(0, idx).toLowerCase(Locale.ROOT);
         String rest = token.substring(idx + 1); // pass-through (no sanitization)
     
         switch (prefixLower) {

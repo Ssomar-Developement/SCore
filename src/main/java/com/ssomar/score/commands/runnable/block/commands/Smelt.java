@@ -5,6 +5,7 @@ import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.events.BlockBreakEventExtension;
+import com.ssomar.score.usedapi.AuraSkillsSmeltTracker;
 import com.ssomar.score.utils.safebreak.SafeBreak;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -16,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,6 +47,9 @@ public class Smelt extends BlockCommand {
             ItemStack smelted = getSmeltedItem(block.getType());
             if (smelted == null) return;
 
+            /* Record before the break, AuraSkills rolls its luck extra drops during the BlockBreakEvent */
+            AuraSkillsSmeltTracker.recordSmelt(pUUID, block);
+
             // Determine the amount of smelted item to drop
             int amountToDrop = 1;
             Enchantment fortune = SCore.is1v20v5Plus() ? Enchantment.FORTUNE : Enchantment.getByName("LOOT_BONUS_BLOCKS");
@@ -52,8 +57,8 @@ public class Smelt extends BlockCommand {
                 int fortuneLevel = itemInHand.getEnchantmentLevel(fortune);
                 amountToDrop = ThreadLocalRandom.current().nextInt(fortuneLevel + 1) + 1;
             }
-            // BREAK
-            SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), false, event, false, BlockBreakEventExtension.BreakCause.SMELT);
+            // BREAK (a cancelled break keeps the block: no smelted item then)
+            if (!SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), false, event, false, BlockBreakEventExtension.BreakCause.SMELT)) return;
 
             // Drop the smelted item
             Location dropLocation = block.getLocation();
@@ -61,7 +66,31 @@ public class Smelt extends BlockCommand {
         }
     }
 
-    public ItemStack getSmeltedItem(Material material) {
+    public static void dropItemWithFortune(Block b, Player p, Material blockMat) {
+        int amountToDrop = 1;
+        // Smelt fortune will only work for ores
+        ArrayList<Material> whitelist = new ArrayList<>(Arrays.asList(Material.IRON_INGOT, Material.GOLD_INGOT, Material.getMaterial("COPPER_INGOT")));
+
+        if (whitelist.contains(blockMat)) {
+            Enchantment fortune = SCore.is1v20v5Plus() ? Enchantment.FORTUNE : Enchantment.getByName("LOOT_BONUS_BLOCKS");
+
+            ItemStack itemInHand = p.getInventory().getItemInMainHand();
+            if (!itemInHand.isEmpty() && itemInHand.containsEnchantment(fortune)) {
+                int fortuneLevel = itemInHand.getEnchantmentLevel(fortune);
+                amountToDrop = ThreadLocalRandom.current().nextInt(fortuneLevel + 1) + 1;
+            }
+        }
+        b.getWorld().dropItemNaturally(b.getLocation(), new ItemStack(blockMat, amountToDrop));
+    }
+
+    /**
+     * Redstone, Lapis, Diamond and Emerald ores are ignored because
+     * when you break those ores, they do not need to be smelt.
+     * @param material
+     * @return smelt version of a material (returned ItemStack is just a regular material). If there's no
+     * smeltable version of the provided Material enum, it will return a null ItemStack.
+     */
+    public static ItemStack getSmeltedItem(Material material) {
         ItemStack result = null;
         switch (material) {
             case STONE:
@@ -156,22 +185,6 @@ public class Smelt extends BlockCommand {
             case DEEPSLATE_IRON_ORE:
                 result = new ItemStack(Material.IRON_INGOT);
                 break;
-            case LAPIS_ORE:
-            case DEEPSLATE_LAPIS_ORE:
-                result = new ItemStack(Material.LAPIS_LAZULI);
-                break;
-            case REDSTONE_ORE:
-            case DEEPSLATE_REDSTONE_ORE:
-                result = new ItemStack(Material.REDSTONE);
-                break;
-            case DIAMOND_ORE:
-            case DEEPSLATE_DIAMOND_ORE:
-                result = new ItemStack(Material.DIAMOND);
-                break;
-            case EMERALD_ORE:
-            case DEEPSLATE_EMERALD_ORE:
-                result = new ItemStack(Material.EMERALD);
-                break;
             case CACTUS:
                 result = new ItemStack(Material.GREEN_DYE);
                 break;
@@ -200,6 +213,7 @@ public class Smelt extends BlockCommand {
                 result = new ItemStack(Material.WARPED_WART_BLOCK);
                 break;
             case COPPER_ORE:
+            case RAW_COPPER:
             case DEEPSLATE_COPPER_ORE:
                 result = new ItemStack(Material.COPPER_INGOT);
                 break;

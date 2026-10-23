@@ -12,6 +12,7 @@ import com.ssomar.score.features.types.PlaceholderConditionTypeFeature;
 import com.ssomar.score.utils.emums.Comparator;
 import com.ssomar.score.utils.emums.PlaceholdersCdtType;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.strings.PlaceholderWhitespace;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -30,7 +31,7 @@ public class If extends PlayerCommand {
     @Override
     public void run(Player p, Player receiver, SCommandToExec sCommandToExec) {
         ActionInfo aInfo = sCommandToExec.getActionInfo();
-        List<String> args = sCommandToExec.getOtherArgs();
+        List<String> args = PlaceholderWhitespace.mergeFirstArgPlaceholders(sCommandToExec.getOtherArgs());
     
         String condition = args.get(0);
         SsomarDev.testMsg("IF condition: " + condition, true);
@@ -54,7 +55,7 @@ public class If extends PlayerCommand {
     
     private boolean evaluateCondition(String condition, Player receiver, StringPlaceholder sp) {
         // Remove any whitespace for easier processing
-        condition = condition.replaceAll("\\s+", "");
+        condition = PlaceholderWhitespace.stripOutsidePlaceholders(condition);
         condition = StringConverter.deconvertColor(condition);
     
         // Use two stacks to manage conditions and operators
@@ -90,8 +91,14 @@ public class If extends PlayerCommand {
             // If current char is part of a condition, extract and evaluate it
             else {
                 StringBuilder cond = new StringBuilder();
-                while (i < condition.length() && condition.charAt(i) != '(' && condition.charAt(i) != ')' && condition.charAt(i) != '&' && condition.charAt(i) != '|') {
-                    //SsomarDev.testMsg(" IF parsing condition at index <" + i + "> <" + condition.charAt(i)+">", true);
+                while (i < condition.length() && condition.charAt(i) != '(' && condition.charAt(i) != ')' && condition.charAt(i) != '&') {
+                    // SCore's %rand% placeholder uses '|' to separate number ranges, so extra logic is required to properly detect "||" and "&&" char sequences
+                    char c = condition.charAt(i);
+                    char next = (i + 1 < condition.length()) ? condition.charAt(i + 1) : '\0';
+
+                    if ((c == '|' && next == '|') || (c == '&' && next == '&')) {
+                        break;
+                    }
                     cond.append(condition.charAt(i));
                     i++;
                 }

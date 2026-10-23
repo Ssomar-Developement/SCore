@@ -12,6 +12,8 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CooldownsManager {
 
@@ -19,11 +21,18 @@ public class CooldownsManager {
 
     private static CooldownsManager instance;
 
+    /*
+     * The maps are read by the async cooldown display sweep while the main/region threads add,
+     * expire and clear cooldowns. Plain HashMap/ArrayList threw ConcurrentModificationException in
+     * that sweep, so: concurrent maps, copy-on-write lists (write-light, iterate-heavy).
+     * COW iterators do not support remove(): every mutation below goes through removeIf / remove(Object).
+     */
+
     /* CD_ID Cooldown */
-    private final Map<String, List<Cooldown>> cooldowns = new HashMap<>();
+    private final Map<String, List<Cooldown>> cooldowns = new ConcurrentHashMap<>();
 
     /* Player_UUID Cooldown */
-    private final Map<UUID, List<Cooldown>> cooldownsUUID = new HashMap<>();
+    private final Map<UUID, List<Cooldown>> cooldownsUUID = new ConcurrentHashMap<>();
 
     public static CooldownsManager getInstance() {
         if (instance == null) instance = new CooldownsManager();
@@ -110,32 +119,12 @@ public class CooldownsManager {
 
         String id = cd.getId();
         SsomarDev.testMsg("ADDDD " + cd.toString(), DEBUG);
-        if (cooldowns.containsKey(id)) {
-            List<Cooldown> cds = cooldowns.get(id);
-            if (cds == null) {
-                cds = new ArrayList<>();
-            }
-            cds.add(cd);
-            cooldowns.put(id, cds);
-        } else {
-            List<Cooldown> cds = new ArrayList<>();
-            cds.add(cd);
-            cooldowns.put(id, cds);
-        }
+        if (id == null) return;
+        cooldowns.computeIfAbsent(id, k -> new CopyOnWriteArrayList<>()).add(cd);
 
         UUID id2 = cd.getEntityUUID();
         if (id2 == null) return;
-        if (cooldownsUUID.containsKey(id2)) {
-            List<Cooldown> cds = cooldownsUUID.get(id2);
-            if (cds == null) {
-                cds = new ArrayList<>();
-            }
-            cds.add(cd);
-        } else {
-            List<Cooldown> cds = new ArrayList<>();
-            cds.add(cd);
-            cooldownsUUID.put(id2, cds);
-        }
+        cooldownsUUID.computeIfAbsent(id2, k -> new CopyOnWriteArrayList<>()).add(cd);
     }
 
     /* FROM DB */
@@ -158,11 +147,9 @@ public class CooldownsManager {
             List<Cooldown> cds = cooldowns.get(id);
             if (cds != null && !cds.isEmpty()) {
                 Cooldown cdMax = null;
-                int cptRemoved = 0;
-                int size = cds.size();
-                //SsomarDev.testMsg("CD size >> "+size, true);
-                for (int i = 0; i < size; i++) {
-                    Cooldown cd = cds.get(i - cptRemoved);
+                // Iterate a snapshot (COW iterator) and remove by object: index-based removal is not
+                // safe when another thread changes the list in between.
+                for (Cooldown cd : cds) {
                     if (cd == null) {
                         //SsomarDev.testMsg("CD NULL", true);
                         continue;
@@ -184,11 +171,12 @@ public class CooldownsManager {
                         cdMax = cd;
                     } else {
                         cd.setNull(true);
-                        cds.remove(i - cptRemoved);
-                        cptRemoved++;
-                        try {
-                            cooldownsUUID.get(uuid).remove(cd);
-                        } catch (Exception ignored) {}
+                        cds.remove(cd);
+                        UUID owner = cd.getEntityUUID() != null ? cd.getEntityUUID() : uuid;
+                        if (owner != null) {
+                            List<Cooldown> uuidCds = cooldownsUUID.get(owner);
+                            if (uuidCds != null) uuidCds.remove(cd);
+                        }
                     }
                 }
                 //if(cdMax != null) SsomarDev.testMsg("COOLDOWN "+cdMax.toString(), DEBUG);
@@ -203,7 +191,12 @@ public class CooldownsManager {
     public List<Cooldown> getCooldownsOf(UUID uuid) {
         if (cooldownsUUID.containsKey(uuid)) {
             List<Cooldown> cds = cooldownsUUID.get(uuid);
-            return  cds == null ? new ArrayList<>() : cds;
+            if (cds == null) return new ArrayList<>();
+            List<Cooldown> result = new ArrayList<>();
+            for (Cooldown cd : cds) {
+                if (cd != null && !cd.isNull()) result.add(cd);
+            }
+            return result;
         } else return new ArrayList<>();
     }
 
@@ -213,7 +206,9 @@ public class CooldownsManager {
         for (String id : cooldowns.keySet()) {
             List<Cooldown> cds = cooldowns.get(id);
             if (cds == null) continue;
-            result.addAll(cds);
+            for (Cooldown cd : cds) {
+                if (cd != null && !cd.isNull()) result.add(cd);
+            }
         }
 
         return result;
@@ -224,31 +219,86 @@ public class CooldownsManager {
         cooldownsUUID.clear();
     }
 
+    /**
+     * Cleans up expired cooldowns and removes empty lists from the maps.
+     * This method should be called periodically to prevent memory leaks.
+     */
+    public void cleanupExpiredCooldowns() {
+        // Clean up cooldowns map
+        Iterator<Map.Entry<String, List<Cooldown>>> cooldownsIterator = cooldowns.entrySet().iterator();
+        while (cooldownsIterator.hasNext()) {
+            Map.Entry<String, List<Cooldown>> entry = cooldownsIterator.next();
+            List<Cooldown> cds = entry.getValue();
+            if (cds == null) {
+                cooldownsIterator.remove();
+                continue;
+            }
+            cds.removeIf(cd -> {
+                if (cd != null && !cd.isNull() && cd.getTimeLeft() > 0) return false;
+                if (cd != null) {
+                    cd.setNull(true);
+                    // Also remove from cooldownsUUID
+                    if (cd.getEntityUUID() != null) {
+                        List<Cooldown> uuidCds = cooldownsUUID.get(cd.getEntityUUID());
+                        if (uuidCds != null) uuidCds.remove(cd);
+                    }
+                }
+                return true;
+            });
+            // Remove empty lists from the map, atomically: a cooldown added by another thread
+            // between the check and the removal must not be dropped with its list.
+            if (cds.isEmpty()) {
+                cooldowns.computeIfPresent(entry.getKey(), (k, v) -> v.isEmpty() ? null : v);
+            }
+        }
+
+        // Clean up cooldownsUUID map - remove empty lists
+        Iterator<Map.Entry<UUID, List<Cooldown>>> uuidIterator = cooldownsUUID.entrySet().iterator();
+        while (uuidIterator.hasNext()) {
+            Map.Entry<UUID, List<Cooldown>> entry = uuidIterator.next();
+            List<Cooldown> cds = entry.getValue();
+            if (cds == null) {
+                uuidIterator.remove();
+                continue;
+            }
+            // Also filter out null entries from UUID lists
+            cds.removeIf(cd -> cd == null || cd.isNull());
+            if (cds.isEmpty()) {
+                cooldownsUUID.computeIfPresent(entry.getKey(), (k, v) -> v.isEmpty() ? null : v);
+            }
+        }
+    }
+
     public void removeCooldownsOf(UUID uuid) {
         //SsomarDev.testMsg("REMOVE COOLDOWNS OF "+uuid, DEBUG);
         cooldownsUUID.remove(uuid);
         for (String s : cooldowns.keySet()) {
             List<Cooldown> cds = cooldowns.get(s);
-            for (int i = 0; i < cds.size(); i++) {
-                Cooldown cd = cds.get(i);
+            if (cds == null) continue;
+            cds.removeIf(cd -> {
                 if (cd != null && cd.getEntityUUID() != null && cd.getEntityUUID().equals(uuid)) {
-                    cds.set(i, null);
-                    break;
+                    cd.setNull(true);
+                    return true;
                 }
-            }
+                return false;
+            });
         }
     }
 
     public void clearCooldown(String cooldownId, @Nullable UUID uuid) {
         for (String s : cooldowns.keySet()) {
             List<Cooldown> cds = cooldowns.get(s);
-            for (int i = 0; i < cds.size(); i++) {
-                Cooldown cd = cds.get(i);
+            if (cds == null) continue;
+            for (Cooldown cd : cds) {
                 if (cd != null && cd.getId().equalsIgnoreCase(cooldownId)) {
                     if (uuid != null && (cd.getEntityUUID() == null || !cd.getEntityUUID().equals(uuid))) continue;
-                    if (cd.getEntityUUID() != null) cooldownsUUID.get(cd.getEntityUUID()).remove(cd);
-                    cds.set(i, null);
-                    break;
+                    if (cd.getEntityUUID() != null) {
+                        List<Cooldown> uuidCds = cooldownsUUID.get(cd.getEntityUUID());
+                        if (uuidCds != null) uuidCds.remove(cd);
+                    }
+                    cd.setNull(true);
+                    cds.remove(cd);
+                    return;
                 }
             }
         }

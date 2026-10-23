@@ -3,13 +3,16 @@ package com.ssomar.score.events;
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.CommandsHandler;
 import com.ssomar.score.commands.runnable.entity.commands.PlayerRideOnEntityManager;
+import com.ssomar.score.commands.runnable.mixed_player_entity.commands.equipmentvisualreplace.EquipmentVisualManager;
 import com.ssomar.score.commands.runnable.player.commands.openchest.OpenChestListener;
 import com.ssomar.score.commands.runnable.player.commands.sudoop.SecurityOPCommands;
 import com.ssomar.score.commands.runnable.player.events.*;
 import com.ssomar.score.config.GeneralConfig;
 import com.ssomar.score.editor.NewEditorInteractionsListener;
 import com.ssomar.score.features.custom.cooldowns.CooldownsHandler;
+import com.ssomar.score.pack.listener.ConfigPhasePackListener;
 import com.ssomar.score.pack.listener.JoinQuitListener;
+import com.ssomar.score.usedapi.AuraSkillsLootDropListener;
 import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.usedapi.JobsAPI;
 import org.bukkit.plugin.Plugin;
@@ -91,8 +94,24 @@ public class EventsHandler {
 
         if(Dependency.JOBS.isInstalled())  main.getServer().getPluginManager().registerEvents(new JobsAPI(), main);
 
+        /* Smelt the extra drops of AuraSkills abilities (e.g. Mining Luck) when the block was smelted by an EI/EB command */
+        if(Dependency.AURA_SKILLS.isInstalled()) main.getServer().getPluginManager().registerEvents(new AuraSkillsLootDropListener(), main);
+
         main.getServer().getPluginManager().registerEvents(new OpenChestListener(), main);
 
+        /* EQUIPMENT_VISUAL_REPLACE: forget the visuals of the players who quit and of the entities that die or despawn */
+        if (SCore.hasProtocolLib && !SCore.is1v12Less()) EquipmentVisualManager.getInstance().registerListeners(main);
+
         main.getServer().getPluginManager().registerEvents(new JoinQuitListener(), main);
+
+        // Config-phase pack dispatch — sends packs during PlayerLinksSendEvent (before world join)
+        // Only sends if the URL is already cached (non-blocking). JoinQuitListener is NOT skipped.
+        if (SCore.is1v20v5Plus()) {
+            try {
+                main.getServer().getPluginManager().registerEvents(new ConfigPhasePackListener(), main);
+            } catch (Exception | Error e) {
+                // PlayerLinksSendEvent not available
+            }
+        }
     }
 }

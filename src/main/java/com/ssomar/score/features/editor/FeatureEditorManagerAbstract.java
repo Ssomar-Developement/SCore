@@ -6,6 +6,8 @@ import com.ssomar.score.editor.NewInteractionClickedGUIManager;
 import com.ssomar.score.editor.SaveSessionPathManager;
 import com.ssomar.score.features.*;
 import com.ssomar.score.menu.GUI;
+import com.ssomar.score.sobject.SObject;
+import com.ssomar.score.sobject.SObjectIconCache;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.entity.Player;
 
@@ -15,9 +17,18 @@ import java.util.Optional;
 public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterface<Y>, Y extends FeatureParentInterface> extends NewGUIManager<T> {
 
     public void startEditing(Player editor, Y feature) {
-        cache.put(editor, buildEditor(feature));
+        T editorGui = buildEditor(feature);
+        // If the feature has a custom GUI texture char, apply it to the editor
+        if (feature instanceof FeatureWithHisOwnEditor) {
+            char textureChar = ((FeatureWithHisOwnEditor<?,?,?,?>) feature).getEditorGuiTextureChar();
+            if (textureChar != '\0') {
+                editorGui.setGuiTextureChar(textureChar);
+                editorGui.load();
+            }
+        }
+        cache.put(editor, editorGui);
         cache.get(editor).openGUISync(editor);
-        SaveSessionPathManager.getInstance().addPlayerSessionPath(editor, cache.get(editor));
+        SaveSessionPathManager.getInstance().addPlayerSessionPath(editor, cache.get(editor), this);
     }
 
     public abstract T buildEditor(Y parent);
@@ -51,7 +62,15 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
                     /* Save the parent if there is one */
                     i.gui.getParent().reload();
                     i.gui.getParent().save();
+                    if (i.gui.getParent() instanceof SObject) SObjectIconCache.invalidate((SObject) i.gui.getParent());
                     FeatureParentInterface parent = (FeatureParentInterface) feature;
+                    // Propagate GUI texture char to sub-feature if it doesn't have its own
+                    if (parent instanceof FeatureWithHisOwnEditor && i.gui.getGuiTextureChar() != '\0') {
+                        FeatureWithHisOwnEditor<?,?,?,?> subFeature = (FeatureWithHisOwnEditor<?,?,?,?>) parent;
+                        if (subFeature.getEditorGuiTextureChar() == '\0') {
+                            subFeature.setEditorGuiTextureChar(i.gui.getGuiTextureChar());
+                        }
+                    }
                     parent.openEditor(i.player);
                 }
                 return true;
@@ -81,9 +100,8 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
     public void back(NewInteractionClickedGUIManager<T> interact) {
         //Y parent = interact.gui.getParent();
         //parent.openBackEditor(interact.player);
-
         Player player = interact.player;
-        GUI gui = SaveSessionPathManager.getInstance().getLastBeforePlayerSessionPath(player);
+        GUI gui = SaveSessionPathManager.getInstance().restoreLastBeforePlayerSessionPath(player);
         if (gui != null){
             gui.update();
             gui.openGUISync(player);
@@ -327,6 +345,9 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
             if (feature instanceof FeatureRequireMultipleMessageInEditor) {
                 if (feature.getEditorName().equals(requestWriting.get(interact.player))) {
                     ((FeatureRequireMultipleMessageInEditor) feature).finishEditInEditor(interact.player, this, null);
+                    currentWriting.remove(interact.player);
+                    requestWriting.remove(interact.player);
+                    disableTextEditor(interact.player);
                     interact.gui.openGUISync(interact.player);
                 }
             } else if (feature instanceof FeatureRequireSubTextEditorInEditor) {
@@ -416,5 +437,6 @@ public abstract class FeatureEditorManagerAbstract<T extends FeatureEditorInterf
             parent = ((FeatureAbstract) parent).getParent();
             parent.reload();
         }
+        if (parent instanceof SObject) SObjectIconCache.invalidate((SObject) parent);
     }
 }

@@ -2,10 +2,12 @@ package com.ssomar.score.commands.runnable.block.commands;
 
 import com.ssomar.score.SCore;
 import com.ssomar.score.commands.runnable.ActionInfo;
+import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.events.BlockBreakEventExtension;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
+import com.ssomar.score.usedapi.AuraSkillsSmeltTracker;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.safebreak.SafeBreak;
 import org.bukkit.ChatColor;
@@ -13,20 +15,36 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.RayTraceResult;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
+import static com.ssomar.score.commands.runnable.block.commands.Smelt.dropItemWithFortune;
 import static org.bukkit.block.BlockFace.*;
 
 /* MINEINCUBE {radius} {ActiveDrop true or false} */
 public class InlineMineInCube extends BlockCommand {
+
+    public InlineMineInCube() {
+        CommandSetting radius = new CommandSetting("radius", 0, Integer.class, 1, true);
+        CommandSetting depth = new CommandSetting("depth", 1, Integer.class, 1, true);
+        CommandSetting drop = new CommandSetting("drop", 2, Boolean.class, true, true);
+        CommandSetting createBBEvent = new CommandSetting("createBBEvent", 3, Boolean.class, false, true);
+        CommandSetting direction = new CommandSetting("direction", 4, String.class, "", true);
+        CommandSetting smelt = new CommandSetting("smelt", 5, Boolean.class, false, true);
+        List<CommandSetting> settings = getSettings();
+        settings.add(radius);
+        settings.add(depth);
+        settings.add(drop);
+        settings.add(createBBEvent);
+        settings.add(direction);
+        settings.add(smelt);
+        setNewSettingsMode(true);
+    }
 
     /**
      * THIS COMMAND MUST BE DELAYED OF AT LEAST 1 TICK
@@ -62,6 +80,13 @@ public class InlineMineInCube extends BlockCommand {
         List<String> args = sCommandToExec.getOtherArgs();
         ActionInfo aInfo = sCommandToExec.getActionInfo();
 
+        int radius = (int) sCommandToExec.getSettingValue("radius");
+        int depthArg = (int) sCommandToExec.getSettingValue("depth");
+        boolean drop = (boolean) sCommandToExec.getSettingValue("drop");
+        boolean createBBEvent = (boolean) sCommandToExec.getSettingValue("createBBEvent");
+        String direction = (String) sCommandToExec.getSettingValue("direction");
+        boolean smelt = (boolean) sCommandToExec.getSettingValue("smelt");
+
         //SsomarDev.testMsg("InlineMineInCube is running !", true);
         Runnable runnable3 = new Runnable() {
             @Override
@@ -70,21 +95,13 @@ public class InlineMineInCube extends BlockCommand {
                 if (aInfo.isEventFromCustomBreakCommand()) return;
 
                 try {
-                    int radius = Integer.parseInt(args.get(0));
 
-                    int depth = 1;
-                    if (args.size() >= 2) depth = Integer.parseInt(args.get(1));
+                    int depth = depthArg;
                     depth = depth - 1;
 
-                    boolean drop = true;
-                    if (args.size() >= 3) drop = Boolean.parseBoolean(args.get(2));
-
-                    boolean createBBEvent = true;
-                    if (args.size() >= 4) createBBEvent = Boolean.parseBoolean(args.get(3));
-
                     BlockFace directionWritten = null;
-                    if(args.size() >= 5) {
-                        switch (args.get(4).toLowerCase()) {
+                    if(!Objects.equals(direction, "")) {
+                        switch (direction) {
                             case "north":
                             case "n":
                             case "-z":
@@ -111,6 +128,9 @@ public class InlineMineInCube extends BlockCommand {
                             case "down":
                                 directionWritten = BlockFace.DOWN;
                                 break;
+                            case "auto":
+                                directionWritten = getPAPIPlayerXZDirection(p);
+                                break;
                         }
                     }
                    // SsomarDev.testMsg("directionWritten: " + directionWritten, true);
@@ -126,6 +146,9 @@ public class InlineMineInCube extends BlockCommand {
                     int maxZ = radius;
                     int maxY = radius;
 
+                    /* The direction is raytraced from the player's eyes: without a player (block
+                     * activator) there is nothing to aim from. */
+                    if (p == null) return;
                     BoundingBox bb = new BoundingBox(block.getX(), block.getY(), block.getZ(), block.getX()+1, block.getY()+1, block.getZ()+1);
                     RayTraceResult rayTraceResult = bb.rayTrace(p.getEyeLocation().toVector(), p.getEyeLocation().getDirection(), 10);
                     //SsomarDev.testMsg("rayTraceResult: " + rayTraceResult.getHitBlockFace(), true);
@@ -169,9 +192,6 @@ public class InlineMineInCube extends BlockCommand {
 
                     //SsomarDev.testMsg("initX: " + initX + " initY: " + initY + " initZ: " + initZ, true);
 
-                    final boolean fDrop = drop;
-                    final boolean fCreateBBEvent = createBBEvent;
-
                     if (radius < 10) {
                         for (int y = initY; y < maxY + 1; y++) {
                             for (int x = initX; x < maxX + 1; x++) {
@@ -194,7 +214,14 @@ public class InlineMineInCube extends BlockCommand {
 
                                             if (!blackList.contains(toBreak.getType())) {
                                                 UUID pUUID = p.getUniqueId();
-                                                SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), fDrop, fCreateBBEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE);
+                                                ItemStack smeltItem = Smelt.getSmeltedItem(toBreak.getType());
+                                                if (smelt && smeltItem != null) {
+                                                    AuraSkillsSmeltTracker.recordSmelt(pUUID, toBreak);
+                                                    boolean safeBreakStatus = SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), false, createBBEvent, true, BlockBreakEventExtension.BreakCause.INLINE_MINEINCUBE);
+                                                    if (safeBreakStatus) dropItemWithFortune(toBreak, p, smeltItem.getType());
+                                                } else {
+                                                    SafeBreak.breakBlockWithEvent(toBreak, pUUID, aInfo.getSlot(), drop, createBBEvent, true, BlockBreakEventExtension.BreakCause.INLINE_MINEINCUBE);
+                                                }
                                             }
                                         }
                                     };
@@ -208,7 +235,38 @@ public class InlineMineInCube extends BlockCommand {
                 }
             }
         };
-        SCore.schedulerHook.runTask(runnable3, 1);
+        SCore.schedulerHook.runLocationTask(runnable3, block.getLocation(), 1);
+    }
+
+    /**
+     * Yaw Logic sourced from: https://github.com/PlaceholderAPI/Player-Expansion/blob/master/src/main/java/com/extendedclip/papi/expansion/player/PlayerUtil.java
+     * @param player
+     * @return
+     */
+    private static BlockFace getPAPIPlayerXZDirection(Player player) {
+        float pitch = player.getLocation().getPitch();
+        if (pitch <= -45) {
+            return BlockFace.UP;
+        } else if (pitch >= 45) {
+            return BlockFace.DOWN;
+        }
+
+        double rotation = player.getLocation().getYaw();
+        if (rotation < 0.0D) {
+            rotation += 360.0D;
+        }
+
+        if (Math.abs(rotation) <= 45 || Math.abs(rotation - 360) <= 45) {
+            return BlockFace.SOUTH;
+        } else if (Math.abs(rotation - 90) <= 45) {
+            return BlockFace.WEST;
+        } else if (Math.abs(rotation - 180) <= 45) {
+            return BlockFace.NORTH;
+        } else if (Math.abs(rotation - 270) <= 45) {
+            return BlockFace.EAST;
+        }
+
+        return BlockFace.UP;
     }
 
     @Override

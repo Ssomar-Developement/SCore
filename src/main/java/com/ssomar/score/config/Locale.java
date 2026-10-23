@@ -26,6 +26,8 @@ public enum Locale {
     ZH("中文"), // Chinese;
     ID("Bahasa Indonesia"), // Indonesian;
     AR("العربية"), // Arabic
+    PL("Polski"), // Polish
+    VI("Việt Nam") // Vietnam
     ;
 
     private String name;

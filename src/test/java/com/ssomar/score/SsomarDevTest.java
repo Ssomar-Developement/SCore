@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,9 +24,16 @@ class SsomarDevTest {
             files.filter(f -> f.toString().endsWith(".java"))
                     .forEach(f -> {
                         try {
-                            String code = Files.readString(f);
+                            String code = new String(Files.readAllBytes(f), StandardCharsets.UTF_8);
+
+                            // Remove block comments /* ... */
+                            code = code.replaceAll("(?s)/\\*.*?\\*/", "");
+
+                            // Remove line comments // ...
+                            code = code.replaceAll("//.*", "");
+
                             assertFalse(code.contains("if (true)"),
-                                    "Forbidden pattern found in: " + f);
+                                    "Someone forgot to remove their forced if=true statement! Forbidden pattern found in: " + f);
                         } catch (IOException e) {
                             fail(e);
                         }

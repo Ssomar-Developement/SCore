@@ -22,15 +22,15 @@ public class HttpRequest {
     }
 
     public String getRequestMethod() {
-        return requestParts[0];
+        return requestParts.length >= 1 ? requestParts[0] : "";
     }
 
     public String getRequestURI() {
-        return requestParts[1];
+        return requestParts.length >= 2 ? requestParts[1] : "";
     }
 
     public String getProtocolVersion() {
-        return requestParts[2];
+        return requestParts.length >= 3 ? requestParts[2] : "";
     }
 
     public String getHeader(String header) {
@@ -56,6 +56,9 @@ public class HttpRequest {
         try (InputStreamReader reader = new InputStreamReader(stream);
              BufferedReader bufferedReader = new BufferedReader(reader)) {
             String request = bufferedReader.readLine();
+            if (request == null) {
+                return new HttpRequest("", new HashMap<>());
+            }
             Map<String, String> headers = readHeaders(bufferedReader);
             return new HttpRequest(request, headers);
         }

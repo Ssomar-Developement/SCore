@@ -14,16 +14,20 @@ import com.ssomar.score.languages.messages.Text;
 import com.ssomar.score.menu.EditorCreator;
 import com.ssomar.score.menu.GUI;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.utils.logging.Utils;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.strings.StringConverter;
-import de.tr7zw.nbtapi.NBT;
 import de.tr7zw.nbtapi.NBTItem;
 import de.tr7zw.nbtapi.NBTType;
-import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,6 +65,10 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
         return blackListedTags;
     }
 
+    /**
+     * This method is used for importing custom nbt values from the held reference ItemStack when running <code>/ei create</code>
+     * @param item
+     */
     public void load(ItemStack item) {
         if (SCore.hasNBTAPI) {
             NBTItem nbti = new NBTItem(item);
@@ -74,7 +82,7 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
                 SsomarDev.testMsg(" >>>>>>> load tag: " + s+" type: "+type, true);
                 switch (type) {
                     case NBTTagInt:
-                        tags.add(new IntNBTTag(s, nbti.getInteger(s).intValue()));
+                        tags.add(new IntNBTTag(s, Integer.toString(nbti.getInteger(s).intValue())));
                         break;
                     case NBTTagByte:
                         tags.add(new ByteNBTTag(s, nbti.getByte(s).byteValue()));
@@ -83,7 +91,7 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
                         tags.add(new CompoundNBTTag(s, nbti.getCompound(s)));
                         break;
                     case NBTTagDouble:
-                        tags.add(new DoubleNBTTag(s, nbti.getDouble(s).doubleValue()));
+                        tags.add(new DoubleNBTTag(s, Double.toString(nbti.getDouble(s).doubleValue())));
                         break;
                     case NBTTagList:
                         /* Important for attributes in 1.12 */
@@ -105,6 +113,13 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
         }
     }
 
+    /**
+     * This method is typically executed during plugin load and reloads
+     * @param sPlugin
+     * @param configurationSection
+     * @param isPremiumLoading
+     * @return
+     */
     @Override
     public List<String> load(SPlugin sPlugin, ConfigurationSection configurationSection, boolean isPremiumLoading) {
         tags.clear();
@@ -173,6 +188,10 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
             config.set("nbt."+i+".type", split[0]);
             config.set("nbt."+i+".key", split[1]);
             config.set("nbt."+i+".value", split[2]);
+            if (split.length >= 4 && split[3].equalsIgnoreCase("true")) {
+                config.set("nbt."+i+".saveInPDC", true);
+            }
+            i++;
         }
         file.delete();
 
@@ -226,17 +245,68 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
     }
 
     public ItemStack writeNBTTags(ItemStack item) {
-        if (SCore.hasNBTAPI) {
-            // Creating a new empty NBT tag
-            // Optional to remove Error occurred while enabling ExecutableItems v7.24.6.23 (Is it up to date?)
-            //java.lang.NoClassDefFoundError: de/tr7zw/nbtapi/iface/ReadableNBT
-            NBT.modify(item, nbtItem -> {
-                Optional<ReadWriteNBT> nbtItemOptional = Optional.of(nbtItem);
-                for (NBTTag nbtTag : tags) {
-                    nbtTag.applyTo(nbtItemOptional.get(), true);
+        if (tags.isEmpty()) return item;
+
+        // Separate tags that should go into the Persistent Data Container from
+        // those that should remain as raw NBT.  PDC is only available on 1.14+
+        // (i.e. !is1v13Less()), so on older versions every tag is treated as
+        // raw NBT regardless of the saveInPDC flag.
+        List<NBTTag> pdcTags = new ArrayList<>();
+        List<NBTTag> rawTags = new ArrayList<>();
+
+        for (NBTTag tag : tags) {
+            if (tag.isSaveInPDC() && !SCore.is1v13Less()) {
+                if (tag instanceof CompoundNBTTag || tag instanceof ListCompoundNBTTag) {
+                    SCore.plugin.getLogger().warning(
+                            "[ExecutableItems] NBT tag '" + tag.getKey() +
+                            "' has saveInPDC:true but its type (COMPOUND/COMPOUND_LIST) " +
+                            "cannot be stored in the Persistent Data Container. " +
+                            "The tag will be written as raw NBT instead.");
+                    rawTags.add(tag);
+                } else {
+                    pdcTags.add(tag);
                 }
-            });
+            } else {
+                rawTags.add(tag);
+            }
         }
+
+        // Write raw NBT tags via NBT-API (existing behaviour).
+        // The actual NBT.modify() call lives in NBTTagNBTAPIApplier so that
+        // this class never directly references ReadWriteNBT and can be loaded
+        // even when the NBT-API plugin is absent.
+        if (!rawTags.isEmpty() && SCore.hasNBTAPI) {
+            NBTTagNBTAPIApplier.applyTags(item, rawTags);
+        }
+
+        // Write PDC tags via Bukkit's PersistentDataContainer
+        if (!pdcTags.isEmpty()) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta != null) {
+                PersistentDataContainer pdc = meta.getPersistentDataContainer();
+                for (NBTTag tag : pdcTags) {
+                    NamespacedKey nsKey = new NamespacedKey(ExecutableItems.getPluginSt(), tag.getKey());
+                    if (tag instanceof StringNBTTag) {
+                        pdc.set(nsKey, PersistentDataType.STRING, ((StringNBTTag) tag).getValueString());
+                    } else if (tag instanceof IntNBTTag) {
+                        pdc.set(nsKey, PersistentDataType.INTEGER, Integer.parseInt(StringPlaceholder.replaceRandomPlaceholders(((IntNBTTag) tag).getValueInt())));
+                    } else if (tag instanceof DoubleNBTTag) {
+                        pdc.set(nsKey, PersistentDataType.DOUBLE, Double.parseDouble(StringPlaceholder.replaceRandomPlaceholders(((DoubleNBTTag) tag).getValueDouble())));
+                    } else if (tag instanceof BooleanNBTTag) {
+                        // PDC has no dedicated boolean type; store as BYTE (0/1)
+                        pdc.set(nsKey, PersistentDataType.BYTE,
+                                ((BooleanNBTTag) tag).isValueBoolean() ? (byte) 1 : (byte) 0);
+                    } else if (tag instanceof ByteNBTTag) {
+                        pdc.set(nsKey, PersistentDataType.BYTE, ((ByteNBTTag) tag).getValueByte());
+                    } else if (tag instanceof ListStringNBTTag) {
+                        List<String> list = ((ListStringNBTTag) tag).getValue();
+                        pdc.set(nsKey, PersistentDataType.STRING, list.toString());
+                    }
+                }
+                item.setItemMeta(meta);
+            }
+        }
+
         return item;
     }
 
@@ -251,11 +321,13 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
     public Optional<String> verifyMessageReceived(String s) {
         String[] split = s.split("::");
         if (split.length < 3)
-            return Optional.of("&cInvalid format ! &7TYPE::KEY::VALUE");
+            return Optional.of("&cInvalid format ! &7TYPE::KEY::VALUE[::saveInPDC]");
         String type = split[0].toUpperCase();
         String [] acceptedTypes = new String[]{"BOOLEAN", "STRING", "DOUBLE", "INTEGER"};
         if (!Arrays.asList(acceptedTypes).contains(type))
             return Optional.of("&cInvalid type ! &7BOOLEAN, STRING, DOUBLE, INTEGER");
+        if (split.length >= 4 && !split[3].equalsIgnoreCase("true") && !split[3].equalsIgnoreCase("false"))
+            return Optional.of("&cInvalid saveInPDC value ! &7true or false");
         return Optional.empty();
     }
 
@@ -287,7 +359,7 @@ public class NBTTags extends FeatureAbstract<Optional<List<String>>, NBTTags> im
 
     @Override
     public String getTips() {
-        return "&7&o Type &eTYPE&a::&eKEY&a::&eVALUE";
+        return "&7&o Type &eTYPE&a::&eKEY&a::&eVALUE&a[::&esaveInPDC&a]";
     }
 
     @Override

@@ -70,7 +70,6 @@ public class VariableEditorManager extends FeatureEditorManagerAbstract<Variable
             parent = ((FeatureAbstract) parent).getParent();
             parent.reload();
         }
-        back(interact);
 
         // save variable in MySQL
         VariablesManager.getInstance().updateLoadedMySQL(interact.gui.getParent().getId(), VariablesManager.MODE.EXPORT);

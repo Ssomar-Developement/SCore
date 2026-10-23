@@ -1000,8 +1000,8 @@ public class ParticleDisplay implements Cloneable {
      *
      * @since 1.0.0
      */
-    @Nonnull
     public Location spawn(double x, double y, double z) {
+        if(getLocation() == null) return null;
         return spawn(rotate(getLocation(), x, y, z));
     }
 

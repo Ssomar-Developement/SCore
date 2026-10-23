@@ -40,9 +40,9 @@ public class DamageReductionGroupFeature extends FeatureWithHisOwnEditor<DamageR
         if (config.isConfigurationSection(this.getName())) {
             ConfigurationSection enchantmentsSection = config.getConfigurationSection(this.getName());
             for (String enchantmentID : enchantmentsSection.getKeys(false)) {
-                ConfigurationSection enchantmentSection = enchantmentsSection.getConfigurationSection(enchantmentID);
+                //ConfigurationSection enchantmentSection = enchantmentsSection.getConfigurationSection(enchantmentID);
                 DamageReductionFeature enchantment = new DamageReductionFeature(this, enchantmentID);
-                List<String> subErrors = enchantment.load(plugin, enchantmentSection, isPremiumLoading);
+                List<String> subErrors = enchantment.load(plugin, enchantmentsSection, isPremiumLoading);
                 if (!subErrors.isEmpty()) {
                     error.addAll(subErrors);
                     continue;
@@ -115,11 +115,11 @@ public class DamageReductionGroupFeature extends FeatureWithHisOwnEditor<DamageR
     @Override
     public DamageReductionGroupFeature clone(FeatureParentInterface newParent) {
         DamageReductionGroupFeature eF = new DamageReductionGroupFeature(newParent, isNotSaveIfNoValue());
-        HashMap<String, DamageReductionFeature> newEnchantments = new HashMap<>();
+        HashMap<String, DamageReductionFeature> newReduction = new HashMap<>();
         for (String x : reductions.keySet()) {
-            newEnchantments.put(x, reductions.get(x).clone(eF));
+            newReduction.put(x, reductions.get(x).clone(eF));
         }
-        eF.setReductions(newEnchantments);
+        eF.setReductions(newReduction);
         return eF;
     }
 

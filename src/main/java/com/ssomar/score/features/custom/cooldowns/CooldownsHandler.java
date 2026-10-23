@@ -47,6 +47,15 @@ public class CooldownsHandler implements Listener {
             }
         };
         SCore.schedulerHook.runAsyncRepeatingTask(r2, 0, 20);
+
+        /* Async task to cleanup expired cooldowns every 5 minutes (6000 ticks) to prevent memory leaks */
+        Runnable cleanupTask = new Runnable() {
+            @Override
+            public void run() {
+                CooldownsManager.getInstance().cleanupExpiredCooldowns();
+            }
+        };
+        SCore.schedulerHook.runAsyncRepeatingTask(cleanupTask, 6000, 6000);
     }
 
     public static void closeServerSaveAll() {

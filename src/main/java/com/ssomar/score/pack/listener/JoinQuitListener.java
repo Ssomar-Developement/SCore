@@ -27,7 +27,7 @@ public class JoinQuitListener implements Listener {
         for (PackSettings pack : packs.values()) {
             Runnable runnable = () -> {
                 try {
-                    p.addResourcePack(pack.getUuid(), pack.getHostedPath(), null, pack.getCustomPromptMessage(), pack.isForce());
+                    p.addResourcePack(pack.getUuid(), pack.getHostedPath(), pack.getHash(), pack.getCustomPromptMessage(), pack.isForce());
                 } catch (Exception | Error ex) {
                     // Version not supported or error in adding resource packs
                 }

@@ -11,6 +11,10 @@ public class DamageBoostEvent implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamageEvent(EntityDamageByEntityEvent e) {
-        e.setDamage(NTools.reduceDouble(DamageBoost.getInstance().getNewDamage(e.getDamager().getUniqueId(), e.getDamage()), 2));
+        // Try catch was added due to WeaponMechanics plugin conflict
+        // An exception happens if a player damages a mob using a gun from WeaponMechanics
+        try {
+           e.setDamage(NTools.reduceDouble(DamageBoost.getInstance().getNewDamage(e.getDamager().getUniqueId(), e.getDamage()), 2));
+        } catch (Exception ex) {}
     }
 }

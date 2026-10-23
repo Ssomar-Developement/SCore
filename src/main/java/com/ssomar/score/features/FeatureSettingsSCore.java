@@ -70,12 +70,15 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     cancelLectern(getFeatureSettings("cancelLectern", "cancel-lectern", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     cancelLoom(getFeatureSettings("cancelLoom", "cancel-loom", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     cancelDecoratedPot(getFeatureSettings("cancelDecoratedPot", "cancel-decorated-pot", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelShelf(getFeatureSettings("cancelShelf", "cancel-shelf", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     cancelCrafter(getFeatureSettings("cancelCrafter", "cancel-crafter", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelPlaceInBundle(getFeatureSettings("cancelPlaceInBundle", "cancel-place-in-bundle", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     cancelMerchant(getFeatureSettings("cancelMerchant", "cancel-merchant", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     cancelSmithingTable(getFeatureSettings("cancelSmithingTable", "cancel-smithing-table", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     cancelStoneCutter(getFeatureSettings("cancelStoneCutter", "cancel-stone-cutter", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     cancelSwapHand(getFeatureSettings("cancelSwapHand", "cancel-swap-hand", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     cancelToolInteractions(getFeatureSettings("cancelToolInteractions", "cancel-tool-interactions", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    cancelSpawner(getFeatureSettings("cancelSpawner", "cancel-spawner", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     charged(getFeatureSettings("charged")),
     color(getFeatureSettings("color")),
     containerContent(getFeatureSettings("containerContent")),
@@ -98,6 +101,35 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     damagePerAttack(getFeatureSettings("damagePerAttack")),
     detailedBlocks(getFeatureSettings("detailedBlocks")),
     weaponFeatures(getFeatureSettings("weaponFeatures")),
+    dyeFeatures(getFeatureSettings("dyeFeatures")),
+    dyeColor(getFeatureSettings("dyeColor")),
+    sulfurCubeContentFeatures(getFeatureSettings("sulfurCubeContentFeatures")),
+    absorbedItem(getFeatureSettings("absorbedItem")),
+    attackRangeFeatures(getFeatureSettings("attackRangeFeatures")),
+    minReach(getFeatureSettings("minReach")),
+    maxReach(getFeatureSettings("maxReach")),
+    minCreativeReach(getFeatureSettings("minCreativeReach")),
+    maxCreativeReach(getFeatureSettings("maxCreativeReach")),
+    hitboxMargin(getFeatureSettings("hitboxMargin")),
+    mobFactor(getFeatureSettings("mobFactor")),
+    piercingWeaponFeatures(getFeatureSettings("piercingWeaponFeatures")),
+    dealsKnockback(getFeatureSettings("dealsKnockback")),
+    dismounts(getFeatureSettings("dismounts")),
+    enableHitSound(getFeatureSettings("enableHitSound")),
+    kineticWeaponFeatures(getFeatureSettings("kineticWeaponFeatures")),
+    contactCooldownTicks(getFeatureSettings("contactCooldownTicks")),
+    delayTicks(getFeatureSettings("delayTicks")),
+    forwardMovement(getFeatureSettings("forwardMovement")),
+    damageMultiplier(getFeatureSettings("damageMultiplier")),
+    dismountMaxDurationTicks(getFeatureSettings("dismountMaxDurationTicks")),
+    dismountMinSpeed(getFeatureSettings("dismountMinSpeed")),
+    dismountMinRelativeSpeed(getFeatureSettings("dismountMinRelativeSpeed")),
+    knockbackMaxDurationTicks(getFeatureSettings("knockbackMaxDurationTicks")),
+    knockbackMinSpeed(getFeatureSettings("knockbackMinSpeed")),
+    knockbackMinRelativeSpeed(getFeatureSettings("knockbackMinRelativeSpeed")),
+    damageMaxDurationTicks(getFeatureSettings("damageMaxDurationTicks")),
+    damageMinSpeed(getFeatureSettings("damageMinSpeed")),
+    damageMinRelativeSpeed(getFeatureSettings("damageMinRelativeSpeed")),
     detailedEffects(getFeatureSettings("detailedEffects")),
     detailedItems(getFeatureSettings("detailedItems")),
     detailedTargetItems(getFeatureSettings("detailedTargetItems")),
@@ -419,8 +451,13 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     dispensable(getFeatureSettings("dispensable")),
     swappable(getFeatureSettings("swappable")),
     allowedEntities(getFeatureSettings("allowedEntities")),
+    canBeSheared(getFeatureSettings("canBeSheared")),
+    enableShearingSound(getFeatureSettings("enableShearingSound")),
+    shearingSound(getFeatureSettings("shearingSound")),
+    equipOnInteract(getFeatureSettings("equipOnInteract")),
     repairableFeatures(getFeatureSettings("repairableFeatures")),
     repairCost(getFeatureSettings("repairCost")),
+    repairableItems(getFeatureSettings("repairableItems")),
     glider(getFeatureSettings("glider")),
     itemModel(getFeatureSettings("itemModel")),
     tooltipModel(getFeatureSettings("tooltipModel")),
@@ -488,6 +525,7 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     playerCooldownFeatures(getFeatureSettings("playerCooldownFeatures")),
     entityCooldownFeatures(getFeatureSettings("entityCooldownFeatures")),
     isRefreshableClean(getFeatureSettings("isRefreshableClean")),
+    parsePlaceholders(getFeatureSettings("parsePlaceholders", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
     refreshTag(getFeatureSettings("refreshTag", "refreshTagDoNotEdit")),
     otherEICooldowns(getFeatureSettings("otherEICooldowns")),
     cooldown_activators(getFeatureSettings("activators")),
@@ -613,7 +651,9 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     canBeMoved(getFeatureSettings("canBeMoved")),
     itemsAdderID(getFeatureSettings("itemsAdderID")),
     oraxenID(getFeatureSettings("oraxenID")),
+    oraxen(getFeatureSettings("oraxen")),
     nexoID(getFeatureSettings("nexoID")),
+    nexo(getFeatureSettings("nexo")),
     myfurnitureID(getFeatureSettings("myfurnitureID")),
     interactionRange(getFeatureSettings("interactionRange")),
     enabled(getFeatureSettings("enabled")),
@@ -665,7 +705,16 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
     itemTextures(getFeatureSettings("itemTextures")),
     itemAdvancedComponents(getFeatureSettings("itemAdvancedComponents")),
     ifGameMode(getFeatureSettings("ifGameMode", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
-    suspiciousBlockLoot(getFeatureSettings("suspiciousBlockLoot"))
+    ifNearbyEntityCount(getFeatureSettings("ifNearbyEntityCount", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifLineOfSight(getFeatureSettings("ifLineOfSight", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifPlayerSpeed(getFeatureSettings("ifPlayerSpeed", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    ifNearbyPlayerCount(getFeatureSettings("ifNearbyPlayerCount", SavingVerbosityLevel.SAVE_ONLY_WHEN_DIFFERENT_DEFAULT)),
+    suspiciousBlockLoot(getFeatureSettings("suspiciousBlockLoot")),
+    papiParser(getFeatureSettings("papiParser")),
+    teleportRandomly(getFeatureSettings("teleportRandomly")),
+    onConsumeSound(getFeatureSettings("onConsumeSound")),
+    clearAllEffects(getFeatureSettings("clearAllEffects")),
+    listPotionEffectTypeToRemove(getFeatureSettings("listPotionEffectTypeToRemove"))
     ;
 
     private FeatureSettingsInterface settingsInterface;
@@ -703,6 +752,10 @@ public enum FeatureSettingsSCore implements FeatureSettingsInterface {
                 return FeatureSettingsSCoreHI.values();
             case IT:
                 return FeatureSettingsSCoreIT.values();
+            case PL:
+                return FeatureSettingsSCorePL.values();
+            case VI:
+                return FeatureSettingsSCoreVI.values();
             default:
                 return FeatureSettingsSCoreEN.values();
         }

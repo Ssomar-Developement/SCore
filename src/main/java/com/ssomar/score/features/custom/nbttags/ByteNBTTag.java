@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.nbttags;
 
+import com.ssomar.score.SCore;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import lombok.Getter;
@@ -22,7 +23,12 @@ public class ByteNBTTag extends NBTTag {
     }
 
     @Override
-    public boolean applyTo(ReadWriteNBT nbtItem, boolean onlyIfDifferent) {
+    public boolean applyTo(Object nbtItemOpt, boolean onlyIfDifferent) {
+        ReadWriteNBT nbtItem = null;
+        if (SCore.hasNBTAPI) {
+            nbtItem = (ReadWriteNBT) nbtItemOpt;
+        } else return false;
+
         if (!onlyIfDifferent || nbtItem.getByte(getKey()) != getValueByte()) {
             nbtItem.setByte(getKey(), getValueByte());
             return true;
@@ -31,7 +37,12 @@ public class ByteNBTTag extends NBTTag {
     }
 
     @Override
-    public boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent) {
+    public boolean applyToComp(Object nbtCompoundOpt, boolean onlyIfDifferent) {
+        NBTCompound nbtCompound = null;
+        if (SCore.hasNBTAPI) {
+            nbtCompound = (NBTCompound) nbtCompoundOpt;
+        } else return false;
+
         if (!onlyIfDifferent || nbtCompound.getByte(getKey()) != getValueByte()) {
             nbtCompound.setByte(getKey(), getValueByte());
             return true;

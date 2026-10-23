@@ -26,7 +26,7 @@ public class PlantInSquare extends BlockCommand {
         CommandSetting radius = new CommandSetting("radius", 0, Integer.class, 1);
         CommandSetting takeFromInv = new CommandSetting("takeFromInv", 1, Boolean.class, false);
         CommandSetting acceptEI = new CommandSetting("acceptEI", 2, Boolean.class, false);
-        CommandSetting cropType = new CommandSetting("cropType", 3, String.class, "WHEAT");
+        CommandSetting cropType = new CommandSetting("cropType", 3, String.class, null);
         CommandSetting isCube = new CommandSetting("isCube", 4, Boolean.class, false);
         List<CommandSetting> settings = getSettings();
         settings.add(radius);
@@ -44,7 +44,14 @@ public class PlantInSquare extends BlockCommand {
         int radius = Integer.parseInt(sCommandToExec.getSettingValue("radius").toString());
         boolean takeFromInventory = Boolean.parseBoolean(sCommandToExec.getSettingValue("takeFromInv").toString());
         boolean acceptEI = Boolean.parseBoolean(sCommandToExec.getSettingValue("acceptEI").toString());
-        List<String> specifiedCropTypes = Arrays.asList(sCommandToExec.getSettingValue("cropType").toString().toUpperCase().split(","));
+
+        List<String> specifiedCropTypes;
+        String cropType = (String) sCommandToExec.getSettingValue("cropType");
+        if (cropType != null)
+            specifiedCropTypes = Arrays.asList(cropType.toUpperCase().split(","));
+        else
+            specifiedCropTypes = new ArrayList<>();
+
         boolean isCube = Boolean.parseBoolean(sCommandToExec.getSettingValue("isCube").toString());
 
         // #2
@@ -87,6 +94,8 @@ public class PlantInSquare extends BlockCommand {
 
         // #6
         if(takeFromInventory) {
+            /* No player when the block command is fired by a block activator: nothing to take from */
+            if (p == null) return;
             int slot = 0;
             //SsomarDev.testMsg("resourcesNeeded: "+resourcesNeeded ,true);
             for (ItemStack item : p.getInventory().getContents()) {
@@ -102,7 +111,8 @@ public class PlantInSquare extends BlockCommand {
         }
         // #7
         else{
-            // random resources
+            // Side Comment: If the user does not specify any crops and takeFromInventory is false, this custom command
+            // will inevitably place random crops.
             int slot = 0;
             while(resourcesNeeded > 0){
                 // get random index of validMaterial
@@ -193,6 +203,16 @@ public class PlantInSquare extends BlockCommand {
         }
     }
 
+    /**
+     * An ItemStack can have an amount value of 0 or less and still be a non-null value. <br/><br/>
+     * Under the context of PLANT_IN_SQUARE, the logic requires an ItemStack that has a value
+     * of greater than 0. <br/>
+     * <br/>
+     * <b>Additional Info: Later down in the code execution, if a crop is placed successfully, its
+     * amount value will be reduced by 1, making the null statement of this method reachable.</b>
+     * @param disposal
+     * @return
+     */
     private ItemStack getValidItem(Map<Integer, ItemStack> disposal){
         for(ItemStack item : disposal.values()){
             if(item.getAmount() > 0) return item;

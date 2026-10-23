@@ -127,39 +127,71 @@ public class AddTemporaryAttribute extends MixedCommand  {
         AttributeInstance attrInstance = livingEntity.getAttribute((attrType));
 
         // make a randomized key to allow spamming of ADD_TEMPORARY_ATTRIBUTE
-        NamespacedKey attr_key = new NamespacedKey(SCore.plugin, String.valueOf(UUID.randomUUID()));
-        AttributeModifier tempModifier = new AttributeModifier(attr_key, Double.parseDouble(sCommandToExec.getSettingValue("amount").toString()), operation);
+        UUID randomUUID = UUID.randomUUID();
+        String attrKeyString;
+        AttributeModifier tempModifier;
+        if (SCore.is1v21Plus()) {
+            NamespacedKey attr_key = new NamespacedKey(SCore.plugin, String.valueOf(randomUUID));
+            attrKeyString = attr_key.toString();
+            tempModifier = new AttributeModifier(attr_key, Double.parseDouble(sCommandToExec.getSettingValue("amount").toString()), operation);
+        } else {
+            // For versions below 1.21, use the legacy constructor
+            attrKeyString = randomUUID.toString();
+            tempModifier = new AttributeModifier(randomUUID, attrKeyString, Double.parseDouble(sCommandToExec.getSettingValue("amount").toString()), operation);
+        }
 
-        assert attrInstance != null;
+        if (attrInstance == null) {
+            SCore.plugin.getLogger().info("[ADD_TEMPORARY_ATTRIBUTE] Attribute " + attrTypeID + " is not applicable to entity " + entity.getType().name() + ", skipping.");
+            return;
+        }
 
         attrInstance.addModifier(tempModifier);
 
         // a record must be made asap to ensure when crashes or restarts occur, expired attribute modifiers can be removed upon the player's relog
-        if (entity instanceof Player) TemporaryAttributeQuery.insertToRecords(
-                Database.getInstance().connect(),
-                String.valueOf(attr_key),
-                attrTypeID,
-                amount,
-                String.valueOf(entity.getUniqueId()),
-                expiry_time);
-
+        final String finalAttrKeyString = attrKeyString;
+        if (entity instanceof Player) {
+            final String finalAttrTypeID = attrTypeID;
+            final double finalAmount = amount;
+            final long finalExpiry_time = expiry_time;
+            SCore.schedulerHook.runAsyncTask(() ->
+                    TemporaryAttributeQuery.insertToRecords(
+                        Database.getInstance().connect(),
+                        finalAttrKeyString,
+                        finalAttrTypeID,
+                        finalAmount,
+                        String.valueOf(entity.getUniqueId()),
+                        finalExpiry_time),0);
+        }
 
 
         String finalAttrTypeID1 = attrTypeID;
         Runnable runlater = new Runnable() {
             @Override
             public void run() {
-                if (!entity.isDead() || (entity instanceof Player && ((Player) entity).isOnline())) {
-                    AttributeUtils.removeSpecificAttribute((LivingEntity) entity, finalAttrTypeID1, attr_key.toString());
-                    if (entity instanceof Player) TemporaryAttributeQuery.removeFromRecords(Database.getInstance().connect(), attr_key.toString());
+                if (shouldRemoveNow(entity)) {
+                    AttributeUtils.removeSpecificAttribute((LivingEntity) entity, finalAttrTypeID1, finalAttrKeyString);
+                    if (entity instanceof Player) {
+                        SCore.schedulerHook.runAsyncTask(
+                                () -> TemporaryAttributeQuery.removeFromRecords(Database.getInstance().connect(), finalAttrKeyString), 0
+                        );
+                    }
                 }
-                // AddTemporaryAttributeManager's method will be called upon player relog if it expires while the player is offline
             }
         };
 
-
         if (!(entity instanceof Player)) SCore.schedulerHook.runEntityTask(runlater, null, entity, Long.parseLong(sCommandToExec.getSettingValue("timeinticks").toString()));
         else SCore.schedulerHook.runTask(runlater, Long.parseLong(sCommandToExec.getSettingValue("timeinticks").toString()));
+    }
+
+    /**
+     * Whether the expired modifier can be removed right now.
+     * A connected player is handled even when dead: on the death screen isValid() is false,
+     * the removal used to be skipped and the modifier stayed until the next reconnection.
+     * An offline player keeps the database record, cleaned up on join or respawn.
+     */
+    static boolean shouldRemoveNow(Entity entity) {
+        if (entity instanceof Player) return ((Player) entity).isOnline();
+        return entity.isValid() && !entity.isDead();
     }
 
 }

@@ -1,12 +1,10 @@
 package com.ssomar.score.utils.scheduler;
 
-import com.ssomar.score.SCore;
 import io.papermc.paper.threadedregions.scheduler.AsyncScheduler;
 import io.papermc.paper.threadedregions.scheduler.EntityScheduler;
 import io.papermc.paper.threadedregions.scheduler.GlobalRegionScheduler;
 import io.papermc.paper.threadedregions.scheduler.RegionScheduler;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
@@ -23,6 +21,7 @@ public class RegionisedSchedulerHook implements SchedulerHook {
 
     @Override
     public ScheduledTask runTask(Runnable runnable, long delay) {
+        if(plugin == null || !plugin.isEnabled()) return null;
         if(delay > 0)
             return new RegionisedScheduledTask(((GlobalRegionScheduler)getReflectedObjectOfBukkit("getGlobalRegionScheduler")).runDelayed(plugin, task -> runnable.run(), delay));
         else
@@ -32,12 +31,14 @@ public class RegionisedSchedulerHook implements SchedulerHook {
 
     @Override
     public ScheduledTask runRepeatingTask(Runnable runnable, long initDelay, long period) {
+        if(plugin == null || !plugin.isEnabled()) return null;
         if(initDelay <= 0) initDelay = 1;
         return new RegionisedScheduledTask(((GlobalRegionScheduler)getReflectedObjectOfBukkit("getGlobalRegionScheduler")).runAtFixedRate(plugin, task -> runnable.run(), initDelay, period));
     }
 
     @Override
     public ScheduledTask runAsyncTask(Runnable runnable, long delay) {
+        if(plugin == null || !plugin.isEnabled()) return null;
         // convert tick to ms
         delay *= 50;
         if(delay > 0)
@@ -48,6 +49,7 @@ public class RegionisedSchedulerHook implements SchedulerHook {
 
     @Override
     public ScheduledTask runAsyncRepeatingTask(Runnable runnable, long initDelay, long period) {
+        if(plugin == null || !plugin.isEnabled()) return null;
         // convert tick to ms
         initDelay *= 50;
         period *= 50;
@@ -57,6 +59,7 @@ public class RegionisedSchedulerHook implements SchedulerHook {
 
     @Override
     public ScheduledTask runEntityTask(Runnable runnable, Runnable retired, Entity entity, long delay) {
+        if(plugin == null || !plugin.isEnabled()) return null;
         io.papermc.paper.threadedregions.scheduler.ScheduledTask scheduledTask = null;
         EntityScheduler scheduler = null;
         try {
@@ -76,7 +79,23 @@ public class RegionisedSchedulerHook implements SchedulerHook {
     }
 
     @Override
+    public ScheduledTask runEntityRepeatingTask(Runnable runnable, Runnable retired, Entity entity, long initDelay, long period) {
+        if(plugin == null || !plugin.isEnabled()) return null;
+        if(initDelay <= 0) initDelay = 1;
+        EntityScheduler scheduler;
+        try {
+            scheduler = (EntityScheduler) Entity.class.getMethod("getScheduler").invoke(entity);
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+        io.papermc.paper.threadedregions.scheduler.ScheduledTask scheduledTask =
+                scheduler.runAtFixedRate(plugin, task -> runnable.run(), retired, initDelay, period);
+        return scheduledTask == null ? null : new RegionisedScheduledTask(scheduledTask);
+    }
+
+    @Override
     public ScheduledTask runEntityTaskAsap(Runnable runnable, Runnable retired, Entity entity) {
+        if(plugin == null || !plugin.isEnabled()) return null;
 
         boolean isOwnedByCurrentRegion = false;
         try {
@@ -106,6 +125,7 @@ public class RegionisedSchedulerHook implements SchedulerHook {
 
     @Override
     public ScheduledTask runLocationTask(Runnable runnable,Location location, long delay) {
+        if(plugin == null || !plugin.isEnabled()) return null;
         io.papermc.paper.threadedregions.scheduler.ScheduledTask scheduledTask = null;
         if(delay > 0)
             scheduledTask = ((RegionScheduler)getReflectedObjectOfBukkit("getRegionScheduler")).runDelayed(plugin, location, task -> runnable.run(), delay);
@@ -115,6 +135,7 @@ public class RegionisedSchedulerHook implements SchedulerHook {
 
     @Override
     public ScheduledTask runLocationTaskAsap(Runnable runnable, Location location) {
+        if(plugin == null || !plugin.isEnabled()) return null;
 
         boolean isOwnedByCurrentRegion = false;
         try {
@@ -142,9 +163,18 @@ public class RegionisedSchedulerHook implements SchedulerHook {
         return runLocationTask(runnable, location, 0);
     }
 
+    /* The Paper schedulers are singletons: resolve each of them by reflection once instead of
+     * on every scheduled task (this reflection showed up at ~10% of the server thread on a
+     * server scheduling tens of thousands of location tasks). */
+    private final java.util.concurrent.ConcurrentHashMap<String, Object> reflectedBukkitObjects = new java.util.concurrent.ConcurrentHashMap<>();
+
     public Object getReflectedObjectOfBukkit(String methodName) {
+        Object cached = reflectedBukkitObjects.get(methodName);
+        if (cached != null) return cached;
         try {
-            return Bukkit.class.getMethod(methodName).invoke(Bukkit.class);
+            Object value = Bukkit.class.getMethod(methodName).invoke(Bukkit.class);
+            if (value != null) reflectedBukkitObjects.put(methodName, value);
+            return value;
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {

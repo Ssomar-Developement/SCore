@@ -1,6 +1,7 @@
 package com.ssomar.score.commands.runnable.player;
 
 import com.ssomar.score.SCore;
+import com.ssomar.score.SsomarDev;
 import com.ssomar.score.commands.runnable.ActionInfo;
 import com.ssomar.score.commands.runnable.CommandsHandler;
 import com.ssomar.score.commands.runnable.RunCommand;
@@ -59,6 +60,15 @@ public class PlayerRunCommand extends RunCommand {
         } else clearIfDisconnect = false;
     }
 
+    /* The tags were removed from the command by initRunOffline / initClearIfDisconnect: saved again with it, the command loaded after a restart keeps them */
+    @Override
+    public String getBrutCommandToSave() {
+        String command = super.getBrutCommandToSave();
+        if (clearIfDisconnect) command = "[<CLEAR_IF_DISCONNECT>] " + command;
+        if (runOffline) command = "[<OFFLINE>] " + command;
+        return command;
+    }
+
     @Override
     public void pickupInfo() {
         ActionInfo aInfo = this.getaInfo();
@@ -112,7 +122,15 @@ public class PlayerRunCommand extends RunCommand {
             SCore.schedulerHook.runTask(runnable, 0);
             return;
         } */
+        SsomarDev.testMsg("[#s_1] [-1] PlayerRunCommand.java > executeRunnable() : "+receiverUUID, false, SsomarDev.DebugMsgGroups._1);
         Player receiver = Bukkit.getPlayer(receiverUUID);
-        SCore.schedulerHook.runEntityTaskAsap(runnable, null, receiver);
+        // Explanation:
+        // - Ssomar wants to use runEntityTask
+
+        if (receiver == null) {
+            SCore.schedulerHook.runTask(runnable, 0);
+        } else {
+            SCore.schedulerHook.runEntityTaskAsap(runnable, null, receiver);
+        }
     }
 }

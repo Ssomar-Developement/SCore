@@ -86,8 +86,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <release>8</release>
                     <encoding>${project.build.sourceEncoding}</encoding>
                     <annotationProcessorPaths>
                         <path>
@@ -99,9 +98,18 @@
                 </configuration>
             </plugin>
             <plugin>
+                <!-- Without this, the default surefire 2.x does not discover the JUnit 5 tests -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.2</version>
+                <configuration>
+                    <testRelease>21</testRelease>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.4.1</version>
+                <version>3.6.2</version>
                 <!-- Do not include the <configuration>...</configuration> part if you
                     are using Sponge! -->
                 <configuration>
@@ -140,6 +148,46 @@
 
 
     <profiles>
+        <!-- Optional: publish the full jar + javadoc to repo.ssomar.com (mvn deploy -Ppublish) -->
+        <profile>
+            <id>publish</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.11.2</version>
+                        <configuration>
+                            <doclint>none</doclint>
+                            <failOnError>false</failOnError>
+                            <quiet>true</quiet>
+                            <notimestamp>true</notimestamp>
+                            <windowtitle>SCore API — SsomarDev plugins</windowtitle>
+                            <doctitle>SCore ${project.version} — public API of the SsomarDev plugins</doctitle>
+                            <groups>
+                                <group>
+                                    <title>Public API — start here (com.ssomar.score.api)</title>
+                                    <packages>com.ssomar.score.api*</packages>
+                                </group>
+                                <group>
+                                    <title>SCore internals (open source, no stability guarantee)</title>
+                                    <packages>com.ssomar*</packages>
+                                </group>
+                            </groups>
+                            <bottom><![CDATA[Copyright &copy; SsomarDev — <a href="https://docs.ssomar.com">docs.ssomar.com</a> &middot; <a href="https://repo.ssomar.com">repo.ssomar.com</a>]]></bottom>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadoc</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <!-- vvv This part is only for me (Ssomar) vvv -->
         <profile>
             <id>Ssomar</id>
@@ -221,17 +269,33 @@
                                         <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
                                               tofile="E:\Razer\Documents\GitHub\ExecutableItems\src\main\resources\SCore.jar"/>
                                         <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="E:\Razer\Documents\GitHub\ExecutableEvents\src\main\resources\SCore.jar"/>
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="E:\Razer\Documents\GitHub\CustomPiglinsTrades\src\main\resources\SCore.jar"/>
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="E:\Razer\Documents\GitHub\ExecutableBlocks\src\main\resources\SCore.jar"/>
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="E:\Razer\Documents\GitHub\MyFurniture\src\main\resources\SCore.jar"/>
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="E:\Razer\Documents\Server Files\PAPERSPIGOT 1.13.2\plugins\SCore.jar"/>
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="E:\Razer\Documents\Server Files\PAPERSPIGOT 1.14.4\plugins\SCore.jar"/>
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
                                               tofile="E:\Razer\Documents\Server Files\PAPERSPIGOT 1.21.4\plugins\SCore.jar"/>
                                         <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
                                               tofile="E:\Razer\Documents\Server Files\PAPERSPIGOT 1.21.4 - Copy\plugins\SCore.jar"/>
                                         <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
                                               tofile="E:\Razer\Documents\Server Files\PAPERSPIGOT 1.21.6\plugins\SCore.jar"/>
                                         <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
-                                              tofile="E:\Razer\Documents\GitHub\ExecutableBlocks\src\main\resources\SCore.jar"/>
-                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
-                                              tofile="E:\Razer\Documents\GitHub\ExecutableItems\src\main\resources\SCore.jar"/>
-                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
                                               tofile="E:\Razer\Documents\Server Files\PAPERSPIGOT 1.21.8\plugins\SCore.jar"/>
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="E:\Razer\Documents\Server Files\PAPERSPIGOT 1.21.10\plugins\SCore.jar"/>
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="E:\Razer\Documents\Server Files\PAPERSPIGOT 1.21.11\plugins\SCore.jar"/>
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="E:\Razer\Documents\Server Files\PAPERSPIGOT 26.1.2\plugins\SCore.jar"/>
+                                        <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
+                                              tofile="E:\Razer\Documents\Server Files\FOLIA 1.21.11\plugins\SCore.jar"/>
                                         <copy file="${project.build.directory}/${project.artifactId}-${project.version}.jar"
                                               tofile="/Users/josefmikourquico/Documents/Server Files/PAPERSPIGOT 1.21.4/plugins/SCore.jar"/>
                                     </target>
@@ -284,6 +348,10 @@
     </profiles>
 
     <repositories>
+        <repository>
+            <id>ssomar-repo</id>
+            <url>https://repo.ssomar.com/releases</url>
+        </repository>
         <repository>
             <id>griefdefender</id>
             <url>https://repo.glaremasters.me/repository/bloodshot/</url>
@@ -356,11 +424,6 @@
             <id>inject repo</id>
             <url>https://maven.andante.dev/releases/</url>
         </repository>
-        <repository>
-            <id>nightexpressdev</id>
-            <name>NightExpressDev Repository</name>
-            <url>https://repo.nightexpressdev.com/releases/</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -388,7 +451,7 @@
         <dependency>
             <groupId>com.github.retrooper</groupId>
             <artifactId>packetevents-spigot</artifactId>
-            <version>2.10.0-SNAPSHOT</version>
+            <version>2.12.2</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -460,13 +523,13 @@
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>RELEASE</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.github.Ssomar-Developement</groupId>
+            <groupId>com.ssomar.sevents</groupId>
             <artifactId>SEvents</artifactId>
-            <version>-6011b1e70f-1</version>
+            <version>1.26.10.16</version>
             <scope>compile</scope>
         </dependency>
 
@@ -496,17 +559,9 @@
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.21.10-R0.1-SNAPSHOT</version>
+            <version>26.3.build.26-alpha</version>
             <scope>provided</scope>
         </dependency>
-
-        <!--<dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.21.3-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>-->
-
 
         <!--<dependency>
             <groupId>dev.folia</groupId>
@@ -768,11 +823,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Compile time only: in compile scope the whole Lombok jar (1.8 MB) was shaded into SCore.jar -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.38</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -891,6 +947,14 @@
         </dependency>
 
         <dependency>
+            <groupId>com.songoda</groupId>
+            <artifactId>FabledSkyBlock</artifactId>
+            <version>4.8.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/fabledskyblock-4.8.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
             <groupId>com.github.brcdev-minecraft</groupId>
             <artifactId>shopgui-api</artifactId>
             <version>3.0.0</version>
@@ -947,7 +1011,16 @@
             <groupId>com.github.nulli0n</groupId>
             <artifactId>ExcellentClaims-spigot</artifactId>
             <version>fd57663fc5</version>
-            <scope>provided</scope>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/ExcellentClaims-spigot-fd57663fc5.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>su.nightexpress.nightcore</groupId>
+            <artifactId>NightCore</artifactId>
+            <version>2.7.12</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/nightcore-2.7.12.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -960,8 +1033,15 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
+            <version>5.11.4</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>ssomar-repo</id>
+            <url>https://repo.ssomar.com/releases</url>
+        </repository>
+    </distributionManagement>
 </project>

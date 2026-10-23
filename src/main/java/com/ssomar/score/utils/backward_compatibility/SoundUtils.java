@@ -13,13 +13,34 @@ import java.util.Map;
 
 public class SoundUtils {
 
+    /* The sound registry never changes while the server runs, but getSounds() used to walk it
+     * (~1 500 entries) and sort the result on EVERY call — and SoundFeature.save() calls it for
+     * every sound of every saved object. A mass save (pack import in MyFurniture, /ei editor on a
+     * big config) then blocked the main thread for seconds (Paper watchdog dumps, 2026-09-22).
+     * Built once, read-only afterwards. */
+    private static volatile Map<Object, String> cachedSounds;
+
     public static Map<Object, String> getSounds() {
+        Map<Object, String> sounds = cachedSounds;
+        if (sounds == null) {
+            synchronized (SoundUtils.class) {
+                sounds = cachedSounds;
+                if (sounds == null) {
+                    sounds = java.util.Collections.unmodifiableMap(buildSounds());
+                    cachedSounds = sounds;
+                }
+            }
+        }
+        return sounds;
+    }
+
+    private static Map<Object, String> buildSounds() {
         Map<Object, String> list = new HashMap<>();
         if (SCore.is1v21v2Plus()) {
             for (Keyed l : Registry.SOUNDS) {
                 NamespacedKey key = l.getKey();
                 if(key.getNamespace().equals("minecraft")) {
-                    list.put(l, l.getKey().getKey().toUpperCase());
+                    list.put(l, l.getKey().getKey().toUpperCase().replace('.', '_'));
                 }
                 else list.put(l, l.getKey().toString());
             }
@@ -40,6 +61,19 @@ public class SoundUtils {
         }
         // Sort the list
         return MapUtil.sortByValue(list);
+    }
+
+    /**
+     * Resolve the org.bukkit.Sound matching an Adventure key (as returned by the
+     * item data-component API, e.g. PiercingWeapon#sound()). Returns null if the
+     * key is null or no matching sound exists.
+     */
+    public static Sound getSoundFromKey(net.kyori.adventure.key.Key key) {
+        if (key == null) return null;
+        if (SCore.is1v21v2Plus()) {
+            return Registry.SOUNDS.get(new NamespacedKey(key.namespace(), key.value()));
+        }
+        return getSound(key.value());
     }
 
     public static Sound getSound(String string) {

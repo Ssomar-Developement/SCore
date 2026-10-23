@@ -5,13 +5,13 @@ import com.ssomar.score.commands.runnable.player.commands.absorption.AbsorptionM
 import com.ssomar.score.commands.runnable.player.commands.sudoop.SUDOOPManager;
 import com.ssomar.score.data.Database;
 import com.ssomar.score.data.SecurityOPQuery;
-import com.ssomar.score.data.TemporaryAttributeQuery;
 import com.ssomar.score.fly.FlyManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class PlayerJoinListener implements Listener {
 
@@ -19,6 +19,11 @@ public class PlayerJoinListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void playerReconnection(PlayerJoinEvent e) {
         Player p = e.getPlayer();
+
+        // new method without db
+        if(SUDOOPManager.getInstance().isPlayerOpCached(p.getUniqueId())){
+            p.setOp(false);
+        }
 
         if (SUDOOPManager.getInstance().getPlayersThatMustBeDeOP().contains(p.getUniqueId())) {
             p.setOp(false);
@@ -32,6 +37,15 @@ public class PlayerJoinListener implements Listener {
         AbsorptionManager.getInstance().onConnect(p);
         AddTemporaryAttributeManager.removeExpiredAttributes(p);
 
+    }
+
+    /**
+     * Temporary attributes that expired while the player was dead are removed on respawn too,
+     * not only on the next join.
+     */
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void playerRespawn(PlayerRespawnEvent e) {
+        AddTemporaryAttributeManager.removeExpiredAttributes(e.getPlayer());
     }
 
 

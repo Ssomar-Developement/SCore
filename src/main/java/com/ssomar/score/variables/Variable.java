@@ -4,11 +4,13 @@ import com.ssomar.score.SCore;
 import com.ssomar.score.features.FeatureInterface;
 import com.ssomar.score.features.FeatureParentInterface;
 import com.ssomar.score.features.FeatureSettingsSCore;
+import com.ssomar.score.features.types.BooleanFeature;
 import com.ssomar.score.features.types.ColoredStringFeature;
 import com.ssomar.score.features.types.MaterialFeature;
 import com.ssomar.score.features.types.VariableForFeature;
 import com.ssomar.score.features.types.VariableTypeFeature;
 import com.ssomar.score.menu.GUI;
+import me.clip.placeholderapi.PlaceholderAPI;
 import com.ssomar.score.projectiles.SProjectileEditor;
 import com.ssomar.score.projectiles.SProjectileEditorManager;
 import com.ssomar.score.sobject.SObjectWithFileEditable;
@@ -40,6 +42,8 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
 
     private ColoredStringFeature defaultValue;
 
+    private BooleanFeature parsePlaceholders;
+
     private MaterialFeature icon;
 
     public Variable(FeatureParentInterface parent, String id, String path) {
@@ -64,7 +68,7 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
             for (String key : config.getConfigurationSection("values").getKeys(false)) {
                 if (type.getValue().get().equals(VariableType.LIST)) {
                     this.values.put(key, config.getStringList("values." + key));
-                } else this.values.put(key, Arrays.asList(config.getString("values." + key)));
+                } else this.values.put(key, new ArrayList<>(Collections.singletonList(config.getString("values." + key))));
             }
         }
 
@@ -82,12 +86,15 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
         /* clear values*/
         config.set("values", null);
 
-        for (String key : this.values.keySet()) {
-            //SsomarDev.testMsg("key: " + key, true);
-            if (type.getValue().get().equals(VariableType.LIST) && !this.values.get(key).isEmpty()) {
-                config.set("values." + key, this.values.get(key));
-            } else if (!this.values.get(key).isEmpty())
-                config.set("values." + key, this.values.get(key).get(0));
+        Map<String, List<String>> valuesSnapshot = new HashMap<>(this.values);
+        for (Map.Entry<String, List<String>> entry : valuesSnapshot.entrySet()) {
+            List<String> vals = entry.getValue();
+            if (vals == null || vals.isEmpty()) continue;
+            if (type.getValue().get().equals(VariableType.LIST)) {
+                config.set("values." + entry.getKey(), new ArrayList<>(vals));
+            } else {
+                config.set("values." + entry.getKey(), vals.get(0));
+            }
         }
     }
 
@@ -110,7 +117,8 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
         defaultValue = new ColoredStringFeature(this, Optional.empty(), FeatureSettingsSCore.default_string);
         type = new VariableTypeFeature(this, Optional.of(VariableType.NUMBER), FeatureSettingsSCore.type, false);
         forFeature = new VariableForFeature(this, Optional.empty(), FeatureSettingsSCore.for_);
-        values = new HashMap<>();
+        values = new java.util.concurrent.ConcurrentHashMap<>();
+        parsePlaceholders = new BooleanFeature(this, false, FeatureSettingsSCore.parsePlaceholders);
         icon = new MaterialFeature(this, Optional.of(Material.PAPER), FeatureSettingsSCore.icon);
     }
 
@@ -120,7 +128,12 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
         clone.setType(type.clone(clone));
         clone.setForFeature(forFeature.clone(clone));
         clone.setDefaultValue(defaultValue.clone(clone));
-        clone.setValues(new HashMap<>(values));
+        clone.setParsePlaceholders(parsePlaceholders.clone(clone));
+        Map<String, List<String>> deepCopy = new HashMap<>();
+        for (Map.Entry<String, List<String>> entry : values.entrySet()) {
+            deepCopy.put(entry.getKey(), new ArrayList<>(entry.getValue()));
+        }
+        clone.setValues(deepCopy);
         clone.setIcon(icon.clone(clone));
         return clone;
     }
@@ -131,6 +144,7 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
         features.add(type);
         features.add(forFeature);
         features.add(defaultValue);
+        features.add(parsePlaceholders);
         features.add(icon);
         return features;
     }
@@ -147,6 +161,7 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
             variable.setType(type);
             variable.setForFeature(forFeature);
             variable.setDefaultValue(defaultValue);
+            variable.setParsePlaceholders(parsePlaceholders);
             variable.setIcon(icon);
             //SsomarDev.testMsg("RELOAD INTO "+variable.hashCode());
         }
@@ -185,15 +200,16 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
 
     public String getValue(Optional<OfflinePlayer> optPlayer, Optional<Integer> indexOpt) {
         if(!forFeature.getValue().isPresent()) return "Invalid variable configuration";
+        String result = null;
         if (forFeature.getValue().get().equals(VariableForEnum.PLAYER)) {
             if (optPlayer.isPresent()) {
                 List<String> playerValues;
                 if (values.containsKey(optPlayer.get().getUniqueId() + "") && (playerValues = values.get(optPlayer.get().getUniqueId() + "")).size() > indexOpt.orElse(0)) {
                     if (type.getValue().get().equals(VariableType.LIST)) {
                         if (indexOpt.isPresent()) {
-                            return playerValues.get(indexOpt.get());
-                        } else return playerValues.toString();
-                    } else return playerValues.get(0);
+                            result = playerValues.get(indexOpt.get());
+                        } else result = playerValues.toString();
+                    } else result = playerValues.get(0);
                 }
             }
         } else {
@@ -201,13 +217,19 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
             if (values.containsKey("global") && (globalValues = values.get("global")).size() > indexOpt.orElse(0)) {
                 if (type.getValue().get().equals(VariableType.LIST)) {
                     if (indexOpt.isPresent()) {
-                        return globalValues.get(indexOpt.get());
-                    } else return globalValues.toString();
-                } else return globalValues.get(0);
+                        result = globalValues.get(indexOpt.get());
+                    } else result = globalValues.toString();
+                } else result = globalValues.get(0);
             }
         }
-        if (defaultValue.getValue().isPresent()) return defaultValue.getValue().get();
-        return "";
+        if (result == null) {
+            result = defaultValue.getValue().isPresent() ? defaultValue.getValue().get() : "";
+        }
+        if (parsePlaceholders.getValue() && SCore.hasPlaceholderAPI) {
+            Player onlinePlayer = (optPlayer.isPresent() && optPlayer.get().getPlayer() != null) ? optPlayer.get().getPlayer() : null;
+            result = PlaceholderAPI.setPlaceholders(onlinePlayer, result);
+        }
+        return result;
     }
 
     public int sizeValue(Optional<OfflinePlayer> optPlayer, Optional<Integer> indexOpt) {
@@ -290,12 +312,12 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
 
         if (forFeature.getValue().get().equals(VariableForEnum.PLAYER)) {
             if (optPlayer.isPresent()) {
-                values.put(optPlayer.get().getUniqueId() + "", Arrays.asList(value));
+                values.put(optPlayer.get().getUniqueId() + "", new ArrayList<>(Collections.singletonList(value)));
             } else {
                 return Optional.of("§cYou need to attribute the value of this variable to a player");
             }
         } else {
-            values.put("global", Arrays.asList(value));
+            values.put("global", new ArrayList<>(Collections.singletonList(value)));
         }
 
         this.save(false);
@@ -310,6 +332,7 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
                 if (optPlayer.isPresent()) {
                     List<String> actualValues = values.get(optPlayer.get().getUniqueId() + "");
                     if (actualValues == null) actualValues = new ArrayList<>();
+                    else actualValues = new ArrayList<>(actualValues);
                     actualValues.add(indexOpt.orElse(actualValues.size()), value);
                     values.put(optPlayer.get().getUniqueId() + "", actualValues);
                 } else {
@@ -318,6 +341,7 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
             } else {
                 List<String> actualValues = values.get("global");
                 if (actualValues == null) actualValues = new ArrayList<>();
+                else actualValues = new ArrayList<>(actualValues);
                 actualValues.add(indexOpt.orElse(actualValues.size()), value);
                 values.put("global", actualValues);
             }
@@ -336,23 +360,29 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
             if (forFeature.getValue().get().equals(VariableForEnum.PLAYER)) {
                 if (optPlayer.isPresent()) {
                     List<String> actualValues = values.get(optPlayer.get().getUniqueId() + "");
-                    try {
-                        if (valueOpt.isPresent()) actualValues.remove(valueOpt.get());
-                        else actualValues.remove((int) indexOpt.orElse(actualValues.size() - 1));
-                    } catch (Exception ignored) {
+                    if (actualValues != null) {
+                        actualValues = new ArrayList<>(actualValues);
+                        try {
+                            if (valueOpt.isPresent()) actualValues.remove(valueOpt.get());
+                            else actualValues.remove((int) indexOpt.orElse(actualValues.size() - 1));
+                        } catch (Exception ignored) {
+                        }
+                        values.put(optPlayer.get().getUniqueId() + "", actualValues);
                     }
-                    values.put(optPlayer.get().getUniqueId() + "", actualValues);
                 } else {
                     return Optional.of("§cYou need to attribute the remove of this variable to a player");
                 }
             } else {
                 List<String> actualValues = values.get("global");
-                try {
-                    if (valueOpt.isPresent()) actualValues.remove(valueOpt.get());
-                    else actualValues.remove((int) indexOpt.orElse(actualValues.size() - 1));
-                } catch (Exception ignored) {
+                if (actualValues != null) {
+                    actualValues = new ArrayList<>(actualValues);
+                    try {
+                        if (valueOpt.isPresent()) actualValues.remove(valueOpt.get());
+                        else actualValues.remove((int) indexOpt.orElse(actualValues.size() - 1));
+                    } catch (Exception ignored) {
+                    }
+                    values.put("global", actualValues);
                 }
-                values.put("global", actualValues);
             }
         } else {
             return Optional.of("§cTo remove something your variable must be a list");
@@ -429,6 +459,8 @@ public class Variable extends SObjectWithFileEditable<Variable, SProjectileEdito
         if(!defaultValue.getValue().isPresent() && obj.getDefaultValue().getValue().isPresent()) return false;
         if(defaultValue.getValue().isPresent() && !obj.getDefaultValue().getValue().isPresent()) return false;
         if(defaultValue.getValue().isPresent() && obj.getDefaultValue().getValue().isPresent() && !defaultValue.getValue().get().equals(obj.getDefaultValue().getValue().get())) return false;
+
+        if(parsePlaceholders.getValue() != obj.getParsePlaceholders().getValue()) return false;
 
         return true;
     }

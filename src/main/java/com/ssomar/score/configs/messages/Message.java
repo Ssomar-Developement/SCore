@@ -9,6 +9,7 @@ public enum Message implements MessageInterface {
     SET_ACTIONBAR_OFF("setActionbarOff"),
     HAVE_ACTIONBAR_ON("haveActionbarOn"),
     HAVE_ACTIONBAR_OFF("haveActionbarOff"),
+    TIME_LEFT("timeLeft"),
     ERROR_MONEY("errorMoneyMsg"),
     NEW_BALANCE_NEGATIVE("newBalanceMsg"),
     NEW_BALANCE_POSITIVE("newBalancePositiveMsg"),

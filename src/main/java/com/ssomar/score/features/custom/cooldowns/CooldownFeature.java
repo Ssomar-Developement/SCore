@@ -1,8 +1,8 @@
 package com.ssomar.score.features.custom.cooldowns;
 
-import com.ssomar.executableitems.configs.Message;
 import com.ssomar.score.SCore;
 import com.ssomar.score.config.GeneralConfig;
+import com.ssomar.score.configs.messages.Message;
 import com.ssomar.score.configs.messages.MessageMain;
 import com.ssomar.score.features.*;
 import com.ssomar.score.features.custom.activators.activator.SActivator;
@@ -145,7 +145,10 @@ public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, Co
                 SObjectBuildable sObjectBuildable = (SObjectBuildable) sObject;
                 ItemStack item = sObjectBuildable.buildItem(1, Optional.empty());
                 HumanEntity humanEntity = (HumanEntity) entity;
-                humanEntity.setCooldown(item, cooldown.getTimeLeftFlatValue()*20);
+                if (this.isCooldownInTicks.getValue())
+                    humanEntity.setCooldown(item, cooldown.getTimeLeftFlatValue());
+                else
+                    humanEntity.setCooldown(item, cooldown.getTimeLeftFlatValue()*20);
                 //SsomarDev.testMsg("SET COOLDOWN FOR "+entity.getName()+" mat>> "+item+" >> "+cooldown.getTimeLeftFlatValue(), true);
             }
         }
@@ -192,10 +195,34 @@ public class CooldownFeature extends FeatureWithHisOwnEditor<CooldownFeature, Co
         CooldownsManager.getInstance().addCooldown(cooldown);
     }
 
+    /**
+     * Check whether an entity currently has this cooldown active.
+     *
+     * @param entity the entity to check
+     * @return true if the cooldown is currently running for this entity
+     */
+    public boolean isInCooldown(@NotNull Entity entity) {
+        return CooldownsManager.getInstance().getCooldown(sPlugin, cooldownId, entity.getUniqueId(), isGlobal).isPresent();
+    }
+
+    /**
+     * Get the remaining time of this cooldown for an entity.
+     *
+     * @param entity the entity to check
+     * @return the remaining time in seconds, or 0 if the entity is not in cooldown
+     */
+    public double getCooldownRemaining(@NotNull Entity entity) {
+        Optional<Cooldown> cooldownOpt = CooldownsManager.getInstance().getCooldown(sPlugin, cooldownId, entity.getUniqueId(), isGlobal);
+        if (cooldownOpt.isPresent()) return cooldownOpt.get().getTimeLeft();
+        return 0;
+    }
+
     public boolean hasNoCDPerm(Permissible p, SObject sObject) {
         String id = sObject.getId();
 
         if (sPlugin.isLotOfWork()) return false;
+        // A cooldown added without a player (EICOOLDOWN from a console/entity context): nobody to exempt.
+        if (p == null) return false;
 
         boolean hasNoCDPerm = p.hasPermission(sPlugin.getName() + ".nocd." + id) ||
                 p.hasPermission(sPlugin.getShortName().toLowerCase() + ".nocd." + id) ||

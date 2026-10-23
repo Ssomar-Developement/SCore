@@ -6,6 +6,7 @@ import com.plotsquared.core.PlotAPI;
 import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.runnable.CommandsHandler;
 import com.ssomar.score.commands.runnable.FilterManager;
+import com.ssomar.score.commands.runnable.mixed_player_entity.commands.equipmentvisualreplace.EquipmentVisualManager;
 import com.ssomar.score.commands.runnable.player.commands.Bossbar;
 import com.ssomar.score.commands.score.CommandsClass;
 import com.ssomar.score.config.Config;
@@ -30,6 +31,7 @@ import com.ssomar.score.projectiles.SProjectile;
 import com.ssomar.score.projectiles.loader.SProjectileLoader;
 import com.ssomar.score.sobject.SObject;
 import com.ssomar.score.splugin.SPlugin;
+import com.ssomar.score.sparticles.ParticleToggleManager;
 import com.ssomar.score.usedapi.Dependency;
 import com.ssomar.score.usedapi.PlaceholderAPISCoreExpansion;
 import com.ssomar.score.usedapi.ProtocolLibAPI;
@@ -86,6 +88,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
     public static boolean hasIridiumSkyblock = false;
     public static boolean hasSuperiorSkyblock2 = false;
     public static boolean hasBentoBox = false;
+    public static boolean hasFabledSkyblock = false;
     public static boolean hasMultiverse = false;
     public static boolean hasLands = false;
     public static boolean hasTowny = false;
@@ -168,9 +171,13 @@ public final class SCore extends JavaPlugin implements SPlugin {
     private static boolean is1v21v8 = false;
     private static boolean is1v21v9 = false;
     private static boolean is1v21v10 = false;
+    private static boolean is1v21v11 = false;
 
-    private static boolean is1v22 = false;
-    private static boolean is1v23 = false;
+    private static boolean is26v1 = false;
+    private static boolean is26v2 = false;
+    private static boolean is26v3 = false;
+    /* A Minecraft version released after this build of SCore: handled like the newest version SCore knows */
+    private static boolean isNewerThanKnownVersions = false;
 
 
 
@@ -366,15 +373,29 @@ public final class SCore extends JavaPlugin implements SPlugin {
         return is1v21v10;
     }
 
-    public static boolean is1v22() {
-        return is1v22;
+    public static boolean is1v21v11() {
+        return is1v21v11;
     }
 
-    public static boolean is1v23() {
-        return is1v23;
+    public static boolean is26v1() {
+        return is26v1;
     }
 
-    /* The server is in 1.12 or - ? */
+    public static boolean is26v2() {
+        return is26v2;
+    }
+
+    public static boolean is26v3() {
+        return is26v3;
+    }
+
+
+    /* The server is in 1.10 or - ? */
+    public static boolean is1v10Less() {
+        return is1v8() || is1v9() || is1v10();
+    }
+
+    /* The server is in 1.11 or - ? */
     public static boolean is1v11Less() {
         return is1v8() || is1v9() || is1v10() || is1v11();
     }
@@ -384,9 +405,17 @@ public final class SCore extends JavaPlugin implements SPlugin {
         return is1v8() || is1v9() || is1v10() || is1v11() || is1v12();
     }
 
+    /* The server is in 1.12 or + ? */
+    public static boolean is1v12Plus() { return is1v12() || is1v13() || is1v14Plus(); }
+
     /* The server is in 1.13 or - ? */
     public static boolean is1v13Less() {
         return is1v8() || is1v9() || is1v10() || is1v11() || is1v12() || is1v13();
+    }
+
+    /* The server is in 1.14 or + ? */
+    public static boolean is1v14Plus() {
+        return is1v14() || is1v15() || is1v16Plus();
     }
 
     /* The server is in 1.16 or + ? */
@@ -438,20 +467,13 @@ public final class SCore extends JavaPlugin implements SPlugin {
     }
 
     public static boolean is1v21Plus() {
-        return is1v21();
+        return is1v21() || is1v21v2Plus();
     }
 
     public static boolean is1v21v2Plus() {
         return is1v21v2()  || is1v21v3() || is1v21v4Plus();
     }
 
-    public static boolean is1v22Plus() {
-        return is1v22() || is1v23Plus();
-    }
-
-    public static boolean is1v23Plus() {
-        return is1v23();
-    }
 
     public static boolean is1v21v4Plus() {
         return is1v21v4() || is1v21v5Plus();
@@ -466,7 +488,23 @@ public final class SCore extends JavaPlugin implements SPlugin {
     }
 
     public static boolean is1v21v7Plus() {
-        return  is1v21v7() || is1v21v8() || is1v21v9() || is1v21v10() || is1v22Plus();
+        return  is1v21v7() || is1v21v8() || is1v21v9() || is1v21v10() || is1v21v11Plus();
+    }
+
+    public static boolean is1v21v11Plus() {
+        return is1v21v11() || is26v1Plus();
+    }
+
+    public static boolean is26v1Plus() {
+        return is26v1() || is26v2Plus();
+    }
+
+    public static boolean is26v2Plus() {
+        return is26v2() || is26v3Plus();
+    }
+
+    public static boolean is26v3Plus() {
+        return is26v3() || isNewerThanKnownVersions;
     }
 
     public static boolean isVersionBetween(String version1, String version2) {
@@ -610,6 +648,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         FilterManager.getInstance().reload();
 
+        /* Particle toggle instance part */
+        ParticleToggleManager.getInstance();
+
         Utils.sendConsoleMsg("&7================ " + NAME_COLOR + " &7================");
 
     }
@@ -637,6 +678,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
         hasSuperiorSkyblock2 = Dependency.SUPERIOR_SKYBLOCK2.hookSoftDependency();
 
         hasBentoBox = Dependency.BENTO_BOX.hookSoftDependency();
+
+        hasFabledSkyblock = Dependency.FABLED_SKYBLOCK.hookSoftDependency();
 
         hasMultiverse = Dependency.MULTIVERSE_CORE.hookSoftDependency();
 
@@ -788,6 +831,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         if (!SCore.is1v11Less())  Bossbar.getInstance().clearTasks();
 
+        if (!SCore.is1v12Less()) EquipmentVisualManager.shutdown();
+
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Save UsagePerDay....");
         UsagePerDayManager.getInstance().save();
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Save UsagePerDay done !");
@@ -804,6 +849,7 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Clear scheduled tasks...");
         ScheduledTaskManager.getInstance().cancelScheduledTask();
+        LoopManager.getInstance().shutdown();
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Clear scheduled tasks done !");
 
         // Unregister all packs
@@ -836,6 +882,9 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
         /* Custom Lists instance part */
         com.ssomar.score.features.custom.customlists.CustomListsManager.getInstance().reload();
+
+        /* The parsed whitelistCurrentBlock arguments depend on the custom lists reloaded above */
+        com.ssomar.score.features.types.list.ListDetailedMaterialFeature.clearRawListCache();
 
         TM.getInstance().load();
 
@@ -903,10 +952,12 @@ public final class SCore extends JavaPlugin implements SPlugin {
     }
 
     public static void initVersion() {
-        is1v23 = Bukkit.getServer().getVersion().contains("1.23");
-        is1v22 = Bukkit.getServer().getVersion().contains("1.22");
-        is1v21v9 = Bukkit.getServer().getVersion().contains("1.21.9");
+        is26v3 = Bukkit.getServer().getVersion().contains("26.3");
+        is26v2 = Bukkit.getServer().getVersion().contains("26.2");
+        is26v1 = Bukkit.getServer().getVersion().contains("26.1");
+        is1v21v11 = Bukkit.getServer().getVersion().contains("1.21.11");
         is1v21v10 = Bukkit.getServer().getVersion().contains("1.21.10");
+        is1v21v9 = Bukkit.getServer().getVersion().contains("1.21.9");
         is1v21v8 = Bukkit.getServer().getVersion().contains("1.21.8");
         is1v21v7 = Bukkit.getServer().getVersion().contains("1.21.7");
         is1v21v6 = Bukkit.getServer().getVersion().contains("1.21.6");
@@ -931,10 +982,12 @@ public final class SCore extends JavaPlugin implements SPlugin {
         is1v14 = Bukkit.getServer().getVersion().contains("1.14");
         is1v13 = Bukkit.getServer().getVersion().contains("1.13");
         is1v12 = Bukkit.getServer().getVersion().contains("1.12");
-        is1v11 = Bukkit.getServer().getVersion().contains("1.11");
+        is1v11 = Bukkit.getServer().getVersion().contains("1.11") && !is1v21v11;
         is1v10 = Bukkit.getServer().getVersion().contains("1.10") && !is1v21v10;
         is1v9 = Bukkit.getServer().getVersion().contains("1.9") && !is1v21v9;;
         is1v8 = Bukkit.getServer().getVersion().contains("1.8") && !is1v21v8;
+
+        isNewerThanKnownVersions = !is1v8 && !is1v9 && !is1v10 && !is1v11 && !is1v12Plus() && getMinecraftMajorVersion() >= 26;
 
         isSpigot = Bukkit.getServer().getVersion().contains("Spigot") || Bukkit.getServer().getVersion().contains("spigot");
         isMohist = Bukkit.getServer().getName().contains("Mohist") || Bukkit.getServer().getVersion().contains("Mohist");
@@ -944,6 +997,18 @@ public final class SCore extends JavaPlugin implements SPlugin {
         isLuminol = Bukkit.getServer().getVersion().contains("Luminol") || Bukkit.getServer().getVersion().contains("luminol");
         isPurpur = Bukkit.getServer().getVersion().contains("Purpur") || Bukkit.getServer().getVersion().contains("purpur");
         isPufferfish = Bukkit.getServer().getVersion().contains("Pufferfish") || Bukkit.getServer().getVersion().contains("pufferfish");
+    }
+
+    /* 26 for "26.3", 1 for "1.21.11", -1 when the version can't be read */
+    private static int getMinecraftMajorVersion() {
+        try {
+            String version = Bukkit.getServer().getVersion();
+            int index = version.indexOf("MC: ");
+            if (index == -1) return -1;
+            return Integer.parseInt(version.substring(index + 4).split("[^0-9]")[0]);
+        } catch (Exception e) {
+            return -1;
+        }
     }
 
     public static boolean hasClass(String className) {
@@ -966,6 +1031,73 @@ public final class SCore extends JavaPlugin implements SPlugin {
 
     public void displayVersion() {
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Version of the server &6" + Bukkit.getServer().getVersion()+ " &7!");
+        if (isNewerThanKnownVersions) Utils.sendConsoleMsg(SCore.NAME_COLOR + " &eThis Minecraft version is newer than this build of SCore, it is handled like &626.3&e. Check if an update of SCore is available.");
+        if(false){
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is Folia &6" + SCore.isFolia() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is Spigot &6" + SCore.isSpigot() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is Paper &6" + SCore.isPaper() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is Mohist &6" + SCore.isMohist() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is Purpur &6" + SCore.isPurpur() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is Pufferfish &6" + SCore.isPufferfish() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v8 &6" + SCore.is1v8() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v9 &6" + SCore.is1v9() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v10 &6" + SCore.is1v10() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v11 &6" + SCore.is1v11() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v12 &6" + SCore.is1v12() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v13 &6" + SCore.is1v13() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v14 &6" + SCore.is1v14() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v15 &6" + SCore.is1v15() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v16 &6" + SCore.is1v16() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v16v1 &6" + SCore.is1v16v1() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v17 &6" + SCore.is1v17() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v18 &6" + SCore.is1v18() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v19 &6" + SCore.is1v19() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v19v1 &6" + SCore.is1v19v1() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v19v4 &6" + SCore.is1v19v4() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v20 &6" + SCore.is1v20() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v20v1 &6" + SCore.is1v20v1() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v20v4 &6" + SCore.is1v20v4() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v20v5 &6" + SCore.is1v20v5() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v20v6 &6" + SCore.is1v20v6() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v21 &6" + SCore.is1v21() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v21v2 &6" + SCore.is1v21v2() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v21v3 &6" + SCore.is1v21v3() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v21v4 &6" + SCore.is1v21v4() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v21v5 &6" + SCore.is1v21v5() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v21v6 &6" + SCore.is1v21v6() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v21v7 &6" + SCore.is1v21v7() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v21v8 &6" + SCore.is1v21v8() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v21v9 &6" + SCore.is1v21v9() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v21v10 &6" + SCore.is1v21v10() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v21v11 &6" + SCore.is1v21v11() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 26v1 &6" + SCore.is26v1() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 26v2 &6" + SCore.is26v2() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 26v3 &6" + SCore.is26v3() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v10Less &6" + SCore.is1v10Less() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v11Less &6" + SCore.is1v11Less() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v12Less &6" + SCore.is1v12Less() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v12Plus &6" + SCore.is1v12Plus() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v13Less &6" + SCore.is1v13Less() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v16Plus &6" + SCore.is1v16Plus() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v17Plus &6" + SCore.is1v17Plus() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v18Plus &6" + SCore.is1v18Plus() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v19Plus &6" + SCore.is1v19Plus() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v19v4Plus &6" + SCore.is1v19v4Plus() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v20Plus &6" + SCore.is1v20Plus() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v20v1Plus &6" + SCore.is1v20v1Plus() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v20v4Plus &6" + SCore.is1v20v4Plus() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v20v5Plus &6" + SCore.is1v20v5Plus() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v20v6Plus &6" + SCore.is1v20v6Plus() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v21Plus &6" + SCore.is1v21Plus() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v21v2Plus &6" + SCore.is1v21v2Plus() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v21v4Plus &6" + SCore.is1v21v4Plus() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v21v5Plus &6" + SCore.is1v21v5Plus() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v21v6Plus &6" + SCore.is1v21v6Plus() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 1v21v7Plus &6" + SCore.is1v21v7Plus() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 26v1Plus &6" + SCore.is26v1Plus() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 26v2Plus &6" + SCore.is26v2Plus() + " &7!");
+            Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Is 26v3Plus &6" + SCore.is26v3Plus() + " &7!");
+        }
     }
 
     @Override

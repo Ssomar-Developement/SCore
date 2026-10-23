@@ -3,10 +3,10 @@ package com.ssomar.score.commands.runnable;
 import com.ssomar.score.SCore;
 import com.ssomar.score.SsomarDev;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
+import com.ssomar.score.utils.safebreak.BreakChain;
 import com.ssomar.score.utils.scheduler.ScheduledTask;
 import com.ssomar.score.utils.strings.StringConverter;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.io.Serializable;
@@ -62,10 +62,12 @@ public abstract class RunCommand implements Serializable {
 
         long diff = runTime - current;
 
-        if (diff == 0) delay = 0;
-        else delay = (int) (diff / 50);
+        /* A saved command keeps the moment it must run: run() computes the remaining delay when it starts (first tick
+         * after a restart, or the join of its receiver), so the time already waited is not counted twice */
+        if (diff <= 0) delay = 0;
+        else delay = (int) Math.min(Integer.MAX_VALUE, diff / 50);
 
-        this.runTime = -1;
+        this.runTime = runTime > 0 ? runTime : -1;
     }
 
     public void run() {
@@ -177,7 +179,10 @@ public abstract class RunCommand implements Serializable {
                 }
             }
         };
-        executeRunnable(runnable);
+
+        SsomarDev.testMsg("[#s_1] [-2] RunCommand.java > runCommand()", false, SsomarDev.DebugMsgGroups._1);
+        /* The command (and the console commands it runs) stays in the chain of blocks broken by commands that started the action */
+        executeRunnable(BreakChain.wrap(aInfo.getBreakChain(), runnable));
     }
 
     public void runDelayedCommand() {
@@ -202,6 +207,12 @@ public abstract class RunCommand implements Serializable {
 
     public String getBrutCommand() {
         return brutCommand;
+    }
+
+    /* The command as it is written in the database at the shutdown: the variables are not serializable, their current value is saved instead */
+    public String getBrutCommandToSave() {
+        if (sp == null) return brutCommand;
+        return sp.replaceVariablePlaceholders(brutCommand);
     }
 
     public void setBrutCommand(String brutCommand) {

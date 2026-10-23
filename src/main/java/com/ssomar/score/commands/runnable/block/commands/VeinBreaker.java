@@ -7,6 +7,7 @@ import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
 import com.ssomar.score.events.BlockBreakEventExtension;
 import com.ssomar.score.features.custom.detailedblocks.DetailedBlocks;
+import com.ssomar.score.usedapi.AuraSkillsSmeltTracker;
 import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import com.ssomar.score.utils.safebreak.SafeBreak;
 import org.bukkit.ChatColor;
@@ -14,12 +15,15 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static com.ssomar.score.commands.runnable.block.commands.Smelt.dropItemWithFortune;
 
 public class VeinBreaker extends BlockCommand {
 
@@ -54,17 +58,23 @@ public class VeinBreaker extends BlockCommand {
 
     public VeinBreaker() {
         CommandSetting maxVeinSize = new CommandSetting("maxVeinSize", 0, Integer.class, 10, true);
-        CommandSetting triggerEvent = new CommandSetting("triggerEvent", 1, Boolean.class, true, true);
+        CommandSetting createBBEvent = new CommandSetting("createBBEvent", 1, Boolean.class, true, true);
+        CommandSetting smelt = new CommandSetting("smelt", 2, Boolean.class, false, true);
+        /* Read by ExecutableItems: the blocks broken by the command also run the activator that launched it */
+        CommandSetting runActivatorOnBlocks = new CommandSetting("runActivatorOnBlocks", -1, Boolean.class, false);
         List<CommandSetting> settings = getSettings();
         settings.add(maxVeinSize);
-        settings.add(triggerEvent);
+        settings.add(createBBEvent);
+        settings.add(smelt);
+        settings.add(runActivatorOnBlocks);
         setNewSettingsMode(true);
     }
 
     @Override
     public void run(Player p, @NotNull Block block, SCommandToExec sCommandToExec) {
         int maxVeinSize = (int) sCommandToExec.getSettingValue("maxVeinSize");
-        boolean triggerEvent = (boolean) sCommandToExec.getSettingValue("triggerEvent");
+        boolean createBBEvent = (boolean) sCommandToExec.getSettingValue("createBBEvent");
+        boolean smelt = (boolean) sCommandToExec.getSettingValue("smelt");
         ActionInfo aInfo = sCommandToExec.getActionInfo();
         Material oldMaterial = aInfo.getOldBlockMaterial();
 
@@ -86,12 +96,26 @@ public class VeinBreaker extends BlockCommand {
                 List<Block> vein;
                 UUID pUUID = null;
                 if (p != null) pUUID = p.getUniqueId();
-                SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), true, triggerEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE);
+                if (smelt) {
+                    Material blockMat = block.getType();
+                    AuraSkillsSmeltTracker.recordSmelt(pUUID, block);
+                    boolean safeBreakStatus = SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), false, createBBEvent, true, BlockBreakEventExtension.BreakCause.VEIN_BREAK);
+                    if (safeBreakStatus) dropItemWithFortune(block, p, blockMat);
+                } else {
+                    SafeBreak.breakBlockWithEvent(block, pUUID, aInfo.getSlot(), true, createBBEvent, true, BlockBreakEventExtension.BreakCause.VEIN_BREAK);
+                }
 
                 vein = getVein(block, oldMaterial, maxVeinSize);
 
                 for (Block b : vein) {
-                    SafeBreak.breakBlockWithEvent(b, pUUID, aInfo.getSlot(), true, triggerEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE);
+                    ItemStack smeltItem = Smelt.getSmeltedItem(b.getType());
+                    if (smelt && smeltItem != null) {
+                        AuraSkillsSmeltTracker.recordSmelt(pUUID, b);
+                        boolean safeBreakStatus = SafeBreak.breakBlockWithEvent(b, pUUID, aInfo.getSlot(), false, createBBEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE);
+                        if (safeBreakStatus) dropItemWithFortune(b, p, smeltItem.getType());
+                    } else {
+                        SafeBreak.breakBlockWithEvent(b, pUUID, aInfo.getSlot(), true, createBBEvent, true, BlockBreakEventExtension.BreakCause.MINE_IN_CUBE);
+                    }
                 }
             }
         };
@@ -165,7 +189,7 @@ public class VeinBreaker extends BlockCommand {
 
     @Override
     public String getTemplate() {
-        return "VEIN_BREAKER maxVeinSize:10 triggerEvent:true";
+        return "VEIN_BREAKER maxVeinSize:10 createBBEvent:true smelt:false runActivatorOnBlocks:false";
     }
 
     @Override

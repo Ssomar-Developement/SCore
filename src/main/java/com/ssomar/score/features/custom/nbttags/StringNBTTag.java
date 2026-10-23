@@ -1,5 +1,7 @@
 package com.ssomar.score.features.custom.nbttags;
 
+import com.ssomar.score.SCore;
+import com.ssomar.score.utils.placeholders.StringPlaceholder;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
 import lombok.Getter;
@@ -22,16 +24,26 @@ public class StringNBTTag extends NBTTag {
     }
 
     @Override
-    public boolean applyTo(ReadWriteNBT nbtItem, boolean onlyIfDifferent) {
+    public boolean applyTo(Object nbtItemOpt, boolean onlyIfDifferent) {
+        ReadWriteNBT nbtItem = null;
+        if (SCore.hasNBTAPI) {
+            nbtItem = (ReadWriteNBT) nbtItemOpt;
+        } else return false;
+
         if (!onlyIfDifferent || !nbtItem.getString(getKey()).equals(getValueString())) {
-            nbtItem.setString(getKey(), getValueString());
+            nbtItem.setString(getKey(), StringPlaceholder.replaceRandomPlaceholders(getValueString()));
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent) {
+    public boolean applyToComp(Object nbtCompoundOpt, boolean onlyIfDifferent) {
+        NBTCompound nbtCompound = null;
+        if (SCore.hasNBTAPI) {
+            nbtCompound = (NBTCompound) nbtCompoundOpt;
+        } else return false;
+
         //SsomarDev.testMsg("StringNBTTag: " + getKey() + " " + getValueString(), true);
         if (!onlyIfDifferent || !nbtCompound.getString(getKey()).equals(getValueString())) {
             nbtCompound.setString(getKey(), getValueString());
@@ -53,7 +65,7 @@ public class StringNBTTag extends NBTTag {
 
     @Override
     public String toString() {
-        return "STRING::" + getKey() + "::" + getValueString();
+        return "STRING::" + getKey() + "::" + getValueString() + (isSaveInPDC() ? "::true" : "");
     }
 
 }

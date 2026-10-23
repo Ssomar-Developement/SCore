@@ -28,7 +28,7 @@ public class SParticle {
     /* specific for the Particle.REDSTONE */
     private Color redstoneColor;
 
-    /* specific for the Particle.BLOCK_CRACK, BLOCK_DUST, BLOCK_MARKER*/
+    /* specific for the Particle.BLOCK_CRACK, BLOCK_DUST, BLOCK_MARKER, FALLING_DUST*/
     private Material blockType;
 
     public SParticle(String id) {
@@ -127,6 +127,7 @@ public class SParticle {
         if (SCore.is1v18Plus()) {
             particles.add(Particle.BLOCK_MARKER);
         }
+        particles.add(Particle.FALLING_DUST);
         return particles;
     }
 

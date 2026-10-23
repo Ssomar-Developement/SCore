@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -28,31 +30,24 @@ public abstract class SObjectWithFileManager<T extends SObjectWithFile> extends 
             String path = object.getPath();
             path = path.replace("\\", "/");
             path = path.replace(fileLoader.getConfigsPath(), "");
-            if (path.contains("/")) {
-                String ymlPart = "";
-                String[] parts = path.split("/");
-                ymlPart = parts[parts.length - 1];
-                path = path.replace("/" + ymlPart, "");
-            } else continue;
+            int lastSlash = path.lastIndexOf("/");
+            if (lastSlash < 0) continue;
+            path = path.substring(0, lastSlash);
             if (path.equalsIgnoreCase(folder)) objects.add(object);
         }
         return objects;
     }
 
     public List<String> getFoldersNames() {
-        List<String> folders = new ArrayList<>();
+        Set<String> folders = new LinkedHashSet<>();
         for (T item : this.getLoadedObjects()) {
             String path = item.getPath();
             path = path.replace("\\", "/");
             path = path.replace(fileLoader.getConfigsPath(), "");
-            if (path.contains("/")) {
-                String ymlPart = "";
-                String[] parts = path.split("/");
-                ymlPart = parts[parts.length - 1];
-                path = path.replace("/" + ymlPart, "");
-            } else continue;
-            if (!folders.contains(path)) folders.add(path);
+            int lastSlash = path.lastIndexOf("/");
+            if (lastSlash < 0) continue;
+            folders.add(path.substring(0, lastSlash));
         }
-        return folders;
+        return new ArrayList<>(folders);
     }
 }

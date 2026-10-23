@@ -5,6 +5,7 @@ import com.ssomar.score.commands.runnable.CommandSetting;
 import com.ssomar.score.commands.runnable.CommmandThatRunsCommand;
 import com.ssomar.score.commands.runnable.SCommandToExec;
 import com.ssomar.score.commands.runnable.block.BlockCommand;
+import com.ssomar.score.usedapi.GriefPreventionAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
@@ -18,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 
 /* AROUND {distance} {true or false} {Your commands here} */
@@ -32,32 +32,16 @@ public class Around extends BlockCommand {
         CommandSetting throughBlocks = new CommandSetting("throughBlocks", -1, Boolean.class, true);
         CommandSetting limit = new CommandSetting("limit", -1, Integer.class, -1);
         CommandSetting sort = new CommandSetting("sort", -1, String.class, "NEAREST");
+        CommandSetting regionCheck = new CommandSetting("regionCheck", -1, Boolean.class, false);
         List<CommandSetting> settings = getSettings();
         settings.add(distance);
         settings.add(displayMsgIfNoPlayer);
         settings.add(throughBlocks);
         settings.add(limit);
         settings.add(sort);
+        settings.add(regionCheck);
         setNewSettingsMode(true);
         setCanExecuteCommands(true);
-    }
-
-    @Override
-    public Optional<String> verify(List<String> args, boolean isFinalVerification) {
-        String error = "";
-
-        String around = "AROUND {distance} [affectThePlayerThatActivesTheActivator true or false] {Your commands here}";
-
-        if (args.size() < 2) error = notEnoughArgs + around;
-        else if (args.size() > 2) {
-            try {
-                Double.valueOf(args.get(0));
-            } catch (NumberFormatException e) {
-                error = invalidDistance + args.get(0) + " for command: " + around;
-            }
-        }
-
-        return error.isEmpty() ? Optional.empty() : Optional.of(error);
     }
 
     @Override
@@ -69,7 +53,7 @@ public class Around extends BlockCommand {
 
     @Override
     public String getTemplate() {
-        return "AROUND {distance} [affectThePlayerThatActivesTheActivator true or false] {Your commands here}";
+        return "AROUND distance:3.0 affectThePlayerThatActivesTheActivator:true throughBlocks:true limit:-1 sort:NEAREST regionCheck:false {Your commands here}";
     }
 
     @Override
@@ -93,12 +77,14 @@ public class Around extends BlockCommand {
                     boolean throughBlocks = (boolean) sCommandToExec.getSettingValue("throughBlocks");
                     int limit = (int) sCommandToExec.getSettingValue("limit");
                     String sort = (String) sCommandToExec.getSettingValue("sort");
+                    boolean regionCheck = (boolean) sCommandToExec.getSettingValue("regionCheck");
 
                     List<Player> targets = new ArrayList<>();
                     for (Entity e : block.getWorld().getNearbyEntities(block.getLocation().add(0.5, 0.5, 0.5), distance, distance, distance)) {
                         if (e instanceof Player) {
 
                             Location receiverLoc = e.getLocation();
+                            if (p != null && regionCheck && SCore.hasGriefPrevention && !GriefPreventionAPI.playerIsInHisClaim(p, e.getLocation(), true)) continue;
 
                             if(!throughBlocks){
                                 List<Location> centerLocationOfEachFaces = new ArrayList<>();
@@ -150,6 +136,6 @@ public class Around extends BlockCommand {
                 }
             }
         };
-        SCore.schedulerHook.runTask(runnable, 0);
+        SCore.schedulerHook.runLocationTask(runnable, block.getLocation(), 0);
     }
 }

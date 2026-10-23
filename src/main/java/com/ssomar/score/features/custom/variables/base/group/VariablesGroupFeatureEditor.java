@@ -9,7 +9,7 @@ public class VariablesGroupFeatureEditor extends FeatureEditorInterface<Variable
     public final VariablesGroupFeature attributesGroupFeature;
 
     public VariablesGroupFeatureEditor(VariablesGroupFeature enchantsGroupFeature) {
-        super("&lVariables feature Editor", 3 * 9);
+        super("&lVariables feature Editor", 5 * 9);
         this.attributesGroupFeature = enchantsGroupFeature;
         load();
     }
@@ -23,13 +23,13 @@ public class VariablesGroupFeatureEditor extends FeatureEditorInterface<Variable
         }
 
         // Back
-        createItem(RED, 1, 18, GUI.BACK, false, false);
+        createItem(RED, 1, 36, GUI.BACK, false, false);
 
         // Reset menu
-        createItem(ORANGE, 1, 19, GUI.RESET, false, false, "", "&c&oClick here to reset");
+        createItem(ORANGE, 1, 37, GUI.RESET, false, false, "", "&c&oClick here to reset");
 
         // new enchant
-        createItem(GREEN, 1, 22, GUI.NEW, false, false, "", "&a&oClick here to add new attribute");
+        createItem(GREEN, 1, 40, GUI.NEW, false, false, "", "&a&oClick here to add new attribute");
     }
 
     @Override

@@ -10,8 +10,22 @@ import java.io.Serializable;
 
 public abstract class FeatureWithHisOwnEditor<FINAL_VALUE_CLASS, FEATURE_CLASS, Y extends GUI, T extends NewGUIManager<Y>> extends FeatureAbstract<FINAL_VALUE_CLASS, FEATURE_CLASS> implements FeatureParentInterface<FINAL_VALUE_CLASS, FEATURE_CLASS>, Serializable {
 
+    /**
+     * Optional GUI texture character for this feature's editor.
+     * When set, the editor will use this char as a custom background texture overlay.
+     */
+    private char editorGuiTextureChar = '\0';
+
     public FeatureWithHisOwnEditor(FeatureParentInterface parent, FeatureSettingsInterface featureSettingsSCore) {
         super(parent, featureSettingsSCore);
+    }
+
+    public char getEditorGuiTextureChar() {
+        return editorGuiTextureChar;
+    }
+
+    public void setEditorGuiTextureChar(char textureChar) {
+        this.editorGuiTextureChar = textureChar;
     }
 
     public abstract void openEditor(@NotNull Player player);

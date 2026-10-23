@@ -1,5 +1,6 @@
 package com.ssomar.score.features.custom.nbttags;
 
+import com.ssomar.score.SCore;
 import de.tr7zw.nbtapi.NBTCompound;
 import de.tr7zw.nbtapi.NBTType;
 import de.tr7zw.nbtapi.iface.ReadWriteNBT;
@@ -34,7 +35,7 @@ public class CompoundNBTTag extends NBTTag {
 
             switch (type) {
                 case NBTTagInt:
-                    this.nbtTags.add(new IntNBTTag(s, nbtCompound.getInteger(s)));
+                    this.nbtTags.add(new IntNBTTag(s, Integer.toString(nbtCompound.getInteger(s))));
                     break;
                 case NBTTagByte:
                     this.nbtTags.add(new ByteNBTTag(s, nbtCompound.getByte(s)));
@@ -45,7 +46,7 @@ public class CompoundNBTTag extends NBTTag {
                     this.nbtTags.add(new CompoundNBTTag(s, nbtCompound.getCompound(s)));
                     break;
                 case NBTTagDouble:
-                    this.nbtTags.add(new DoubleNBTTag(s, nbtCompound.getDouble(s)));
+                    this.nbtTags.add(new DoubleNBTTag(s, Double.toString(nbtCompound.getDouble(s))));
                     break;
                 case NBTTagEnd:
                     break;
@@ -54,6 +55,7 @@ public class CompoundNBTTag extends NBTTag {
                 case NBTTagIntArray:
                     break;
                 case NBTTagList:
+                    this.nbtTags.add(new ListCompoundNBTTag(s, nbtCompound.getCompoundList(s)));
                     break;
                 case NBTTagLong:
                     break;
@@ -69,7 +71,11 @@ public class CompoundNBTTag extends NBTTag {
     }
 
     @Override
-    public boolean applyTo(ReadWriteNBT nbtItem, boolean onlyIfDifferent) {
+    public boolean applyTo(Object nbtItemOpt, boolean onlyIfDifferent) {
+        ReadWriteNBT nbtItem = null;
+        if (SCore.hasNBTAPI) {
+            nbtItem = (ReadWriteNBT) nbtItemOpt;
+        } else return false;
         ReadWriteNBT compound = nbtItem.getOrCreateCompound(getKey());
 
         boolean different = false;
@@ -80,10 +86,14 @@ public class CompoundNBTTag extends NBTTag {
     }
 
     @Override
-    public boolean applyTo(NBTCompound nbtCompound, boolean onlyIfDifferent) {
+    public boolean applyToComp(Object nbtCompoundOpt, boolean onlyIfDifferent) {
+        NBTCompound nbtCompound = null;
+        if (SCore.hasNBTAPI) {
+            nbtCompound = (NBTCompound) nbtCompoundOpt;
+        } else return false;
+
         //SsomarDev.testMsg(">>> BULD CompoundNBTTag: " + getKey(), true);
         NBTCompound compound = nbtCompound.addCompound(getKey());
-
         boolean different = false;
         for (NBTTag nbtTag : nbtTags) {
             //SsomarDev.testMsg(">>> chldren CompoundNBTTag: " + nbtTag.getKey(), true);
@@ -142,6 +152,11 @@ public class CompoundNBTTag extends NBTTag {
                         break;
                     case "COMPOUND":
                         tag = new CompoundNBTTag(tagSection);
+                        break;
+                    case "COMPOUND_LIST":
+                        tag = new ListCompoundNBTTag(tagSection);
+                        break;
+                    default:
                         break;
                 }
                 if (tag != null) this.nbtTags.add(tag);

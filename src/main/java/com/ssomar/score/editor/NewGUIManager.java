@@ -59,6 +59,11 @@ public abstract class NewGUIManager<T extends GUI> {
         activeTextEditor = new HashMap<>();
     }
 
+    @SuppressWarnings("unchecked")
+    public void restoreInCache(Player player, GUI gui) {
+        cache.put(player, (T) gui);
+    }
+
     public void enableTextEditor(Player player) {
         activeTextEditor.put(player, true);
         suggestionPage.put(player, 0);
@@ -69,6 +74,13 @@ public abstract class NewGUIManager<T extends GUI> {
         suggestionPage.remove(player);
     }
 
+    public void clearPlayerEditorState(Player player) {
+        requestWriting.remove(player);
+        currentWriting.remove(player);
+        suggestions.remove(player);
+        disableTextEditor(player);
+    }
+
     public void clicked(Player p, ItemStack item, ClickType click) {
         NewInteractionClickedGUIManager<T> interact = new NewInteractionClickedGUIManager<>();
         interact.player = p;
@@ -76,7 +88,6 @@ public abstract class NewGUIManager<T extends GUI> {
     }
 
     public void clicked(ItemStack item, NewInteractionClickedGUIManager<T> interact, ClickType click) {
-        //SsomarDev.testMsg("ITEM CLICKED: " + item, true);
         if (item != null && item.hasItemMeta()) {
             interact.cache = this.getCache();
             interact.setName(GUI.getIdentifier(item));
@@ -278,8 +289,14 @@ public abstract class NewGUIManager<T extends GUI> {
         space(p);
         int line = Integer.valueOf(interact.decoloredMessage.split("edit line <")[1].split(">")[0]);
         if (line >= 0) {
-            String modification = interact.coloredDeconvertMessage.split("edit line <" + line + "> ->")[1];
-            currentWriting.get(p).set(line, modification);
+            String[] splitContent = interact.coloredDeconvertMessage.split("edit line <" + line + "> ->");
+            if (splitContent.length >= 2) {
+                String modification = splitContent[1];
+                currentWriting.get(p).set(line, modification);
+            }
+            else {
+                p.sendMessage(StringConverter.coloredString("&c&l>> &4&lEDITION &cedit line format is not valid! Correct format: &eedit line <line_number> -> your new line"));
+            }
         }
         p.sendMessage(StringConverter.coloredString("&a&l>> &2&lEDITION &aYou have edit the line: " + line + " !"));
         space(p);
