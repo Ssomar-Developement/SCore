@@ -6,6 +6,7 @@ import com.plotsquared.core.PlotAPI;
 import com.ssomar.score.actionbar.ActionbarHandler;
 import com.ssomar.score.commands.runnable.CommandsHandler;
 import com.ssomar.score.commands.runnable.FilterManager;
+import com.ssomar.score.commands.runnable.mixed_player_entity.commands.equipmentvisualreplace.EquipmentVisualManager;
 import com.ssomar.score.commands.runnable.player.commands.Bossbar;
 import com.ssomar.score.commands.score.CommandsClass;
 import com.ssomar.score.config.Config;
@@ -832,6 +833,8 @@ public final class SCore extends JavaPlugin implements SPlugin {
         }
 
         if (!SCore.is1v11Less())  Bossbar.getInstance().clearTasks();
+
+        if (!SCore.is1v12Less()) EquipmentVisualManager.shutdown();
 
         Utils.sendConsoleMsg(SCore.NAME_COLOR + " &7Save UsagePerDay....");
         UsagePerDayManager.getInstance().save();
